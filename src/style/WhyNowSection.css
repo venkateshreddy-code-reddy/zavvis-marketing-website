@@ -1,0 +1,469 @@
+/* WhyNowSection.css */
+
+/* ========== SECTION ========== */
+.whyNow {
+  position: relative;
+  width: 100%;
+  background: #000;
+  padding: 56px 0 60px;
+  overflow: hidden;
+}
+
+.whyNow__bgGlow {
+  position: absolute;
+  inset: -220px -240px auto -240px;
+  height: 520px;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side at 52% 45%, rgba(152, 96, 255, 0.28), rgba(152, 96, 255, 0) 68%),
+    radial-gradient(closest-side at 52% 40%, rgba(90, 40, 160, 0.30), rgba(90, 40, 160, 0) 72%);
+  filter: blur(8px);
+  opacity: 0.95;
+  transform: translate3d(0, 0, 0);
+  animation: whyNowGlowDrift 9.5s ease-in-out infinite;
+}
+
+.whyNow__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.10;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.10), rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.08), rgba(255,255,255,0) 44%),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.06), rgba(255,255,255,0) 46%);
+  mix-blend-mode: screen;
+  filter: blur(18px);
+  animation: whyNowGrain 6.5s linear infinite;
+}
+
+@keyframes whyNowGlowDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.92; }
+  50%  { transform: translate3d(0, 14px, 0) scale(1.03); opacity: 1; }
+  100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.92; }
+}
+
+@keyframes whyNowGrain {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(-10px, 8px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* ✅ slightly smaller + centered */
+.whyNow__container {
+  width: min(1120px, calc(100% - 64px));
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* layout (✅ tighter + centered feel) */
+.whyNow__grid {
+  display: grid;
+  grid-template-columns: 520px 3.25fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* ✅ center the card so whole section feels balanced */
+.whyNow__left {
+  display: flex;
+  justify-content: center;
+}
+
+.whyNow__right {
+  padding-top: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* ========== RIGHT CONTENT ========== */
+.whyNow__title {
+  margin: 0 0 14px;
+  font-size: 68px; /* ✅ slightly smaller */
+  line-height: 0.98;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 10px 48px rgba(140, 100, 255, 0.18);
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.whyNow__lead {
+  margin: 0 0 26px;
+  font-size: 18px; /* ✅ slightly smaller */
+  line-height: 1.55;
+  font-weight: 450;
+  color: rgba(255, 255, 255, 0.72);
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  transition-delay: 90ms;
+}
+
+.whyNow__bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: grid;
+  gap: 16px;
+}
+
+.whyNow__bullet {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  column-gap: 14px;
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 650ms ease, transform 650ms ease;
+  transition-delay: calc(160ms + (var(--i) * 90ms));
+}
+
+.whyNow__bulletIcon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+}
+
+.whyNow__check {
+  width: 22px;
+  height: 22px;
+  color: rgba(255, 255, 255, 0.88);
+  filter: drop-shadow(0 6px 16px rgba(140, 100, 255, 0.18));
+}
+
+.whyNow__bulletText {
+  font-size: 20px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.whyNow__callout {
+  width: 100%;
+  border-radius: 14px;
+  padding: 18px;
+  border: 1.5px solid rgba(164, 130, 255, 0.58);
+  background: linear-gradient(180deg, rgba(40, 20, 74, 0.32), rgba(22, 10, 40, 0.22));
+  box-shadow:
+    0 0 0 1px rgba(140, 100, 255, 0.10) inset,
+    0 0 34px rgba(148, 110, 255, 0.14);
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms ease, transform 700ms ease, box-shadow 700ms ease, border-color 700ms ease;
+  transition-delay: 460ms;
+
+  position: relative;
+}
+
+.whyNow__callout::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(closest-side at 52% 40%, rgba(160, 120, 255, 0.35), rgba(160, 120, 255, 0) 70%);
+  filter: blur(10px);
+}
+
+.whyNow__calloutText {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.whyNow__dead {
+  color: #ff2d8a;
+  font-weight: 650;
+  text-shadow: 0 10px 28px rgba(255, 45, 138, 0.18);
+}
+
+.whyNow__footer {
+  margin: 26px 0 0;
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  transition-delay: 620ms;
+}
+
+/* ========== INVESTIGATION CARD (✅ slightly smaller) ========== */
+.itCard {
+  width: 100%;
+  max-width: 720px; /* ✅ smaller */
+  border-radius: 34px;
+  position: relative;
+  background: radial-gradient(
+      110% 90% at 52% 34%,
+      rgba(86, 56, 145, 0.55) 0%,
+      rgba(34, 18, 64, 0.78) 42%,
+      rgba(16, 8, 32, 0.95) 74%,
+      rgba(10, 6, 18, 0.98) 100%
+    );
+  border: 2px solid rgba(164, 130, 255, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(140, 100, 255, 0.12) inset,
+    0 0 28px rgba(148, 110, 255, 0.22),
+    0 0 56px rgba(120, 90, 255, 0.12);
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(18px) scale(0.99);
+  transition: opacity 800ms ease, transform 800ms ease;
+}
+
+.itCard::before {
+  content: "";
+  position: absolute;
+  inset: -60px -120px auto -120px;
+  height: 220px;
+  pointer-events: none;
+  background: radial-gradient(closest-side at 50% 55%, rgba(170, 120, 255, 0.25), rgba(170, 120, 255, 0) 70%);
+  filter: blur(10px);
+  opacity: 0.9;
+  animation: itSheen 7.2s ease-in-out infinite;
+}
+
+@keyframes itSheen {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0.55; }
+  50%  { transform: translate3d(0, 14px, 0); opacity: 0.9; }
+  100% { transform: translate3d(0, 0, 0); opacity: 0.55; }
+}
+
+/* ✅ slightly tighter padding */
+.itCard__inner {
+  position: relative;
+  padding: 48px 52px 44px;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.itCard__title {
+  margin: 0 0 22px;
+  text-align: center;
+  font-size: 42px;
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.itCard__chart {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.itCard__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* chart styles */
+.itCard__axis {
+  stroke: rgba(255, 255, 255, 0.33);
+  stroke-width: 2;
+}
+
+.itCard__label {
+  fill: rgba(255, 255, 255, 0.92);
+  font-size: 34px;
+}
+
+.itCard__label--x {
+  font-size: 34px;
+}
+
+.itCard__line,
+.itCard__arrow {
+  stroke: rgba(118, 94, 255, 0.98);
+  stroke-width: 6;
+  fill: none;
+}
+
+.itCard__caret {
+  stroke: rgba(255, 255, 255, 0.65);
+  stroke-width: 2.5;
+  fill: none;
+}
+
+/* ========= line draw + arrow pop + area fade ========= */
+.itCard__line,
+.itCard__arrow {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  transition: stroke-dashoffset 1100ms ease;
+}
+
+.itCard__area {
+  opacity: 0;
+  transform-origin: 50% 60%;
+  transform: scaleY(0.92);
+  transition: opacity 900ms ease, transform 900ms ease;
+}
+
+.itCard__arrow {
+  transition-delay: 780ms;
+}
+
+.itCard__arrow--a { transition-delay: 820ms; }
+.itCard__arrow--b { transition-delay: 900ms; }
+
+.itCard__caret {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  transition-delay: 980ms;
+}
+
+/* trigger animations */
+.whyNow.is-inview .whyNow__title,
+.whyNow.is-inview .whyNow__lead,
+.whyNow.is-inview .whyNow__bullet,
+.whyNow.is-inview .whyNow__callout,
+.whyNow.is-inview .whyNow__footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.whyNow.is-inview .itCard {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.itCard.is-animate {
+  animation: itFloat 6.2s ease-in-out infinite;
+}
+
+@keyframes itFloat {
+  0%   { transform: translateY(0) scale(1); }
+  50%  { transform: translateY(-10px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.itCard.is-animate .itCard__line,
+.itCard.is-animate .itCard__arrow {
+  stroke-dashoffset: 0;
+}
+
+.itCard.is-animate .itCard__area {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.itCard.is-animate .itCard__caret {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* callout subtle pulse once visible */
+.whyNow.is-inview .whyNow__callout {
+  animation: calloutPulse 2.9s ease-in-out infinite;
+}
+
+.whyNow.is-inview .whyNow__callout::after {
+  opacity: 1;
+  animation: calloutHalo 2.9s ease-in-out infinite;
+}
+
+@keyframes calloutPulse {
+  0%, 100% {
+    border-color: rgba(164, 130, 255, 0.58);
+    box-shadow:
+      0 0 0 1px rgba(140, 100, 255, 0.10) inset,
+      0 0 34px rgba(148, 110, 255, 0.14);
+  }
+  50% {
+    border-color: rgba(190, 160, 255, 0.72);
+    box-shadow:
+      0 0 0 1px rgba(160, 120, 255, 0.14) inset,
+      0 0 52px rgba(160, 120, 255, 0.20);
+  }
+}
+
+@keyframes calloutHalo {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50%      { opacity: 0.32; transform: scale(1.02); }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 980px) {
+  .whyNow__grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .whyNow__left {
+    justify-content: center;
+  }
+
+  .itCard {
+    max-width: 720px;
+  }
+
+  .whyNow__title {
+    font-size: 56px;
+  }
+}
+
+@media (max-width: 560px) {
+  .whyNow__container {
+    width: min(1120px, calc(100% - 28px));
+  }
+
+  .itCard {
+    max-width: 100%;
+  }
+
+  .itCard__inner {
+    padding: 44px 26px 36px;
+  }
+
+  .itCard__title {
+    font-size: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whyNow__bgGlow,
+  .whyNow__grain,
+  .itCard::before,
+  .itCard.is-animate,
+  .whyNow.is-inview .whyNow__callout {
+    animation: none !important;
+  }
+
+  .itCard__line,
+  .itCard__arrow {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+
+  .whyNow__title,
+  .whyNow__lead,
+  .whyNow__bullet,
+  .whyNow__callout,
+  .whyNow__footer,
+  .itCard,
+  .itCard__area,
+  .itCard__caret {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

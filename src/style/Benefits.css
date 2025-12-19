@@ -1,0 +1,461 @@
+/* Benefits.css */
+.bf {
+  width: 100%;
+  min-height: auto; /* ✅ slightly smaller + not full-screen */
+  background: #050008;
+  color: #fff;
+  font-family: system-ui, -apple-system, "Inter", Segoe UI, Roboto, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 36px 0 48px; /* ✅ tighter vertical spacing */
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle purple glow behind title area (gently "breathes") */
+.bf::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -170px;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 480px;
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(146, 96, 255, 0.55) 0%,
+    rgba(117, 77, 255, 0.32) 22%,
+    rgba(75, 40, 140, 0.16) 42%,
+    rgba(5, 0, 8, 0) 72%
+  );
+  filter: blur(2px);
+  pointer-events: none;
+  opacity: 0.9;
+  animation: bfGlow 6.5s ease-in-out infinite;
+}
+
+@keyframes bfGlow {
+  0% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 0.85;
+    filter: blur(2px);
+  }
+  50% {
+    transform: translateX(-50%) translateY(10px) scale(1.04);
+    opacity: 1;
+    filter: blur(3px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 0.85;
+    filter: blur(2px);
+  }
+}
+
+/* gentle vignette to match screenshot edges */
+.bf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.55) 78%),
+    radial-gradient(circle at 50% 120%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.65) 86%);
+  pointer-events: none;
+}
+
+.bf__container {
+  width: 100%;
+  max-width: 1080px; /* ✅ smaller + centered */
+  padding: 0 56px;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   REVEAL ANIMATION (scroll)
+   ========================= */
+[data-anim] {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(6px);
+  transition:
+    opacity 700ms ease,
+    transform 800ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 800ms ease;
+  transition-delay: var(--d, 0ms);
+  will-change: opacity, transform, filter;
+}
+
+[data-anim].is-in {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.bf__title {
+  margin: 0;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: clamp(36px, 4vw, 56px); /* ✅ slightly smaller */
+  line-height: 1.05;
+  color: rgba(255, 255, 255, 0.93);
+  text-shadow:
+    0 0 22px rgba(150, 105, 255, 0.35),
+    0 0 42px rgba(150, 105, 255, 0.18);
+  padding-top: 6px;
+  padding-bottom: 44px; /* ✅ slightly tighter */
+}
+
+/* 3 columns, 2 rows (5 items + chart in bottom-right) */
+.bf__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: min-content;
+  column-gap: 84px; /* ✅ tighter */
+  row-gap: 56px; /* ✅ tighter */
+  align-items: start;
+  justify-content: center; /* ✅ keep the whole block visually centered */
+}
+
+/* place items as in screenshot: 3 on top row, 2 on bottom-left/middle */
+.bf__item:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+.bf__item:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+.bf__item:nth-child(3) {
+  grid-column: 3;
+  grid-row: 1;
+}
+.bf__item:nth-child(4) {
+  grid-column: 1;
+  grid-row: 2;
+}
+.bf__item:nth-child(5) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.bf__item {
+  max-width: 330px; /* ✅ slightly smaller */
+  position: relative;
+  border-radius: 18px;
+  padding: 2px 0;
+}
+
+/* subtle hover: lift + soft halo */
+.bf__item::before {
+  content: "";
+  position: absolute;
+  inset: -14px -18px;
+  border-radius: 24px;
+  background: radial-gradient(circle at 30% 10%, rgba(145, 92, 255, 0.18), rgba(145, 92, 255, 0) 62%);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 300ms ease, transform 300ms ease;
+  pointer-events: none;
+}
+
+.bf__item:hover::before {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bf__item:hover .bf__badge {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 14px 34px rgba(145, 92, 255, 0.28),
+    0 0 22px rgba(145, 92, 255, 0.18);
+}
+
+.bf__badge {
+  width: 50px; /* ✅ slightly smaller */
+  height: 50px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.96);
+  background: radial-gradient(circle at 30% 30%, #b79bff 0%, #8a5cff 35%, #6a2fff 70%, #4c19a8 100%);
+  box-shadow:
+    0 10px 28px rgba(145, 92, 255, 0.22),
+    0 0 18px rgba(145, 92, 255, 0.15);
+  transform: translateZ(0);
+  transition: transform 260ms ease, box-shadow 260ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* little shimmer sweep inside the badge */
+.bf__badge::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 60%;
+  height: 180%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 45%, rgba(255, 255, 255, 0) 100%);
+  transform: rotate(18deg);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.bf__item:hover .bf__badge::after {
+  opacity: 0.9;
+  animation: bfShimmer 900ms ease forwards;
+}
+
+@keyframes bfShimmer {
+  from {
+    transform: translateX(0) rotate(18deg);
+  }
+  to {
+    transform: translateX(260%) rotate(18deg);
+  }
+}
+
+.bf__iconSvg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+
+/* micro "float" for icons after reveal */
+.bf__item.is-in .bf__iconSvg {
+  animation: bfFloat 3.4s ease-in-out infinite;
+}
+
+@keyframes bfFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.bf__h {
+  margin: 0 0 12px;
+  font-weight: 600;
+  font-size: 24px; /* ✅ slightly smaller */
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.bf__p {
+  margin: 0;
+  font-size: 15px; /* ✅ slightly smaller */
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* chart area (bottom-right) */
+.bf__chart {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  align-self: start;
+  width: 320px; /* ✅ smaller */
+  padding-top: 8px;
+}
+
+.bf__bars {
+  position: relative;
+  height: 260px; /* ✅ smaller */
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 36px; /* ✅ tighter */
+}
+
+.bf__barGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.bf__barLabel {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.78);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 600ms ease, transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* bar grow animation (plays once when section is in view) */
+.bf__bar {
+  width: 112px; /* ✅ smaller */
+  border-radius: 0;
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  transform-origin: bottom;
+  transform: scaleY(0.05);
+  filter: saturate(1.05);
+  transition: transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.bf__bar--tall {
+  height: 200px; /* ✅ smaller */
+  background: linear-gradient(
+    180deg,
+    rgba(176, 163, 255, 0.95) 0%,
+    rgba(103, 81, 195, 0.55) 52%,
+    rgba(12, 7, 22, 0.72) 100%
+  );
+}
+
+.bf__bar--short {
+  height: 110px; /* ✅ smaller */
+  background: linear-gradient(
+    180deg,
+    rgba(196, 74, 221, 0.9) 0%,
+    rgba(118, 43, 132, 0.55) 55%,
+    rgba(12, 7, 22, 0.78) 100%
+  );
+}
+
+/* when root toggles bf--play, bars + labels animate */
+.bf.bf--play .bf__bar {
+  transform: scaleY(1);
+}
+
+.bf.bf--play .bf__barGroup:nth-child(1) .bf__bar {
+  transition-delay: 120ms;
+}
+.bf.bf--play .bf__barGroup:nth-child(2) .bf__bar {
+  transition-delay: 240ms;
+}
+
+.bf.bf--play .bf__barLabel {
+  opacity: 1;
+  transform: translateY(0);
+}
+.bf.bf--play .bf__barGroup:nth-child(1) .bf__barLabel {
+  transition-delay: 80ms;
+}
+.bf.bf--play .bf__barGroup:nth-child(2) .bf__barLabel {
+  transition-delay: 200ms;
+}
+
+.bf__baseline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+
+/* baseline sweep */
+.bf__baseline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(180, 160, 255, 0.55) 45%, rgba(255, 255, 255, 0) 100%);
+  transform: translateX(-120%);
+  opacity: 0;
+}
+
+.bf.bf--play .bf__baseline::after {
+  opacity: 1;
+  animation: bfSweep 1.2s ease 520ms forwards;
+}
+
+@keyframes bfSweep {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+/* responsive: stack into one column */
+@media (max-width: 980px) {
+  .bf {
+    padding: 40px 0 58px;
+  }
+
+  .bf__container {
+    padding: 0 22px;
+    max-width: 980px;
+  }
+
+  .bf__grid {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 44px;
+    justify-content: start;
+  }
+
+  .bf__item:nth-child(1),
+  .bf__item:nth-child(2),
+  .bf__item:nth-child(3),
+  .bf__item:nth-child(4),
+  .bf__item:nth-child(5) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .bf__chart {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+    width: min(380px, 100%);
+    padding-top: 10px;
+  }
+
+  .bf__bars {
+    justify-content: flex-start;
+    gap: 28px;
+    height: 250px;
+  }
+
+  .bf__bar {
+    width: 110px;
+  }
+}
+
+/* respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .bf::before,
+  .bf__item.is-in .bf__iconSvg,
+  .bf__baseline::after {
+    animation: none !important;
+  }
+
+  [data-anim],
+  .bf__badge,
+  .bf__bar,
+  .bf__barLabel {
+    transition: none !important;
+  }
+
+  [data-anim] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .bf__bar {
+    transform: none;
+  }
+
+  .bf__barLabel {
+    opacity: 1;
+    transform: none;
+  }
+}

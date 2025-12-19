@@ -1,0 +1,393 @@
+/* ../style/HowItWorks.css */
+
+/* =========================
+   HOW IT WORKS (SMALL + CENTERED)
+   ========================= */
+.hiwOnly {
+  width: 100%;
+  min-height: 100vh;
+  background: radial-gradient(circle at top center, rgba(145, 94, 255, 0.35) 0%, #000 62%);
+  color: #fff;
+  padding: 100px 20px 180px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ambient glows */
+.hiwOnly::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(170, 120, 255, 0.20) 0%, rgba(0, 0, 0, 0) 46%),
+    radial-gradient(circle at 15% 35%, rgba(130, 80, 255, 0.10) 0%, rgba(0, 0, 0, 0) 52%),
+    radial-gradient(circle at 85% 40%, rgba(130, 80, 255, 0.10) 0%, rgba(0, 0, 0, 0) 52%);
+  opacity: 0.95;
+  transform: translateY(-6px);
+}
+
+.hiwOnly--in::before {
+  animation: hiwGlowBreath 6.5s ease-in-out infinite;
+}
+
+@keyframes hiwGlowBreath {
+  0% {
+    opacity: 0.85;
+    transform: translateY(-6px) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.02);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translateY(-6px) scale(1);
+  }
+}
+
+/* main container */
+.hiwOnly__container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   TITLE
+   ========================= */
+.hiwOnly__title {
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(36px, 3.6vw, 46px);
+  margin-bottom: 196px;
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.hiwOnly--in .hiwOnly__title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
+   STAGE (IMAGE + TEXT)
+   ========================= */
+.hiwOnly__stage {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+
+  /* vertical text positions */
+  --topY: 4%;
+  --bottomY: 94%;
+
+  /* circle centers */
+  --c1: 12.5%;
+  --c2: 37.5%;
+  --c3: 62.5%;
+  --c4: 87.5%;
+}
+
+/* image */
+.hiwOnly__image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 18px 45px rgba(140, 90, 255, 0.22));
+
+  opacity: 0;
+  transform: translateY(18px) scale(0.995);
+  transition:
+    opacity 900ms ease,
+    transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    filter 900ms ease;
+  will-change: transform, opacity, filter;
+}
+
+.hiwOnly--in .hiwOnly__image {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: hiwFloat 6.5s ease-in-out 900ms infinite;
+}
+
+@keyframes hiwFloat {
+  0% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 18px 45px rgba(140, 90, 255, 0.20));
+  }
+  50% {
+    transform: translateY(-6px) scale(1);
+    filter: drop-shadow(0 22px 55px rgba(170, 120, 255, 0.26));
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 18px 45px rgba(140, 90, 255, 0.20));
+  }
+}
+
+/* overlay */
+.hiwOnly__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* =========================
+   EXTRA ANIMATION: SOFT SHEEN OVER CONNECTOR
+   ========================= */
+.hiwOnly__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(190, 150, 255, 0.10) 38%,
+    rgba(255, 255, 255, 0) 68%
+  );
+  transform: translateX(-45%);
+  mix-blend-mode: screen;
+}
+
+.hiwOnly--in .hiwOnly__stage::after {
+  opacity: 1;
+  animation: hiwSheen 4.8s ease-in-out 1.2s infinite;
+}
+
+@keyframes hiwSheen {
+  0% {
+    transform: translateX(-45%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  80% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(45%);
+    opacity: 0;
+  }
+}
+
+/* =========================
+   TEXT BLOCKS
+   ========================= */
+.hiwOnly__copy {
+  position: absolute;
+  left: 50%;
+  width: 230px;
+  text-align: center;
+
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  transition:
+    opacity 700ms ease,
+    transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  transition-delay: calc(220ms + (var(--i, 0) * 130ms));
+  will-change: transform, opacity;
+}
+
+.hiwOnly--in .hiwOnly__copy {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* top texts (02, 04) */
+.hiwOnly__copy--top {
+  top: var(--topY);
+}
+
+/* bottom texts (01, 03) */
+.hiwOnly__copy--bottom {
+  top: var(--bottomY);
+}
+
+/* column alignment */
+.hiwOnly__copy--c1 { left: var(--c1); }
+.hiwOnly__copy--c2 { left: var(--c2); }
+.hiwOnly__copy--c3 { left: var(--c3); }
+.hiwOnly__copy--c4 { left: var(--c4); }
+
+/* move c2 & c4 slightly upward */
+.hiwOnly__copy--c2 { transform: translate(-50%, -138px); }
+.hiwOnly__copy--c4 { transform: translate(-50%, -158px); }
+
+/* preserve offsets when revealed */
+.hiwOnly--in .hiwOnly__copy--c2 { transform: translate(-50%, -138px); }
+.hiwOnly--in .hiwOnly__copy--c4 { transform: translate(-50%, -158px); }
+
+/* headings */
+.hiwOnly__h {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 15.5px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* body text */
+.hiwOnly__p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.62);
+  text-wrap: balance;
+}
+
+/* =========================
+   EXTRA ANIMATION: MICRO HOVER LIFT (DESKTOP)
+   ========================= */
+@media (hover: hover) and (pointer: fine) {
+  .hiwOnly__copy {
+    transition:
+      opacity 700ms ease,
+      transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1),
+      filter 250ms ease;
+  }
+
+  .hiwOnly__copy:hover {
+    filter: drop-shadow(0 10px 22px rgba(170, 120, 255, 0.18));
+  }
+
+  .hiwOnly__copy--c1:hover,
+  .hiwOnly__copy--c3:hover {
+    transform: translate(-50%, -6px);
+  }
+
+  .hiwOnly__copy--c2:hover {
+    transform: translate(-50%, -144px);
+  }
+
+  .hiwOnly__copy--c4:hover {
+    transform: translate(-50%, -164px);
+  }
+}
+
+/* =========================
+   SPARKS (subtle pulses on each node)
+   ========================= */
+.hiwOnly__spark {
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(210, 180, 255, 0.95) 0%,
+    rgba(150, 95, 255, 0.15) 55%,
+    rgba(0, 0, 0, 0) 72%
+  );
+  filter: blur(0.2px);
+}
+
+.hiwOnly--in .hiwOnly__spark {
+  opacity: 1;
+  animation: hiwPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes hiwPulse {
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.75; }
+  50% { transform: translate(-50%, -50%) scale(1.25); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.75; }
+}
+
+.hiwOnly__spark--c1 { left: var(--c1); animation-delay: 0ms; }
+.hiwOnly__spark--c2 { left: var(--c2); animation-delay: 220ms; }
+.hiwOnly__spark--c3 { left: var(--c3); animation-delay: 440ms; }
+.hiwOnly__spark--c4 { left: var(--c4); animation-delay: 660ms; }
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 900px) {
+  .hiwOnly {
+    padding: 80px 20px 120px;
+  }
+
+  .hiwOnly__title {
+    transform: translateY(-24px);
+    margin-bottom: 48px;
+    opacity: 1;
+  }
+
+  .hiwOnly__overlay {
+    position: static;
+    margin-top: 32px;
+    pointer-events: auto;
+  }
+
+  .hiwOnly__copy {
+    position: static;
+    width: 100%;
+    max-width: 520px;
+    text-align: left;
+    margin: 0 auto 24px;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hiwOnly__spark {
+    display: none;
+  }
+
+  .hiwOnly__image {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+
+  .hiwOnly__stage::after {
+    display: none;
+  }
+
+  .hiwOnly--in::before {
+    animation: none;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+  .hiwOnly__title,
+  .hiwOnly__image,
+  .hiwOnly__copy {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .hiwOnly__spark,
+  .hiwOnly__stage::after,
+  .hiwOnly::before {
+    animation: none !important;
+    display: none !important;
+  }
+}
