@@ -4,6 +4,7 @@ import "../style/mission.css";
 import missionImg from "../assets/mission.png";
 
 
+
 function useInView<T extends HTMLElement>(threshold = 0.22) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
