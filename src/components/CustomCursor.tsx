@@ -10,6 +10,7 @@ const CustomCursor: React.FC = () => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
 
+
     const enterHandler = () => setIsHidden(false);
     const leaveHandler = () => setIsHidden(true);
     const downHandler = () => setIsClicked(true);

@@ -1,11 +1,16 @@
 // EarlyResultsSection.tsx
-import  { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "../style/EarlyResultsSection.css";
+
+import ceoImg from "../assets/ceo.png";
+import cfoImg from "../assets/cfo.png"; // keep your file name as sfo.png
+import controllerImg from "../assets/controller.png";
 
 type Testimonial = {
   quote: string;
   role: string;
   subtitle: string;
+  image: string;
 };
 
 const TESTIMONIALS: Testimonial[] = [
@@ -13,37 +18,40 @@ const TESTIMONIALS: Testimonial[] = [
     quote: "This is the first time we’ve had real financial observability.",
     role: "CEO",
     subtitle: "$120M healthcare group",
+    image: ceoImg,
   },
   {
     quote: "Caught a $20k duplicate payment the day it posted.",
     role: "Controller",
     subtitle: "$90M SaaS company",
+    image: controllerImg,
   },
   {
     quote: "Reduced quarterly investigation time from 120 hours to under 10.",
     role: "CFO",
     subtitle: "$180M manufacturing company",
+    image: cfoImg,
   },
 ];
 
-function ArrowIcon({ dir = "left" }: { dir?: "left" | "right" }) {
+function ArrowIcon({ dir }: { dir: "left" | "right" }) {
   return (
     <svg className="ers__arrowIcon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       {dir === "left" ? (
         <path
-          d="M14.8 5.6 8.4 12l6.4 6.4"
+          d="M14.9 5.2 8.2 12l6.7 6.8"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.4"
+          strokeWidth="2.6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
       ) : (
         <path
-          d="M9.2 18.4 15.6 12 9.2 5.6"
+          d="M9.1 18.8 15.8 12 9.1 5.2"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.4"
+          strokeWidth="2.6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -59,49 +67,15 @@ function QuoteSquareIcon() {
         <path
           d="M26.7 28.4c-4.9 0-8.8 3.9-8.8 8.8V46h13.9V32.2c0-2.1-1.7-3.8-3.8-3.8h-1.3z"
           fill="currentColor"
-          opacity="0.9"
+          opacity="0.92"
         />
         <path
           d="M46.6 28.4c-4.9 0-8.8 3.9-8.8 8.8V46h13.9V32.2c0-2.1-1.7-3.8-3.8-3.8h-1.3z"
           fill="currentColor"
-          opacity="0.9"
+          opacity="0.92"
         />
       </svg>
     </span>
-  );
-}
-
-function Avatar({ seed = 1 }: { seed?: number }) {
-  const svg = encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
-      <defs>
-        <radialGradient id="g" cx="30%" cy="25%" r="85%">
-          <stop offset="0" stop-color="rgba(170,130,255,1)"/>
-          <stop offset="0.55" stop-color="rgba(118,76,255,1)"/>
-          <stop offset="1" stop-color="rgba(40,18,80,1)"/>
-        </radialGradient>
-        <linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="rgba(255,255,255,0.18)"/>
-          <stop offset="1" stop-color="rgba(255,255,255,0)"/>
-        </linearGradient>
-      </defs>
-      <rect width="96" height="96" rx="48" fill="url(#g)"/>
-      <path d="M16 84c6-18 22-28 32-28s26 10 32 28" fill="rgba(0,0,0,0.28)"/>
-      <circle cx="48" cy="40" r="16" fill="rgba(255,255,255,0.22)"/>
-      <path d="M35 40c2-7 7-11 13-11s11 4 13 11" fill="rgba(0,0,0,0.22)"/>
-      <path d="M26 30c9-13 35-13 44 0" stroke="rgba(255,255,255,0.16)" stroke-width="3" stroke-linecap="round" fill="none"/>
-      <rect x="10" y="10" width="76" height="76" rx="38" fill="url(#s)"/>
-      <text x="50%" y="92%" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto" font-size="10" fill="rgba(255,255,255,0.0)">${seed}</text>
-    </svg>
-  `);
-
-  return (
-    <img
-      className="ers__avatar"
-      src={`data:image/svg+xml;charset=utf-8,${svg}`}
-      alt=""
-      draggable={false}
-    />
   );
 }
 
@@ -151,15 +125,11 @@ function JsonCard({ variant }: { variant: "back" | "front" }) {
               <span className="ers__k">"baseline_window_days"</span>
               {": "}
               <span className="ers__n">30</span>
-              {",  "}
-              <span className="ers__c">// Default MOM; user can specify</span>
-              {"\n"}
+              {",\n"}
               {"  "}
               <span className="ers__k">"alert_channel"</span>
               {": "}
               <span className="ers__s">"email"</span>
-              {"  "}
-              <span className="ers__c">// Optional</span>
               {"\n"}
             </>
           ) : (
@@ -240,43 +210,117 @@ function useInViewClass<T extends HTMLElement>() {
   return ref;
 }
 
-function useIsMobile(breakpoint = 980) {
-  const [isMobile, setIsMobile] = useState(false);
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
-    const onChange = () => setIsMobile(mq.matches);
+    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    if (!mq) return;
+    const onChange = () => setReduced(mq.matches);
     onChange();
     mq.addEventListener?.("change", onChange);
     return () => mq.removeEventListener?.("change", onChange);
-  }, [breakpoint]);
+  }, []);
 
-  return isMobile;
+  return reduced;
 }
 
 export default function EarlyResultsSection() {
   const sectionRef = useInViewClass<HTMLElement>();
-  const isMobile = useIsMobile(980);
+  const reducedMotion = usePrefersReducedMotion();
 
-  const [index, setIndex] = useState(0);
-  const maxIndex = useMemo(() => Math.max(0, TESTIMONIALS.length - 1), []);
+  const setRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+
+  const [paused, setPaused] = useState(false);
+  const [setWidth, setSetWidth] = useState(0);
+
+  // IMPORTANT: offset is translateX(px) and moves RIGHT continuously
+  const [offset, setOffset] = useState(0);
+  const offsetRef = useRef(0);
+
+  const items = useMemo(() => {
+    const a = TESTIMONIALS;
+    return [...a, ...a, ...a, ...a];
+  }, []);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = setRef.current;
+      if (!el) return;
+      const w = Math.ceil(el.getBoundingClientRect().width);
+      setSetWidth(w);
+
+      const start = -w; // start off-screen left
+      setOffset(start);
+      offsetRef.current = start;
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   useEffect(() => {
-    setIndex(0);
-  }, [isMobile]);
+    if (reducedMotion) return;
 
-  const prev = () => setIndex((v) => (v - 1 < 0 ? maxIndex : v - 1));
-  const next = () => setIndex((v) => (v + 1 > maxIndex ? 0 : v + 1));
+    const speedPxPerSec = 58;
+    let last = performance.now();
+
+    const tick = (now: number) => {
+      const dt = Math.min(40, now - last);
+      last = now;
+
+      if (!paused && setWidth > 0) {
+        let next = offsetRef.current + (speedPxPerSec * dt) / 1000; // move RIGHT
+        if (next >= 0) next = -setWidth; // loop seamlessly
+        offsetRef.current = next;
+        setOffset(next);
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [paused, reducedMotion, setWidth]);
+
+  const nudge = 420;
+
+  const normalize = (val: number) => {
+    if (setWidth <= 0) return val;
+    while (val >= 0) val -= setWidth;
+    while (val < -setWidth) val += setWidth;
+    return val;
+  };
+
+  const goLeft = () => {
+    const next = normalize(offsetRef.current - nudge);
+    offsetRef.current = next;
+    setOffset(next);
+  };
+
+  const goRight = () => {
+    const next = normalize(offsetRef.current + nudge);
+    offsetRef.current = next;
+    setOffset(next);
+  };
 
   return (
     <section ref={sectionRef} className="ers" aria-label="Early Results and Social Proof">
-      <div className="ers__bgGlow" aria-hidden="true" />
-      <div className="ers__bgNoise" aria-hidden="true" />
+      <div className="ers__bg" aria-hidden="true" />
+      <div className="ers__noise" aria-hidden="true" />
 
       <div className="ers__container">
         <div className="ers__top">
           <header className="ers__left">
-            <h2 className="ers__title">Early Results &amp; Social Proof</h2>
+            <h2 className="ers__title">
+              Early Results &amp; <span className="ers__titleAccent">Social</span>
+              <br />
+              Proof
+            </h2>
 
             <p className="ers__quote">
               “Reduced monthly investigation <br />
@@ -284,7 +328,6 @@ export default function EarlyResultsSection() {
             </p>
 
             <div className="ers__divider" aria-hidden="true" />
-
             <QuoteSquareIcon />
           </header>
 
@@ -293,56 +336,38 @@ export default function EarlyResultsSection() {
               <JsonCard variant="back" />
               <JsonCard variant="front" />
               <div className="ers__orb ers__orb--a" aria-hidden="true" />
-              <div className="ers__orb ers__orb--b" aria-hidden="true" />
             </div>
           </div>
         </div>
 
         <div className="ers__bottom">
-          <div className="ers__controls" aria-label="Carousel controls">
-            <button
-              className="ers__ctrlBtn"
-              type="button"
-              aria-label="Previous testimonials"
-              onClick={prev}
-            >
+          <div className="ers__nav" aria-label="Carousel controls">
+            <button className="ers__ctrlBtn" type="button" aria-label="Scroll left" onClick={goLeft}>
               <ArrowIcon dir="left" />
             </button>
-            <button
-              className="ers__ctrlBtn"
-              type="button"
-              aria-label="Next testimonials"
-              onClick={next}
-            >
+            <button className="ers__ctrlBtn" type="button" aria-label="Scroll right" onClick={goRight}>
               <ArrowIcon dir="right" />
             </button>
           </div>
 
           <div
-            className={`ers__cards ${isMobile ? "ers__cards--carousel" : ""}`}
+            className="ers__rail"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onTouchStart={() => setPaused(true)}
+            onTouchEnd={() => setPaused(false)}
+            role="region"
             aria-label="Testimonials"
           >
-            <div
-              className="ers__track"
-              style={
-                isMobile
-                  ? ({ ["--x" as any]: `${index}` } as React.CSSProperties)
-                  : undefined
-              }
-            >
+            {/* This is only to MEASURE width of one full "set" (3 cards). Hidden off-screen. */}
+            <div className="ers__measureSet" ref={setRef} aria-hidden="true">
               {TESTIMONIALS.map((t, i) => (
-                <article
-                  className="ers__card"
-                  key={i}
-                  style={{ ["--i" as any]: i } as React.CSSProperties}
-                >
+                <article className="ers__card" key={`measure-${i}`}>
                   <div className="ers__cardInner">
                     <div className="ers__cardTop">
-                      <Avatar seed={i + 1} />
+                      <img className="ers__avatar" src={t.image} alt="" draggable={false} />
                     </div>
-
                     <p className="ers__cardQuote">“{t.quote}”</p>
-
                     <div className="ers__cardRole">
                       <span className="ers__dash">—</span> {t.role}
                     </div>
@@ -352,19 +377,27 @@ export default function EarlyResultsSection() {
               ))}
             </div>
 
-            {isMobile && (
-              <div className="ers__dots" aria-label="Carousel position">
-                {TESTIMONIALS.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className={`ers__dot ${i === index ? "is-active" : ""}`}
-                    aria-label={`Go to testimonial ${i + 1}`}
-                    onClick={() => setIndex(i)}
-                  />
-                ))}
-              </div>
-            )}
+            {/* Actual moving track (MUST stay left->right) */}
+            <div className="ers__track" style={{ transform: `translate3d(${offset}px, 0, 0)` }}>
+              {items.map((t, i) => (
+                <article className="ers__card" key={`${t.role}-${i}`}>
+                  <div className="ers__cardInner">
+                    <div className="ers__cardTop">
+                      <img className="ers__avatar" src={t.image} alt={t.role} draggable={false} />
+                    </div>
+                    <p className="ers__cardQuote">“{t.quote}”</p>
+                    <div className="ers__cardRole">
+                      <span className="ers__dash">—</span> {t.role}
+                    </div>
+                    <div className="ers__cardSub">{t.subtitle}</div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="ers__hint" aria-hidden="true">
+            {paused ? "Paused" : "Auto-scrolling"}
           </div>
         </div>
       </div>

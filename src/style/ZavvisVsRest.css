@@ -1,22 +1,23 @@
-/* ZavvisVsRest.css */
+/* src/style/ZavvisVsRest.css */
 
-/* ====== Section background (dark purple + subtle glow) ====== */
 .zvr {
   width: 100%;
-  min-height: 100vh;
+  min-height: auto;
   display: flex;
   justify-content: center;
-  padding: 64px 16px 84px;
+  padding: 44px 16px 64px;
+
   color: rgba(255, 255, 255, 0.92);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
-    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  background:
-    radial-gradient(900px 520px at 50% 6%, rgba(168, 85, 247, 0.24) 0%, rgba(0, 0, 0, 0) 62%),
-    radial-gradient(740px 520px at 50% 24%, rgba(124, 58, 237, 0.18) 0%, rgba(0, 0, 0, 0) 64%),
-    radial-gradient(1200px 900px at 50% 120%, rgba(91, 33, 182, 0.14) 0%, rgba(0, 0, 0, 0) 70%),
-    linear-gradient(180deg, #06020c 0%, #05010b 30%, #04000a 100%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+    Roboto, Helvetica, Arial;
+
+  /* ✅ PURE BLACK BACKGROUND */
+  background: #000;
+
   position: relative;
   overflow: hidden;
+
+  --stars-url: none;
 }
 
 /* Ambient animated glow on the page */
@@ -26,65 +27,170 @@
   inset: -120px -80px;
   pointer-events: none;
   background:
-    radial-gradient(520px 320px at 50% 0%, rgba(168, 85, 247, 0.18) 0%, rgba(0, 0, 0, 0) 60%),
-    radial-gradient(620px 420px at 15% 40%, rgba(124, 58, 237, 0.10) 0%, rgba(0, 0, 0, 0) 65%),
-    radial-gradient(620px 420px at 85% 45%, rgba(99, 102, 241, 0.09) 0%, rgba(0, 0, 0, 0) 65%);
+    radial-gradient(460px 280px at 50% 0%, rgba(168, 85, 247, 0.16) 0%, rgba(0, 0, 0, 0) 60%),
+    radial-gradient(560px 380px at 15% 40%, rgba(124, 58, 237, 0.10) 0%, rgba(0, 0, 0, 0) 65%),
+    radial-gradient(560px 380px at 85% 45%, rgba(99, 102, 241, 0.08) 0%, rgba(0, 0, 0, 0) 65%);
   filter: blur(10px);
   opacity: 0.9;
   transform: translate3d(0, 0, 0);
   animation: zvr-ambient 10s ease-in-out infinite;
+  z-index: 0;
 }
 
 @keyframes zvr-ambient {
-  0%   { transform: translateY(-6px) scale(1); opacity: 0.85; }
-  50%  { transform: translateY(8px) scale(1.02); opacity: 1; }
+  0% { transform: translateY(-6px) scale(1); opacity: 0.85; }
+  50% { transform: translateY(8px) scale(1.02); opacity: 1; }
   100% { transform: translateY(-6px) scale(1); opacity: 0.85; }
 }
 
+/* =========================
+   HERO-STYLE STARS (SIDES)
+   ========================= */
+.zvr__starsSide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  /* ✅ slightly narrower so the section feels tighter */
+  width: 22vw;
+  min-width: 220px;
+  max-width: 520px;
+
+  pointer-events: none;
+  z-index: 1;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 1200px auto;
+  background-position: 0 0;
+
+  opacity: 0.58;
+  filter: brightness(1.85) contrast(1.35);
+  mix-blend-mode: screen;
+
+  animation: zvr-starsDrift1 var(--star-speed-1) linear infinite,
+    zvr-starsTwinkle var(--twinkle-speed) ease-in-out infinite,
+    zvr-starsBreathe 9s ease-in-out infinite;
+
+  will-change: background-position, opacity, filter;
+}
+
+.zvr__starsSide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 900px auto;
+  background-position: 120px 200px;
+  opacity: 0.40;
+  filter: brightness(1.9) contrast(1.35);
+  mix-blend-mode: screen;
+  animation: zvr-starsDrift2 var(--star-speed-2) linear infinite,
+    zvr-starsTwinkle2 calc(var(--twinkle-speed) * 1.25) ease-in-out infinite;
+}
+
+.zvr__starsSide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 720px auto;
+  background-position: -200px 320px;
+  opacity: 0.26;
+  filter: brightness(2) contrast(1.4);
+  mix-blend-mode: screen;
+  animation: zvr-starsDrift3 var(--star-speed-3) linear infinite,
+    zvr-starsTwinkle3 calc(var(--twinkle-speed) * 1.5) ease-in-out infinite;
+}
+
+.zvr__starsSide--left {
+  left: -7vw;
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+  mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+}
+
+.zvr__starsSide--right {
+  right: -7vw;
+  transform: scaleX(-1);
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+  mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+}
+
+/* Star animations */
+@keyframes zvr-starsDrift1 {
+  from { background-position: 0 0; }
+  to { background-position: 0 var(--star-drift); }
+}
+@keyframes zvr-starsDrift2 {
+  from { background-position: 120px 200px; }
+  to { background-position: 120px calc(200px + var(--star-drift)); }
+}
+@keyframes zvr-starsDrift3 {
+  from { background-position: -200px 320px; }
+  to { background-position: -200px calc(320px + var(--star-drift)); }
+}
+
+@keyframes zvr-starsTwinkle {
+  0%, 100% { opacity: 0.52; }
+  50% { opacity: 0.68; }
+}
+@keyframes zvr-starsTwinkle2 {
+  0%, 100% { opacity: 0.33; }
+  50% { opacity: 0.46; }
+}
+@keyframes zvr-starsTwinkle3 {
+  0%, 100% { opacity: 0.20; }
+  50% { opacity: 0.30; }
+}
+@keyframes zvr-starsBreathe {
+  0%, 100% { filter: brightness(1.8) contrast(1.35); }
+  50% { filter: brightness(2.05) contrast(1.45); }
+}
+
+/* ✅ keep content above stars */
 .zvr__inner {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1080px; /* ✅ smaller than before */
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* Title entrance */
+/* ✅ smaller title */
 .zvr__title {
-  margin: 6px 0 34px;
+  margin: 4px 0 22px;
   text-align: center;
   font-weight: 650;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.78);
-  font-size: 64px;
-  line-height: 1.06;
+  font-size: 48px; /* ✅ was 64px */
+  line-height: 1.08;
   opacity: 0;
   transform: translateY(10px) scale(0.985);
   animation: zvr-title-in 700ms cubic-bezier(0.2, 0.9, 0.2, 1) 80ms forwards;
 }
 
 @keyframes zvr-title-in {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ====== Card ====== */
+/* ====== Card (smaller) ====== */
 .zvr__card {
   width: 100%;
-  max-width: 1100px;
-  border-radius: 22px;
+  max-width: 940px; /* ✅ was 1100px */
+  border-radius: 20px;
   border: 1px solid rgba(171, 117, 255, 0.35);
   background:
-    radial-gradient(900px 520px at 50% 12%, rgba(140, 78, 255, 0.18) 0%, rgba(0, 0, 0, 0) 60%),
-    linear-gradient(180deg, rgba(40, 20, 70, 0.58) 0%, rgba(22, 10, 40, 0.48) 60%, rgba(18, 7, 34, 0.52) 100%);
+    radial-gradient(860px 500px at 50% 12%, rgba(140, 78, 255, 0.17) 0%, rgba(0, 0, 0, 0) 60%),
+    linear-gradient(180deg, rgba(40, 20, 70, 0.56) 0%, rgba(22, 10, 40, 0.46) 60%, rgba(18, 7, 34, 0.50) 100%);
   box-shadow:
-    0 28px 90px rgba(0, 0, 0, 0.55),
+    0 24px 78px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  padding: 18px 18px 22px;
+  padding: 14px 14px 16px; /* ✅ tighter */
   position: relative;
   overflow: hidden;
   opacity: 0;
@@ -117,17 +223,17 @@
 }
 
 @keyframes zvr-sheen {
-  0%   { opacity: 0; transform: rotate(12deg) translateX(-40%); }
-  10%  { opacity: 0.55; }
+  0% { opacity: 0; transform: rotate(12deg) translateX(-40%); }
+  10% { opacity: 0.55; }
   100% { opacity: 0; transform: rotate(12deg) translateX(280%); }
 }
 
-/* ====== Grid with inner table lines ====== */
+/* ====== Grid ====== */
 .zvr__grid {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.08);
@@ -135,35 +241,34 @@
 
 .zvr__cell {
   position: relative;
-  padding: 0 28px;
+  padding: 0 22px; /* ✅ was 28px */
   display: flex;
   align-items: center;
 }
 
-/* Inner grid lines: vertical divider */
+/* Vertical divider */
 .zvr__cell--left {
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Row dividers */
+/* ✅ smaller row heights */
 .zvr__cell--head,
 .zvr__cell--body {
-  height: 74px;
+  height: 60px; /* ✅ was 74px */
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Last row: no bottom border */
+.zvr__cell--head {
+  height: 64px; /* ✅ was 78px */
+  background: rgba(255, 255, 255, 0.02);
+}
+
 .zvr__grid > .zvr__cell:nth-last-child(-n + 2) {
   border-bottom: none;
 }
 
-.zvr__cell--head {
-  height: 78px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
 .zvr__headText {
-  font-size: 26px;
+  font-size: 20px; /* ✅ was 26px */
   font-weight: 600;
   letter-spacing: 0.01em;
   color: rgba(255, 255, 255, 0.86);
@@ -175,29 +280,26 @@
   opacity: 0;
   transform: translateY(10px);
   animation: zvr-row-in 520ms cubic-bezier(0.2, 0.85, 0.25, 1) forwards;
-  animation-delay: calc(260ms + (var(--i) * 90ms));
+  animation-delay: calc(240ms + (var(--i) * 85ms));
 }
 
 @keyframes zvr-row-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Items */
 .zvr__item {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px; /* ✅ slightly tighter */
   min-width: 0;
 }
 
-/* Icon pop-in */
+/* ✅ smaller icons */
 .zvr__icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 9px;
+  width: 22px; /* ✅ was 26px */
+  height: 22px;
+  border-radius: 999px; /* ✅ round "❌" style */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -207,31 +309,37 @@
   transform: scale(0.92);
   opacity: 0.9;
   animation: zvr-icon-pop 520ms cubic-bezier(0.2, 0.9, 0.25, 1) forwards;
-  animation-delay: calc(330ms + (var(--i) * 90ms));
+  animation-delay: calc(310ms + (var(--i) * 85ms));
 }
 
 @keyframes zvr-icon-pop {
-  0%   { transform: scale(0.85); opacity: 0; }
-  60%  { transform: scale(1.06); opacity: 1; }
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.06); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-.zvr__icon svg {
-  display: block;
-}
+.zvr__icon svg { display: block; }
 
 .zvr__icon--bad {
   color: rgba(255, 58, 86, 0.95);
+  background: rgba(255, 58, 86, 0.10);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 58, 86, 0.28),
+    0 10px 18px rgba(255, 58, 86, 0.10);
 }
 
 .zvr__icon--good {
   color: rgba(34, 197, 94, 0.95);
+  background: rgba(34, 197, 94, 0.10);
+  box-shadow:
+    inset 0 0 0 1px rgba(34, 197, 94, 0.26),
+    0 10px 18px rgba(34, 197, 94, 0.10);
 }
 
-/* Text fade-in */
+/* ✅ smaller text */
 .zvr__text {
-  font-size: 18px;
-  line-height: 1.35;
+  font-size: 16px; /* ✅ was 18px */
+  line-height: 1.32;
   color: rgba(255, 255, 255, 0.70);
   white-space: nowrap;
   overflow: hidden;
@@ -239,62 +347,52 @@
   opacity: 0;
   transform: translateY(6px);
   animation: zvr-text-in 520ms ease forwards;
-  animation-delay: calc(360ms + (var(--i) * 90ms));
+  animation-delay: calc(335ms + (var(--i) * 85ms));
 }
 
 @keyframes zvr-text-in {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Hover: row highlight + gentle lift */
+/* Hover */
 .zvr__cell--body {
   transition: background-color 220ms ease, transform 220ms ease;
 }
+.zvr__cell--body:hover { background: rgba(255, 255, 255, 0.03); }
+.zvr__cell--body:hover .zvr__icon { transform: scale(1.03); }
+.zvr__cell--body:hover .zvr__text { color: rgba(255, 255, 255, 0.78); }
 
-.zvr__cell--body:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.zvr__cell--body:hover .zvr__icon {
-  transform: scale(1.03);
-}
-
-.zvr__cell--body:hover .zvr__text {
-  color: rgba(255, 255, 255, 0.78);
-}
-
-/* ====== Bottom pill ====== */
+/* ====== Bottom pill (smaller) ====== */
 .zvr__pillWrap {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 22px;
+  padding-top: 16px; /* ✅ was 22px */
 }
 
 .zvr__pill {
-  padding: 14px 26px;
-  border-radius: 14px;
+  padding: 12px 20px; /* ✅ smaller */
+  border-radius: 12px;
   border: 1px solid rgba(171, 117, 255, 0.38);
   background: rgba(30, 16, 52, 0.46);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 18px 40px rgba(0, 0, 0, 0.35);
   color: rgba(255, 255, 255, 0.74);
-  font-size: 18px;
+  font-size: 16px; /* ✅ was 18px */
   letter-spacing: 0.01em;
   text-align: center;
   position: relative;
   overflow: hidden;
   opacity: 0;
   transform: translateY(10px);
-  animation: zvr-pill-in 650ms cubic-bezier(0.2, 0.85, 0.25, 1) 880ms forwards;
+  animation: zvr-pill-in 650ms cubic-bezier(0.2, 0.85, 0.25, 1) 820ms forwards;
 }
 
 @keyframes zvr-pill-in {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Subtle shimmer loop on the pill */
 .zvr__pill::after {
   content: "";
   position: absolute;
@@ -312,26 +410,29 @@
 }
 
 @keyframes zvr-pill-shimmer {
-  0%   { transform: translateX(-120%); opacity: 0; }
-  15%  { opacity: 0.45; }
-  35%  { transform: translateX(120%); opacity: 0; }
+  0% { transform: translateX(-120%); opacity: 0; }
+  15% { opacity: 0.45; }
+  35% { transform: translateX(120%); opacity: 0; }
   100% { transform: translateX(120%); opacity: 0; }
 }
 
-/* ====== Responsive: stack columns on mobile ====== */
+/* Responsive */
 @media (max-width: 780px) {
   .zvr {
-    padding: 54px 14px 72px;
-    min-height: auto;
+    padding: 38px 14px 54px;
+  }
+
+  .zvr__inner {
+    max-width: 980px;
   }
 
   .zvr__title {
-    font-size: 40px;
-    margin-bottom: 22px;
+    font-size: 34px;
+    margin-bottom: 18px;
   }
 
   .zvr__card {
-    padding: 14px 14px 18px;
+    padding: 12px 12px 14px;
   }
 
   .zvr__grid {
@@ -349,28 +450,28 @@
   .zvr__cell--right.zvr__cell--body::before {
     content: "";
     position: absolute;
-    left: 18px;
-    right: 18px;
+    left: 16px;
+    right: 16px;
     top: 0;
     height: 1px;
     background: rgba(255, 255, 255, 0.08);
   }
 
   .zvr__cell {
-    padding: 0 18px;
-    height: 68px;
+    padding: 0 16px;
+    height: 56px;
   }
 
   .zvr__cell--head {
-    height: 68px;
+    height: 58px;
   }
 
   .zvr__headText {
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .zvr__text {
-    font-size: 16px;
+    font-size: 15px;
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
@@ -379,12 +480,32 @@
   .zvr__pill {
     width: 100%;
     max-width: 520px;
-    font-size: 16px;
-    padding: 13px 18px;
+    font-size: 15px;
+    padding: 12px 16px;
   }
+
+  .zvr__starsSide {
+    width: 28vw;
+    min-width: 170px;
+    background-size: 1400px auto;
+    opacity: 0.5;
+  }
+
+  .zvr__starsSide::before {
+    background-size: 1000px auto;
+    opacity: 0.35;
+  }
+
+  .zvr__starsSide::after {
+    background-size: 800px auto;
+    opacity: 0.22;
+  }
+
+  .zvr__starsSide--left { left: -12vw; }
+  .zvr__starsSide--right { right: -12vw; }
 }
 
-/* Respect reduced motion */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .zvr::before,
   .zvr__title,
@@ -394,7 +515,10 @@
   .zvr__icon,
   .zvr__text,
   .zvr__pill,
-  .zvr__pill::after {
+  .zvr__pill::after,
+  .zvr__starsSide,
+  .zvr__starsSide::before,
+  .zvr__starsSide::after {
     animation: none !important;
     transform: none !important;
     opacity: 1 !important;

@@ -1,6 +1,7 @@
-// ZavvisVsRest.tsx
+// src/components/ZavvisVsRest.tsx
 import React from "react";
 import "../style/ZavvisVsRest.css";
+import stars from "../assets/stars.png";
 
 const leftItems = [
   "Static dashboards & monthly reports",
@@ -12,10 +13,10 @@ const leftItems = [
 
 const rightItems = [
   "Real-time transactional observability",
-  "GL-line + cross-system anomaly detection",
+  "GL-line and cross-system signal detection",
   "Instant provenance to source transaction",
   "Live, drillable, collaborative war room",
-  "Preventative guardrails & closed loop",
+  "Preventative guardrails and closed loop",
 ];
 
 function IconX({ className }: { className?: string }) {
@@ -63,21 +64,35 @@ function IconCheck({ className }: { className?: string }) {
 
 export default function ZavvisVsRest() {
   return (
-    <section className="zvr">
-      <div className="zvr__inner">
-        <h2 className="zvr__title">Zavvis Vs The Rest</h2>
+    <section
+      className="zvr"
+      style={
+        {
+          ["--stars-url" as any]: `url(${stars})`,
+        } as React.CSSProperties
+      }
+    >
+      <div className="zvr__starsSide zvr__starsSide--left" aria-hidden="true" />
+      <div className="zvr__starsSide zvr__starsSide--right" aria-hidden="true" />
 
-        <div className="zvr__card" role="group" aria-label="Zavvis vs the rest comparison">
+      <div className="zvr__inner">
+        <h2 className="zvr__title">Zavvis vs. The Status Quo</h2>
+
+        <div className="zvr__card" role="group" aria-label="Zavvis vs the status quo comparison">
           <div className="zvr__grid">
-            {/* Header row */}
-            <div className="zvr__cell zvr__cell--head zvr__cell--left zvr__reveal" style={{ ["--i" as any]: 0 }}>
+            <div
+              className="zvr__cell zvr__cell--head zvr__cell--left zvr__reveal"
+              style={{ ["--i" as any]: 0 }}
+            >
               <span className="zvr__headText">Traditional Tools</span>
             </div>
-            <div className="zvr__cell zvr__cell--head zvr__cell--right zvr__reveal" style={{ ["--i" as any]: 0 }}>
-              <span className="zvr__headText">Zavvis AI</span>
+            <div
+              className="zvr__cell zvr__cell--head zvr__cell--right zvr__reveal"
+              style={{ ["--i" as any]: 0 }}
+            >
+              <span className="zvr__headText">Zavvis</span>
             </div>
 
-            {/* Body rows */}
             {leftItems.map((left, i) => (
               <React.Fragment key={left}>
                 <div

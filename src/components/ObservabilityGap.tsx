@@ -1,6 +1,7 @@
-
-import  { useEffect, useRef } from "react";
+// src/components/ObservabilityGapSection.tsx
+import { useEffect, useRef } from "react";
 import "../style/ObservabilityGap.css";
+import stars from "../assets/stars.png";
 
 type PillVariant = "orange" | "purple";
 
@@ -44,10 +45,55 @@ const Pill: React.FC<{ children: React.ReactNode; variant?: PillVariant }> = ({
 const ObservabilityGapSection: React.FC = () => {
   const sectionRef = useInViewOnce<HTMLElement>(0.18);
 
+  // ✅ HERO-LIKE STAR PARALLAX (mx/my) — same logic as Hero
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (reduced || !hover) return;
+
+    let raf = 0;
+
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const nx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        const ny = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+
+        const clampedX = Math.max(-1, Math.min(1, nx));
+        const clampedY = Math.max(-1, Math.min(1, ny));
+
+        el.style.setProperty("--mx", `${clampedX * 10}px`);
+        el.style.setProperty("--my", `${clampedY * 6}px`);
+      });
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+    };
+  }, [sectionRef]);
+
   return (
-    <section ref={sectionRef} className="ogap" aria-labelledby="ogap-title">
+    <section
+      ref={sectionRef}
+      className="ogap"
+      aria-labelledby="ogap-title"
+      style={
+        {
+          ["--stars-url" as any]: `url(${stars})`,
+        } as React.CSSProperties
+      }
+    >
       <div className="ogap__bg" aria-hidden="true" />
-      <div className="ogap__stars" aria-hidden="true" />
+
+      <div className="ogap__starsSide ogap__starsSide--left" aria-hidden="true" />
+      <div className="ogap__starsSide ogap__starsSide--right" aria-hidden="true" />
+
       <div className="ogap__vignette" aria-hidden="true" />
 
       <div className="ogap__container">
@@ -63,40 +109,24 @@ const ObservabilityGapSection: React.FC = () => {
 
         <div className="ogap__panel ogap__panel--pulse">
           <div className="ogap__grid">
-            {/* LEFT */}
             <div className="ogap__left ogap__anim ogap__anim--left" style={{ ["--d" as any]: "130ms" }}>
               <h3 className="ogap__kicker">
                 <span className="ogap__kickerAccent">Traditional tools give you:</span>
               </h3>
 
               <ul className="ogap__list" aria-label="Traditional tools list">
-                <li
-                  className="ogap__li ogap__anim ogap__anim--stagger"
-                  style={{ ["--i" as any]: 1, ["--d" as any]: "200ms" }}
-                >
-                  <span className="ogap__check" aria-hidden="true">
-                    ✓
-                  </span>
+                <li className="ogap__li ogap__anim ogap__anim--stagger" style={{ ["--i" as any]: 1, ["--d" as any]: "200ms" }}>
+                  <span className="ogap__check" aria-hidden="true">✓</span>
                   <span className="ogap__liText">Static reports (after the damage)</span>
                 </li>
 
-                <li
-                  className="ogap__li ogap__anim ogap__anim--stagger"
-                  style={{ ["--i" as any]: 2, ["--d" as any]: "200ms" }}
-                >
-                  <span className="ogap__check" aria-hidden="true">
-                    ✓
-                  </span>
+                <li className="ogap__li ogap__anim ogap__anim--stagger" style={{ ["--i" as any]: 2, ["--d" as any]: "200ms" }}>
+                  <span className="ogap__check" aria-hidden="true">✓</span>
                   <span className="ogap__liText">Metric alerts (no proof)</span>
                 </li>
 
-                <li
-                  className="ogap__li ogap__anim ogap__anim--stagger"
-                  style={{ ["--i" as any]: 3, ["--d" as any]: "200ms" }}
-                >
-                  <span className="ogap__check" aria-hidden="true">
-                    ✓
-                  </span>
+                <li className="ogap__li ogap__anim ogap__anim--stagger" style={{ ["--i" as any]: 3, ["--d" as any]: "200ms" }}>
+                  <span className="ogap__check" aria-hidden="true">✓</span>
                   <span className="ogap__liText">Manual RCA in spreadsheets (120+ hours/quarter)</span>
                 </li>
               </ul>
@@ -112,18 +142,15 @@ const ObservabilityGapSection: React.FC = () => {
               <div className="ogap__rule" role="separator" />
 
               <p className="ogap__p">
-                Zavvis is the first system that watches the source of truth (your general ledger and
-                operating systems) in real time, detects material deviations the moment they occur,
-                traces them to the exact transaction, and delivers a live, auditable war room.
+                Zavvis is the first engine that continuously monitors the sources of truth, detects material issues as they
+                occur, traces them to the exact transactions, and delivers a live, auditable war room.
               </p>
 
               <p className="ogap__callout">
-                This is financial data observability — the same real-time control engineering teams have
-                had for a decade.
+                This is financial data observability; the same level of real-time control engineering teams have relied on for years.
               </p>
             </div>
 
-            {/* RIGHT */}
             <div
               className="ogap__right ogap__anim ogap__anim--right ogap__float"
               style={{ ["--d" as any]: "160ms" }}
@@ -140,7 +167,7 @@ const ObservabilityGapSection: React.FC = () => {
                       <span className="ogap__arrow ogap__bounce">↓</span>
                     </div>
 
-                    <Pill variant="purple">Anomaly → War Room → Decision</Pill>
+                    <Pill variant="purple">Signal → War Room → Decision</Pill>
                   </div>
                 </div>
               </div>

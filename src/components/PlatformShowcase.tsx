@@ -1,15 +1,16 @@
 // src/components/PlatformShowcase.tsx
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../style/PlatformShowcase.css";
 
-import logo from "../assets/logo.png";
 import leftGlow from "../assets/left.png";
 import rightGlow from "../assets/right.png";
+import stars from "../assets/stars.png"; // ✅ same stars as hero
 
 import qbLogo from "../assets/quickbooks.png";
 import salesforceLogo from "../assets/salesforce-logo.png";
 import plaidLogo from "../assets/plaid-logo.webp";
 
+import MenuIcon from "../icons/MenuIcon";
 import SparklesIcon from "../icons/SparklesIcon";
 import AlertTriangleIcon from "../icons/AlertTriangleIcon";
 import HomeIcon from "../icons/HomeIcon";
@@ -17,15 +18,6 @@ import DatabaseIcon from "../icons/DatabaseIcon";
 import ClipboardIcon from "../icons/ClipboardIcon";
 import GridIcon from "../icons/GridIcon";
 import SettingsIcon from "../icons/SettingsIcon";
-
-type Star = {
-  id: number;
-  left: string;
-  top: string;
-  delay: string;
-  size: string;
-  opacity: number;
-};
 
 const PlatformShowcase: React.FC = () => {
   const [activeNav, setActiveNav] = useState<string>("sparkles");
@@ -36,52 +28,27 @@ const PlatformShowcase: React.FC = () => {
     !!window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const stars: Star[] = useMemo(() => {
-    const count = 30;
-    return Array.from({ length: count }).map((_, i) => ({
-      id: i,
-      left: `${(i * 37) % 100}%`,
-      top: `${(i * 53) % 100}%`,
-      delay: `${(i % 10) * 0.28}s`,
-      size: `${1 + (i % 3)}px`,
-      opacity: 0.18 + ((i % 5) * 0.06),
-    }));
-  }, []);
-
-  useEffect(() => {
-    if (reduceMotion) return;
-
-    const els = document.querySelectorAll<HTMLElement>("[data-ps-reveal]");
-    els.forEach((el, idx) => {
-      el.style.setProperty("--reveal-delay", `${idx * 90}ms`);
-      el.classList.add("ps-reveal");
-    });
-  }, [reduceMotion]);
-
-  // Mouse parallax tilt (very subtle, premium)
   useEffect(() => {
     if (reduceMotion) return;
     const shell = shellRef.current;
     if (!shell) return;
 
     let raf = 0;
+
     const onMove = (e: MouseEvent) => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const r = shell.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
+        const px = (e.clientX - r.left) / r.width - 0.5;
         const py = (e.clientY - r.top) / r.height - 0.5;
 
-        // super subtle tilts
-        const rx = (-py * 6).toFixed(2);
-        const ry = (px * 8).toFixed(2);
+        const rx = (-py * 4.5).toFixed(2);
+        const ry = (px * 6).toFixed(2);
 
         shell.style.setProperty("--tiltX", `${rx}deg`);
         shell.style.setProperty("--tiltY", `${ry}deg`);
-
-        // glow drift for extra “alive”
-        shell.style.setProperty("--glowShiftX", `${(px * 30).toFixed(1)}px`);
-        shell.style.setProperty("--glowShiftY", `${(py * 20).toFixed(1)}px`);
+        shell.style.setProperty("--glowShiftX", `${(px * 26).toFixed(1)}px`);
+        shell.style.setProperty("--glowShiftY", `${(py * 18).toFixed(1)}px`);
       });
     };
 
@@ -94,6 +61,7 @@ const PlatformShowcase: React.FC = () => {
 
     shell.addEventListener("mousemove", onMove);
     shell.addEventListener("mouseleave", onLeave);
+
     return () => {
       cancelAnimationFrame(raf);
       shell.removeEventListener("mousemove", onMove);
@@ -102,126 +70,120 @@ const PlatformShowcase: React.FC = () => {
   }, [reduceMotion]);
 
   return (
-    <div className="platform-showcase">
-      <div className="ps-shell" ref={shellRef}>
+    <section className="platform-showcase">
+      <div
+        className="ps-shell"
+        ref={shellRef}
+        style={
+          {
+            ["--stars-url" as any]: `url(${stars})`,
+          } as React.CSSProperties
+        }
+      >
         <div className="ps-ambient" aria-hidden="true" />
-        <div className="ps-starfield" aria-hidden="true">
-          {stars.map((s) => (
-            <span
-              key={s.id}
-              className="ps-twinkle"
-              style={{
-                left: s.left,
-                top: s.top,
-                width: s.size,
-                height: s.size,
-                opacity: s.opacity,
-                animationDelay: s.delay,
-              }}
-            />
-          ))}
-        </div>
 
-        {/* EDGE GLOWS only on this component */}
+        {/* ✅ stars sit where glows are (left/right), like hero */}
+        <div className="ps-starsSide ps-starsSide--left" aria-hidden="true" />
+        <div className="ps-starsSide ps-starsSide--right" aria-hidden="true" />
+
         <img src={leftGlow} alt="" className="ps-glow ps-glow--left" />
         <img src={rightGlow} alt="" className="ps-glow ps-glow--right" />
 
         <div className="ps-dashboardWrap">
-          <div className="ps-dashboard" data-ps-reveal>
-            {/* SIDEBAR */}
-            <aside className="ps-sidebar">
-              <div className="ps-sidebarInner">
-                <div className="ps-sidebarTop">
-                  <button className="ps-icon ps-icon--menu" aria-label="Menu" type="button">
-                    ☰
+          <div className="ps-dashboard">
+            <div className="ps-dashboardInner">
+              <aside className="ps-sidebar" aria-label="Sidebar">
+                <button className="ps-menuBtn" aria-label="Menu" type="button">
+                  <MenuIcon size={16} />
+                </button>
+
+                <nav className="ps-nav" aria-label="Primary">
+                  <button
+                    className={`ps-icon ${activeNav === "sparkles" ? "ps-icon--active" : ""}`}
+                    onClick={() => setActiveNav("sparkles")}
+                    aria-label="Sparkles"
+                    type="button"
+                  >
+                    <SparklesIcon />
                   </button>
 
-                  <div className="ps-sidebarIcons">
-                    <button
-                      className={`ps-icon ${activeNav === "sparkles" ? "ps-icon--active" : ""}`}
-                      onClick={() => setActiveNav("sparkles")}
-                      aria-label="Sparkles"
-                      type="button"
-                    >
-                      <SparklesIcon />
-                    </button>
-
-                    <button
-                      className={`ps-icon ${activeNav === "alerts" ? "ps-icon--active" : ""}`}
-                      onClick={() => setActiveNav("alerts")}
-                      aria-label="Alerts"
-                      type="button"
-                    >
-                      <AlertTriangleIcon />
-                    </button>
-
-                    <button
-                      className={`ps-icon ${activeNav === "home" ? "ps-icon--active" : ""}`}
-                      onClick={() => setActiveNav("home")}
-                      aria-label="Home"
-                      type="button"
-                    >
-                      <HomeIcon />
-                    </button>
-
-                    <button
-                      className={`ps-icon ${activeNav === "db" ? "ps-icon--active" : ""}`}
-                      onClick={() => setActiveNav("db")}
-                      aria-label="Database"
-                      type="button"
-                    >
-                      <DatabaseIcon />
-                    </button>
-
-                    <button
-                      className={`ps-icon ${activeNav === "reports" ? "ps-icon--active" : ""}`}
-                      onClick={() => setActiveNav("reports")}
-                      aria-label="Reports"
-                      type="button"
-                    >
-                      <ClipboardIcon />
-                    </button>
-
-                    <button
-                      className={`ps-icon ${activeNav === "grid" ? "ps-icon--active" : ""}`}
-                      onClick={() => setActiveNav("grid")}
-                      aria-label="Grid"
-                      type="button"
-                    >
-                      <GridIcon />
-                    </button>
-
-                    <button
-                      className={`ps-icon ${activeNav === "settings" ? "ps-icon--active" : ""}`}
-                      onClick={() => setActiveNav("settings")}
-                      aria-label="Settings"
-                      type="button"
-                    >
-                      <SettingsIcon />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="ps-sidebarBottom">
-                  <button className="ps-logout" aria-label="Logout" type="button">
-                    ⮞
+                  <button
+                    className={`ps-icon ${activeNav === "alerts" ? "ps-icon--active" : ""}`}
+                    onClick={() => setActiveNav("alerts")}
+                    aria-label="Alerts"
+                    type="button"
+                  >
+                    <AlertTriangleIcon />
                   </button>
-                </div>
-              </div>
-            </aside>
 
-            {/* MAIN */}
-            <div className="ps-mainWrap">
+                  <button
+                    className={`ps-icon ${activeNav === "home" ? "ps-icon--active" : ""}`}
+                    onClick={() => setActiveNav("home")}
+                    aria-label="Home"
+                    type="button"
+                  >
+                    <HomeIcon />
+                  </button>
+
+                  <button
+                    className={`ps-icon ${activeNav === "db" ? "ps-icon--active" : ""}`}
+                    onClick={() => setActiveNav("db")}
+                    aria-label="Database"
+                    type="button"
+                  >
+                    <DatabaseIcon />
+                  </button>
+
+                  <button
+                    className={`ps-icon ${activeNav === "reports" ? "ps-icon--active" : ""}`}
+                    onClick={() => setActiveNav("reports")}
+                    aria-label="Reports"
+                    type="button"
+                  >
+                    <ClipboardIcon />
+                  </button>
+
+                  <button
+                    className={`ps-icon ${activeNav === "grid" ? "ps-icon--active" : ""}`}
+                    onClick={() => setActiveNav("grid")}
+                    aria-label="Grid"
+                    type="button"
+                  >
+                    <GridIcon />
+                  </button>
+
+                  <button
+                    className={`ps-icon ${activeNav === "settings" ? "ps-icon--active" : ""}`}
+                    onClick={() => setActiveNav("settings")}
+                    aria-label="Settings"
+                    type="button"
+                  >
+                    <SettingsIcon />
+                  </button>
+                </nav>
+
+                <div className="ps-spacer" />
+
+                <button className="ps-logout" aria-label="Open" type="button">
+                  ↗
+                </button>
+              </aside>
+
               <div className="ps-main">
-                <header className="ps-header" data-ps-reveal>
+                <header className="ps-header">
                   <div className="ps-headerLeft">
-                    <img src={logo} alt="Zavvis AI" className="ps-logo" />
+                    <span className="ps-brand">
+                      <span className="ps-brandText">Z A V V I S</span>
+                    </span>
                   </div>
 
                   <div className="ps-headerCenter">Good Morning, John!</div>
 
                   <div className="ps-headerRight">
-                    <div className="ps-time">🗓️ 11:40 AM, Nov 25</div>
+                    <div className="ps-time">
+                      <span aria-hidden="true">🗓️</span> 11:40 AM, Nov 25
+                    </div>
+
                     <button className="ps-hIcon" aria-label="Notifications" type="button">
                       🔔
                     </button>
@@ -236,121 +198,142 @@ const PlatformShowcase: React.FC = () => {
                   </div>
                 </header>
 
-                <div className="ps-grid">
-                  {/* LEFT */}
-                  <section className="ps-left">
-                    <div className="ps-card ps-welcome" data-ps-reveal>
-                      <div className="ps-badgeRow">
-                        <div className="ps-badge ps-badge--pulse">
-                          <SparklesIcon size={20} />
-                        </div>
-                      </div>
-
-                      <h1 className="ps-title">
-                        Hi! I'm Zavvis AI. What would you like me to monitor, check, or explain
-                        today?
-                      </h1>
-
-                      <div className="ps-prompts">
-                        <button className="ps-prompt" type="button">
-                          Trace the root cause of anomalies affecting revenue or expenses.
-                        </button>
-                        <button className="ps-prompt" type="button">
-                          Where are the biggest risks across my financial data?
-                        </button>
-                        <button className="ps-prompt" type="button">
-                          Summarize today’s financial health and fired guardrails.
-                        </button>
-                        <button className="ps-prompt" type="button">
-                          Show inconsistencies between QuickBooks and canonical data.
-                        </button>
-                      </div>
-
-                      <div className="ps-inputRow">
-                        <input className="ps-input" placeholder="What do you want to know..." type="text" />
-                        <button className="ps-cta ps-cta--shine" type="button">
-                          SHOW
-                        </button>
+                <div className="ps-layout">
+                  <section className="ps-card ps-welcome">
+                    <div className="ps-badgeRow">
+                      <div className="ps-badge">
+                        <SparklesIcon size={14} />
                       </div>
                     </div>
 
-                    <div className="ps-card ps-panel" data-ps-reveal>
-                      <h3 className="ps-cardTitle">Reports</h3>
-                      <button className="ps-chipBtn" type="button">
-                        Add Report
+                    <br />
+                    <br />
+                    <br />
+
+                    <h1 className="ps-title">
+                      Hi! I&apos;m Zavvis AI. What would you like me to monitor, check, or explain today?
+                    </h1>
+
+                    <div className="ps-prompts">
+                      <button className="ps-prompt" type="button">
+                        Trace the root cause of any anomalies affecting revenue or expenses.
                       </button>
-                      <div className="ps-placeholder">Generate custom reports</div>
+                      <button className="ps-prompt" type="button">
+                        Where are the biggest risks or inconsistencies across my financial data?
+                      </button>
+                      <button className="ps-prompt" type="button">
+                        Summarize today’s financial system health and flag any thresholds or guardrails that fired.
+                      </button>
+                      <button className="ps-prompt" type="button">
+                        Show me inconsistencies between QuickBooks data and the canonical model.
+                      </button>
+                    </div>
+
+                    <div className="ps-inputRow">
+                      <input className="ps-input" placeholder="What do you want to know..." type="text" />
+                      <button className="ps-cta" type="button">
+                        SHOW
+                      </button>
                     </div>
                   </section>
 
-                  {/* RIGHT */}
-                  <section className="ps-right">
-                    <div className="ps-card ps-anomaly" data-ps-reveal>
+                  <aside className="ps-card ps-anomaly">
+                    <div className="ps-anomTop">
                       <div className="ps-anomHead">
-                        <div className="ps-anomPill">🔍</div>
-                        <h3 className="ps-anomTitle">ANOMALY DETECTION COMPLETE</h3>
+                        <div className="ps-anomPill">🔎</div>
+                        <div className="ps-anomTitle">Anomaly Detection Complete</div>
                       </div>
 
                       <p className="ps-anomIntro">
-                        I analyzed your financial data and identified issues that require attention:
+                        I’ve analyzed your financial data and identified the following anomalies that require attention:
                       </p>
-
-                      <div className="ps-anomItem ps-anomItem--pink ps-anomItem--float">
-                        <h4 className="ps-anomItemTitle">Revenue Integrity Issue — $48,900 Missing</h4>
-                        <p className="ps-anomDesc">Salesforce closed-won deals not reflected in QuickBooks.</p>
-                        <p className="ps-anomSub">Indicates a break in revenue recognition workflow.</p>
-                      </div>
-
-                      <div className="ps-anomItem ps-anomItem--orange ps-anomItem--float">
-                        <h4 className="ps-anomItemTitle">November 2025 Financial Irregularities</h4>
-                        <ul className="ps-anomList">
-                          <li>Sales down 173% vs average</li>
-                          <li>Supplies up 300%</li>
-                          <li>6 deals missing in GL</li>
-                          <li>2 deposits unlinked</li>
-                        </ul>
-                        <p className="ps-anomSub">
-                          Suggests potential data entry errors or missing revenue entries.
-                        </p>
-                      </div>
-
-                      <div className="ps-anomItem ps-anomItem--blue ps-anomItem--float">
-                        <h4 className="ps-anomItemTitle">Unreversed Accrual — $12,400</h4>
-                        <p className="ps-anomDesc">Accrual from Nov 2023 missing reversal entry.</p>
-                        <p className="ps-anomSub">Should be corrected for accurate reporting.</p>
-                      </div>
                     </div>
 
-                    <div className="ps-card ps-panel" data-ps-reveal>
-                      <h3 className="ps-cardTitle">Data Sources</h3>
+                    <div className="ps-anomItem">
+                      <div className="ps-anomItemTitle">1. Revenue Integrity Issue — $48,900 Missing</div>
+                      <p className="ps-anomDesc">
+                        Detected a mismatch between Salesforce closed-won deals and revenue posted in QuickBooks. This
+                        inconsistency suggests a break in your revenue-recognition workflow and should be reviewed.
+                      </p>
+                    </div>
+
+                    {/* ✅ UPDATED to boss version */}
+                    <div className="ps-anomItem">
+                      <div className="ps-anomItemTitle">2. November 2025 Financial Irregularities</div>
+
+                      <ul className="ps-anomList">
+                        <li>
+                          <strong>Sales Revenue:</strong> $6.8M (17.5% below average of ~ $8.3M)
+                        </li>
+                        <li>
+                          <strong>Supplies:</strong> $140,000 (30% above normal $105,000)
+                        </li>
+                        <li>6 deals marked closed-won not reflected in GL</li>
+                        <li>2 deposits unlinked to customer records</li>
+                      </ul>
+
+                      <p className="ps-anomDesc ps-anomDesc--afterList">
+                        This significant deviation suggests potential data entry errors or missing revenue entries.
+                      </p>
+                    </div>
+
+                    {/* ✅ UPDATED to boss version */}
+                    <div className="ps-anomItem">
+                      <div className="ps-anomItemTitle">3. Unreversed Accrual — $12,400</div>
+                      <p className="ps-anomDesc">
+                        Found an accrual from <span className="ps-anomMeta">2025-11-01</span> that did not generate its
+                        expected reversal entry. Traced to journal entry <span className="ps-anomMeta">#4412</span>.
+                      </p>
+                      <p className="ps-anomDesc ps-anomDesc--afterList">
+                        This integrity risk should be corrected to ensure accurate financial reporting.
+                      </p>
+                    </div>
+                  </aside>
+
+                  <section className="ps-card ps-panel ps-reports">
+                    <div className="ps-panelHead">
+                      <h3 className="ps-panelTitle">
+                        <span aria-hidden="true">🗂️</span> Reports
+                      </h3>
+                      <button className="ps-chipBtn" type="button">
+                        Add Report
+                      </button>
+                    </div>
+                    <div className="ps-placeholder">Generate custom reports</div>
+                  </section>
+
+                  <section className="ps-card ps-panel ps-sourcesPanel">
+                    <div className="ps-panelHead">
+                      <h3 className="ps-panelTitle">
+                        <span aria-hidden="true">🗄️</span> Data sources
+                      </h3>
                       <button className="ps-chipBtn" type="button">
                         Add data
                       </button>
-
-                      <ul className="ps-sources">
-                        <li className="ps-sourceRow">
-                          <img src={qbLogo} alt="QuickBooks" className="ps-sourceLogo" />
-                          QuickBooks
-                        </li>
-                        <li className="ps-sourceRow">
-                          <img src={salesforceLogo} alt="Salesforce" className="ps-sourceLogo" />
-                          Salesforce
-                        </li>
-                        <li className="ps-sourceRow">
-                          <img src={plaidLogo} alt="Plaid" className="ps-sourceLogo" />
-                          Plaid
-                        </li>
-                      </ul>
                     </div>
+
+                    <ul className="ps-sources">
+                      <li className="ps-sourceRow">
+                        <img src={qbLogo} alt="QuickBooks" className="ps-sourceLogo" />
+                        Quick Books
+                      </li>
+                      <li className="ps-sourceRow">
+                        <img src={salesforceLogo} alt="Salesforce" className="ps-sourceLogo" />
+                        Salesforce
+                      </li>
+                      <li className="ps-sourceRow">
+                        <img src={plaidLogo} alt="Plaid" className="ps-sourceLogo" />
+                        Plaid
+                      </li>
+                    </ul>
                   </section>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
-    </div>
+    </section>
   );
 };
 

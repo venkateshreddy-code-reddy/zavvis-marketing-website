@@ -1,6 +1,7 @@
-// ROISection.tsx
-import  { useEffect, useRef, useState } from "react";
+// src/components/ROISection.tsx
+import { useEffect, useRef, useState } from "react";
 import "../style/ROISection.css";
+import stars from "../assets/stars.png";
 
 type RoiRow = {
   metric: string;
@@ -8,11 +9,11 @@ type RoiRow = {
 };
 
 const ROWS: RoiRow[] = [
-  { metric: "Time Anomaly-to-Deck", target: "< 3 minutes" },
+  { metric: "Signal-to-War-Room Time", target: "< 3 minutes" },
   { metric: "Drill-Down Clicks", target: "80% of users click ≥1 number" },
   { metric: "Share Rate", target: "60% of sessions → shared link" },
   { metric: "NPS (Beta)", target: "> 70" },
-  { metric: 'ICP “Wow”', target: '8-second Loom: “Anomaly → Live Deck → Fix”' },
+  { metric: "ICP “Wow”", target: "8-second Loom: Signal → Live Deck → Fix" },
 ];
 
 export default function ROISection() {
@@ -43,7 +44,15 @@ export default function ROISection() {
       ref={sectionRef}
       className={`roi ${visible ? "is-visible" : ""}`}
       aria-labelledby="roi-title"
+      style={
+        {
+          ["--stars-url" as any]: `url(${stars})`,
+        } as React.CSSProperties
+      }
     >
+      <div className="roi__starsSide roi__starsSide--left" aria-hidden="true" />
+      <div className="roi__starsSide roi__starsSide--right" aria-hidden="true" />
+
       <div className="roi__glow" aria-hidden="true" />
       <div className="roi__glow roi__glow--b" aria-hidden="true" />
       <div className="roi__noise" aria-hidden="true" />
@@ -51,15 +60,15 @@ export default function ROISection() {
       <div className="roi__container">
         <header className="roi__header">
           <h2 id="roi-title" className="roi__title">
-            ROI
+            The ROI of Control
           </h2>
 
           <p className="roi__subtitle">Observability Leaders Generate 125% ROI</p>
 
           <p className="roi__lead">
-            Companies that adopt financial observability — rather than static dashboards — achieve
-            measurable ROI through faster investigation time, reduced risk exposure, and early
-            anomaly prevention.
+            Organizations that adopt financial observability over static dashboards achieve
+            measurable returns through faster investigations, reduced exposure, and early issue
+            prevention.
           </p>
         </header>
 

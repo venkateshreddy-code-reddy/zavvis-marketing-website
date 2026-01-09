@@ -32,8 +32,7 @@ const LookingAheadSection: React.FC = () => {
               </p>
 
               <p className="lookingAhead__p">
-                Enable finance teams to operate with clarity, control, and proactive intelligence —
-                not reactive analysis.
+                Enable finance teams to operate with clarity, control, and proactive intelligence. 
               </p>
 
               <p className="lookingAhead__p lookingAhead__p--emph">

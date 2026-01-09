@@ -1,4 +1,4 @@
-
+// src/components/ApproachSection.tsx
 import "../style/approach.css";
 import approachImg from "../assets/approach.png";
 
@@ -13,7 +13,7 @@ const ApproachSection: React.FC = () => {
         <div className="approach__grid">
           <div className="approach__media" aria-hidden="true">
             <div className="approach__mediaGlow" aria-hidden="true" />
-            <div className="approach__imageFrame">
+            <div className="approach__imageFrame" aria-hidden="true">
               <img
                 className="approach__image"
                 src={approachImg}
@@ -42,15 +42,11 @@ const ApproachSection: React.FC = () => {
               <strong>We are the observability engine for corporate finance.</strong>
             </p>
 
-            <p className="approach__paragraph">
-              We ingest fragmented signals from GL, CRM, ERP, and data warehouses — then
-              convert them into causal truth: What changed. Why it changed. How to stop it
-              from happening again.
-            </p>
+           
 
             <p className="approach__paragraph">
-              The result: a continuously learning system that eliminates noise, removes
-              busywork, and focuses your team on what actually moves the business.
+              The result: a continuously learning system that eliminates noise, removes busywork,
+              and focuses your team on what actually moves the business.
             </p>
           </div>
         </div>

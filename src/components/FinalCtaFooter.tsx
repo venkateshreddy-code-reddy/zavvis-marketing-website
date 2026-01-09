@@ -2,10 +2,16 @@
 import { useEffect, useRef } from "react";
 import "../style/CTASection.css";
 import logo from "../assets/logo.png";
+import stars from "../assets/stars.png";
 
 function WireSphere({ className }: { className: string }) {
   return (
-    <svg className={className} viewBox="0 0 260 260" aria-hidden="true" focusable="false">
+    <svg
+      className={className}
+      viewBox="0 0 260 260"
+      aria-hidden="true"
+      focusable="false"
+    >
       <defs>
         <linearGradient id="ctaSphereStroke" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="rgba(255, 196, 0, 0.55)" />
@@ -33,7 +39,12 @@ function WireSphere({ className }: { className: string }) {
         </filter>
       </defs>
 
-      <g fill="none" stroke="url(#ctaSphereStroke)" strokeWidth="2.3" filter="url(#ctaSphereGlow)">
+      <g
+        fill="none"
+        stroke="url(#ctaSphereStroke)"
+        strokeWidth="2.3"
+        filter="url(#ctaSphereGlow)"
+      >
         <circle cx="130" cy="130" r="92" opacity="0.58" />
         <circle cx="130" cy="130" r="78" opacity="0.42" />
         <circle cx="130" cy="130" r="64" opacity="0.34" />
@@ -58,8 +69,40 @@ function WireSphere({ className }: { className: string }) {
 }
 
 export default function CTASection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
 
+  // stars parallax like hero
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (reduced || !hover) return;
+
+    let raf = 0;
+
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const nx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        const ny = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+
+        const clampedX = Math.max(-1, Math.min(1, nx));
+        const clampedY = Math.max(-1, Math.min(1, ny));
+
+        el.style.setProperty("--mx", `${clampedX * 10}px`);
+        el.style.setProperty("--my", `${clampedY * 6}px`);
+      });
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  // card tilt + glow tracking
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
@@ -101,7 +144,19 @@ export default function CTASection() {
   }, []);
 
   return (
-    <section className="cta" aria-label="CTA">
+    <section
+      ref={sectionRef}
+      className="cta"
+      aria-label="CTA"
+      style={
+        {
+          ["--stars-url" as any]: `url(${stars})`,
+        } as React.CSSProperties
+      }
+    >
+      <div className="cta__starsSide cta__starsSide--left" aria-hidden="true" />
+      <div className="cta__starsSide cta__starsSide--right" aria-hidden="true" />
+
       <div className="cta__wrap">
         <div className="cta__card" ref={cardRef} role="region" aria-label="CTA card">
           <div className="cta__bgGlow" aria-hidden="true" />
@@ -120,7 +175,9 @@ export default function CTASection() {
           <div className="cta__content">
             <h2 className="cta__title">
               <span className="cta__tStrong">Ready</span>{" "}
-              <span className="cta__tSoft">to</span>{" "}
+              <span className="cta__tMidGlow" aria-label="to">
+                <span className="cta__tMidText">to</span>
+              </span>{" "}
               <span className="cta__tStrong">Transform Your</span>
               <br />
               <span className="cta__tStrong">Finance Operations?</span>
@@ -167,8 +224,20 @@ export default function CTASection() {
           </div>
         </div>
 
-        <div className="ctaFooter__copyright">
-          © 2025 Zavvis Technologies, Inc. All rights reserved.
+        <div className="ctaFooter__footnote">
+          <div className="ctaFooter__footLinks" aria-label="Footer legal links">
+            <a className="ctaFooter__footLink" href="/privacy-policy">
+              Privacy Policy
+            </a>
+            <span className="ctaFooter__footSep" aria-hidden="true">
+              |
+            </span>
+            <a className="ctaFooter__footLink" href="/terms-of-service">
+              Terms of Service
+            </a>
+          </div>
+
+          <div className="ctaFooter__copy">© 2025 Zavvis Technologies, Inc. All rights reserved.</div>
         </div>
       </footer>
     </section>

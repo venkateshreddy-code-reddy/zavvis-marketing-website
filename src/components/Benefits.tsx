@@ -1,6 +1,7 @@
-// Benefits.tsx
+// src/components/Benefits.tsx
 import { useEffect, useRef } from "react";
 import "../style/Benefits.css";
+import stars from "../assets/stars.png";
 
 type Benefit = {
   title: React.ReactNode;
@@ -239,7 +240,20 @@ export default function Benefits() {
   }, []);
 
   return (
-    <section className="bf" ref={rootRef} aria-label="Benefits for Finance Teams">
+    <section
+      className="bf"
+      ref={rootRef}
+      aria-label="Benefits for Finance Teams"
+      style={
+        {
+          ["--stars-url" as any]: `url(${stars})`,
+        } as React.CSSProperties
+      }
+    >
+      {/* ⭐ Stars like Hero */}
+      <div className="bf__starsSide bf__starsSide--left" aria-hidden="true" />
+      <div className="bf__starsSide bf__starsSide--right" aria-hidden="true" />
+
       <div className="bf__container">
         <h2 className="bf__title" data-anim style={{ ["--d" as any]: "0ms" }}>
           Benefits For Finance Teams

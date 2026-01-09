@@ -1,4 +1,4 @@
-/* ../style/observabilityGap.css */
+/* ../style/ObservabilityGap.css */
 
 .ogap {
   position: relative;
@@ -6,6 +6,18 @@
   background: #000;
   overflow: hidden;
   padding: 78px 0 88px;
+
+  /* ✅ hero-like mouse parallax vars */
+  --mx: 0px;
+  --my: 0px;
+
+  /* ✅ stars asset like hero */
+  --stars-url: none;
+  --star-drift: 260px;
+  --star-speed-1: 40s;
+  --star-speed-2: 60s;
+  --star-speed-3: 85s;
+  --twinkle-speed: 5s;
 }
 
 .ogap__bg {
@@ -17,22 +29,96 @@
     radial-gradient(760px 520px at 0% 10%, rgba(122, 74, 255, 0.22), transparent 70%),
     radial-gradient(760px 520px at 100% 12%, rgba(122, 74, 255, 0.22), transparent 70%);
   opacity: 0.95;
+  z-index: 0;
 }
 
-.ogap__stars {
+/* =========================
+   ✅ STARS (hero-style sides)
+   ========================= */
+.ogap__starsSide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  width: 26vw;
+  min-width: 260px;
+  max-width: 560px;
+
+  pointer-events: none;
+  z-index: 1;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 1200px auto;
+  background-position: 0 0;
+
+  opacity: 0.55;
+  filter: brightness(1.85) contrast(1.35);
+  mix-blend-mode: screen;
+
+  /* ✅ add hero-like parallax */
+  transform: translate3d(calc(var(--mx) * 0.06), calc(var(--my) * 0.05), 0);
+
+  animation:
+    ogapStarsDrift1 var(--star-speed-1) linear infinite,
+    ogapStarsTwinkle var(--twinkle-speed) ease-in-out infinite,
+    ogapStarsBreathe 9s ease-in-out infinite;
+
+  will-change: background-position, opacity, transform, filter;
+}
+
+.ogap__starsSide::before {
+  content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  opacity: 0.55;
-  background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.22) 50%, transparent 60%),
-    radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.18) 50%, transparent 60%),
-    radial-gradient(1px 1px at 40% 35%, rgba(255,255,255,0.20) 50%, transparent 60%),
-    radial-gradient(1px 1px at 55% 60%, rgba(255,255,255,0.16) 50%, transparent 60%),
-    radial-gradient(1px 1px at 70% 25%, rgba(255,255,255,0.18) 50%, transparent 60%),
-    radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.14) 50%, transparent 60%),
-    radial-gradient(1px 1px at 92% 40%, rgba(255,255,255,0.16) 50%, transparent 60%);
-  background-size: 520px 520px;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 900px auto;
+  background-position: 120px 200px;
+
+  opacity: 0.42;
+  filter: brightness(1.9) contrast(1.35);
+  mix-blend-mode: screen;
+
+  animation:
+    ogapStarsDrift2 var(--star-speed-2) linear infinite,
+    ogapStarsTwinkle2 calc(var(--twinkle-speed) * 1.25) ease-in-out infinite;
+}
+
+.ogap__starsSide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 720px auto;
+  background-position: -200px 320px;
+
+  opacity: 0.28;
+  filter: brightness(2) contrast(1.4);
+  mix-blend-mode: screen;
+
+  animation:
+    ogapStarsDrift3 var(--star-speed-3) linear infinite,
+    ogapStarsTwinkle3 calc(var(--twinkle-speed) * 1.5) ease-in-out infinite;
+}
+
+.ogap__starsSide--left {
+  left: -7vw;
+  mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+}
+
+.ogap__starsSide--right {
+  right: -7vw;
+
+  /* ✅ match hero: flip + keep parallax */
+  transform: scaleX(-1) translate3d(calc(var(--mx) * 0.06), calc(var(--my) * 0.05), 0);
+
+  mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
 }
 
 .ogap__vignette {
@@ -40,6 +126,7 @@
   inset: -1px;
   pointer-events: none;
   background: radial-gradient(1200px 700px at 50% 20%, transparent 55%, rgba(0,0,0,0.72) 100%);
+  z-index: 2;
 }
 
 .ogap__container {
@@ -48,7 +135,7 @@
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 24px;
-  z-index: 1;
+  z-index: 3;
 }
 
 .ogap__header {
@@ -86,6 +173,7 @@
     inset 0 1px 0 rgba(255,255,255,0.10);
   padding: clamp(22px, 3.2vw, 34px);
   overflow: hidden;
+  z-index: 1;
 }
 
 .ogap__panel::after {
@@ -128,9 +216,7 @@
   z-index: 1;
 }
 
-.ogap__left {
-  min-width: 0;
-}
+.ogap__left { min-width: 0; }
 
 .ogap__kicker {
   margin: 0 0 16px;
@@ -139,9 +225,7 @@
   color: rgba(240, 235, 255, 0.92);
 }
 
-.ogap__kickerAccent {
-  color: rgba(255, 126, 80, 0.95);
-}
+.ogap__kickerAccent { color: rgba(255, 126, 80, 0.95); }
 
 .ogap__list {
   list-style: none;
@@ -176,9 +260,7 @@
   flex: 0 0 auto;
 }
 
-.ogap__liText {
-  opacity: 0.98;
-}
+.ogap__liText { opacity: 0.98; }
 
 .ogap__rule {
   height: 1px;
@@ -194,9 +276,7 @@
   line-height: 1.7;
 }
 
-.ogap__p + .ogap__p {
-  margin-top: 14px;
-}
+.ogap__p + .ogap__p { margin-top: 14px; }
 
 .ogap__callout {
   margin: 18px 0 0;
@@ -228,15 +308,8 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-.ogap__frame--1 {
-  transform: translate3d(-16px, -16px, 0);
-  opacity: 0.35;
-}
-
-.ogap__frame--2 {
-  transform: translate3d(-8px, -8px, 0);
-  opacity: 0.5;
-}
+.ogap__frame--1 { transform: translate3d(-16px, -16px, 0); opacity: 0.35; }
+.ogap__frame--2 { transform: translate3d(-8px, -8px, 0); opacity: 0.5; }
 
 .ogap__frame--3 {
   display: grid;
@@ -334,9 +407,7 @@
   font-size: 18px;
 }
 
-.ogap--inview .ogap__bounce {
-  animation: ogap-bounce 1.6s ease-in-out infinite;
-}
+.ogap--inview .ogap__bounce { animation: ogap-bounce 1.6s ease-in-out infinite; }
 
 @keyframes ogap-bounce {
   0%, 100% { transform: translateY(0); opacity: 0.92; }
@@ -380,58 +451,97 @@
 }
 
 /* Floating right stack */
-.ogap--inview .ogap__float {
-  animation: ogap-float 6.5s ease-in-out infinite;
-}
+.ogap--inview .ogap__float { animation: ogap-float 6.5s ease-in-out infinite; }
 
 @keyframes ogap-float {
   0%, 100% { transform: translate3d(0, 0, 0); }
   50% { transform: translate3d(0, -8px, 0); }
 }
 
+/* ✅ star animations */
+@keyframes ogapStarsDrift1 {
+  from { background-position: 0 0; }
+  to { background-position: 0 var(--star-drift); }
+}
+@keyframes ogapStarsDrift2 {
+  from { background-position: 120px 200px; }
+  to { background-position: 120px calc(200px + var(--star-drift)); }
+}
+@keyframes ogapStarsDrift3 {
+  from { background-position: -200px 320px; }
+  to { background-position: -200px calc(320px + var(--star-drift)); }
+}
+
+@keyframes ogapStarsTwinkle {
+  0%, 100% { opacity: 0.52; }
+  50% { opacity: 0.68; }
+}
+@keyframes ogapStarsTwinkle2 {
+  0%, 100% { opacity: 0.34; }
+  50% { opacity: 0.48; }
+}
+@keyframes ogapStarsTwinkle3 {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.32; }
+}
+
+@keyframes ogapStarsBreathe {
+  0%, 100% { filter: brightness(1.8) contrast(1.35); }
+  50% { filter: brightness(2.05) contrast(1.45); }
+}
+
 /* Responsive */
 @media (max-width: 980px) {
-  .ogap {
-    padding: 64px 0 76px;
-  }
+  .ogap { padding: 64px 0 76px; }
 
   .ogap__grid {
     grid-template-columns: 1fr;
     gap: 22px;
   }
 
-  .ogap__right {
-    min-height: 320px;
-  }
+  .ogap__right { min-height: 320px; }
 
   .ogap__frames {
     height: 320px;
     width: min(520px, 100%);
   }
+
+  .ogap__starsSide {
+    width: 30vw;
+    min-width: 180px;
+    background-size: 1400px auto;
+    opacity: 0.5;
+  }
+
+  .ogap__starsSide::before {
+    background-size: 1000px auto;
+    opacity: 0.35;
+  }
+
+  .ogap__starsSide::after {
+    background-size: 800px auto;
+    opacity: 0.22;
+  }
+
+  .ogap__starsSide--left { left: -12vw; }
+  .ogap__starsSide--right { right: -12vw; }
 }
 
 @media (max-width: 520px) {
-  .ogap__panel {
-    padding: 18px;
-    border-radius: 22px;
-  }
-
+  .ogap__panel { padding: 18px; border-radius: 22px; }
   .ogap__frame,
-  .ogap__frame--3 {
-    border-radius: 22px;
-  }
-
-  .ogap__pill {
-    padding: 13px 16px;
-  }
-
-  .ogap__pillText {
-    font-size: 14px;
-  }
+  .ogap__frame--3 { border-radius: 22px; }
+  .ogap__pill { padding: 13px 16px; }
+  .ogap__pillText { font-size: 14px; }
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .ogap {
+    --mx: 0px;
+    --my: 0px;
+  }
+
   .ogap__anim {
     transition: none;
     opacity: 1;
@@ -442,11 +552,26 @@
   .ogap__float,
   .ogap__bounce,
   .ogap__panel--pulse::before,
-  .ogap__pillShimmer {
+  .ogap__pillShimmer,
+  .ogap__starsSide,
+  .ogap__starsSide::before,
+  .ogap__starsSide::after {
     animation: none !important;
+    transform: none !important;
   }
 
-  .ogap__panel--pulse::before {
-    opacity: 0 !important;
-  }
+  .ogap__panel--pulse::before { opacity: 0 !important; }
+}
+
+/* ✅ force pure black everywhere behind this section */
+.ogap,
+.ogap__bg,
+.ogap__vignette {
+  background: #000 !important;
+}
+
+/* ✅ remove the purple glow gradients only (keep stars, panel, everything else) */
+.ogap__bg {
+  background: #000 !important;
+  opacity: 1 !important;
 }

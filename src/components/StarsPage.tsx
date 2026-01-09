@@ -1,9 +1,8 @@
-// MissionSection.tsx
-import  { useEffect, useRef, useState } from "react";
+// src/components/MissionSection.tsx
+import { useEffect, useRef, useState } from "react";
 import "../style/mission.css";
 import missionImg from "../assets/mission.png";
-
-
+import stars from "../assets/stars.png";
 
 function useInView<T extends HTMLElement>(threshold = 0.22) {
   const ref = useRef<T | null>(null);
@@ -30,14 +29,49 @@ function useInView<T extends HTMLElement>(threshold = 0.22) {
 const MissionSection: React.FC = () => {
   const { ref, inView } = useInView<HTMLElement>(0.22);
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (reduced || !hover) return;
+
+    let raf = 0;
+
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const nx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        const ny = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+
+        const clampedX = Math.max(-1, Math.min(1, nx));
+        const clampedY = Math.max(-1, Math.min(1, ny));
+
+        el.style.setProperty("--mx", `${clampedX * 10}px`);
+        el.style.setProperty("--my", `${clampedY * 6}px`);
+      });
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
   return (
     <section
       ref={ref}
       className={`mission ${inView ? "is-inview" : ""}`}
       aria-labelledby="mission-title"
+      style={
+        {
+          ["--stars-url" as any]: `url(${stars})`,
+        } as React.CSSProperties
+      }
     >
       <div className="mission__bg" aria-hidden="true" />
-      <div className="mission__stars" aria-hidden="true" />
+      <div className="mission__starsSide mission__starsSide--left" aria-hidden="true" />
+      <div className="mission__starsSide mission__starsSide--right" aria-hidden="true" />
       <div className="mission__vignette" aria-hidden="true" />
 
       <div className="mission__container">
@@ -54,20 +88,17 @@ const MissionSection: React.FC = () => {
 
             <div className="mission__text">
               <p>
-                We founded Zavvis to solve a fundamental flaw in corporate finance: Too much
-                data. Too little control. Discovered too late.
+               We founded Zavvis to fix a fundamental flaw in corporate finance: too much data, too little control, discovered too late.
               </p>
 
               <p>
                 Traditional tools leave finance teams buried in month-end surprises, manual
-                reconciliations, and 120-hour investigation cycles — after performance is
-                already impacted.
+                reconciliations, and 120-hour investigation cycles — after performance is already
+                impacted.
               </p>
 
               <p>
-                Our mission: make financial operations proactive, intelligent, and
-                preventative — transforming raw transactional data into real-time anomaly
-                intelligence that stops risk before it compounds.
+              Our mission is to make financial operations proactive, controlled, and preventative.
               </p>
             </div>
           </div>

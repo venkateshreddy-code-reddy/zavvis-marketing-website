@@ -1,4 +1,3 @@
-// src/components/AboutZavvis.tsx
 import { useEffect, useRef, useState } from "react";
 import "../style/AboutZavvis.css";
 
@@ -7,31 +6,47 @@ import stars from "../assets/stars.png";
 
 const AboutZavvis: React.FC = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [inView, setInView] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.25 }
-    );
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (reduced || !hover) return;
 
-    io.observe(el);
-    return () => io.disconnect();
+    let raf = 0;
+
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const nx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        const ny = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+
+        const clampedX = Math.max(-1, Math.min(1, nx));
+        const clampedY = Math.max(-1, Math.min(1, ny));
+
+        el.style.setProperty("--mx", `${clampedX * 10}px`);
+        el.style.setProperty("--my", `${clampedY * 6}px`);
+      });
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className={`aboutZ ${inView ? "aboutZ--in" : ""}`}
-      aria-label="About Zavvis section"
+      className={`aboutZ ${ready ? "aboutZ--ready" : ""}`}
+      aria-label="About Zavvis"
       style={
         {
           ["--grid-url" as any]: `url(${grid})`,
@@ -40,22 +55,24 @@ const AboutZavvis: React.FC = () => {
       }
     >
       <div className="aboutZ__grid" aria-hidden="true" />
-      <div className="aboutZ__content" role="presentation">
-        <h2 className="aboutZ__title">About Zavvis</h2>
+      <div className="aboutZ__starsSide aboutZ__starsSide--left" aria-hidden="true" />
+      <div className="aboutZ__starsSide aboutZ__starsSide--right" aria-hidden="true" />
 
-        <p className="aboutZ__para">
-          Corporate finance has entered its observability era. Zavvis is the first engine
-          that watches every transaction — from GL entry to CRM deal — and turns it into
-          real-time, preventative intelligence.
-        </p>
+      <div className="aboutZ__center">
+        <div className="aboutZ__content">
+          <h1 className="aboutZ__title">About Zavvis</h1>
 
-        <p className="aboutZ__para aboutZ__para--spaced">
-          We build Financial Data Observability — powered by AI agents that continuously
-          monitor transactional signals, detect material anomalies, trace root causes across
-          systems, and close the loop with automated prevention.
-        </p>
+          <p className="aboutZ__subtitle">
+       Corporate finance has entered its observability era. Zavvis is the first engine that watches every transaction, from GL entry to CRM deal, and converts it into real-time, preventative intelligence.
+          </p>
+
+          <p className="aboutZ__subtitle aboutZ__subtitle--spaced">
+       We build Financial Data Observability, using advanced reasoning systems to continuously monitor transactional signals, detect material issues, trace root causes across systems, and prevent recurrence.
+          </p>
+        </div>
       </div>
-      <div className="aboutZ__stars" aria-hidden="true" />
+
+      <div className="aboutZ__seam" aria-hidden="true" />
     </section>
   );
 };

@@ -1,393 +1,403 @@
-/* ../style/HowItWorks.css */
+/* src/style/HowItWorks.css */
 
-/* =========================
-   HOW IT WORKS (SMALL + CENTERED)
-   ========================= */
 .hiwOnly {
-  width: 100%;
-  min-height: 100vh;
-  background: radial-gradient(circle at top center, rgba(145, 94, 255, 0.35) 0%, #000 62%);
-  color: #fff;
-  padding: 100px 20px 180px;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
   position: relative;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 72px 20px 110px;
+
+  /* ✅ stars support like hero */
+  --stars-url: none;
+  --star-drift: 260px;
+  --star-speed-1: 40s;
+  --star-speed-2: 60s;
+  --star-speed-3: 85s;
+  --twinkle-speed: 5s;
 }
 
-/* ambient glows */
+/* ✅ purple ambience */
 .hiwOnly::before {
   content: "";
   position: absolute;
-  inset: -30%;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 10%, rgba(170, 120, 255, 0.20) 0%, rgba(0, 0, 0, 0) 46%),
-    radial-gradient(circle at 15% 35%, rgba(130, 80, 255, 0.10) 0%, rgba(0, 0, 0, 0) 52%),
-    radial-gradient(circle at 85% 40%, rgba(130, 80, 255, 0.10) 0%, rgba(0, 0, 0, 0) 52%);
-  opacity: 0.95;
-  transform: translateY(-6px);
-}
-
-.hiwOnly--in::before {
-  animation: hiwGlowBreath 6.5s ease-in-out infinite;
-}
-
-@keyframes hiwGlowBreath {
-  0% {
-    opacity: 0.85;
-    transform: translateY(-6px) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-10px) scale(1.02);
-  }
-  100% {
-    opacity: 0.85;
-    transform: translateY(-6px) scale(1);
-  }
-}
-
-/* main container */
-.hiwOnly__container {
-  width: 100%;
-  max-width: 980px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-/* =========================
-   TITLE
-   ========================= */
-.hiwOnly__title {
-  text-align: center;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(36px, 3.6vw, 46px);
-  margin-bottom: 196px;
-
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 700ms ease, transform 700ms ease;
-}
-
-.hiwOnly--in .hiwOnly__title {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
-   STAGE (IMAGE + TEXT)
-   ========================= */
-.hiwOnly__stage {
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
-
-  /* vertical text positions */
-  --topY: 4%;
-  --bottomY: 94%;
-
-  /* circle centers */
-  --c1: 12.5%;
-  --c2: 37.5%;
-  --c3: 62.5%;
-  --c4: 87.5%;
-}
-
-/* image */
-.hiwOnly__image {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-  pointer-events: none;
-  user-select: none;
-  filter: drop-shadow(0 18px 45px rgba(140, 90, 255, 0.22));
-
-  opacity: 0;
-  transform: translateY(18px) scale(0.995);
-  transition:
-    opacity 900ms ease,
-    transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1),
-    filter 900ms ease;
-  will-change: transform, opacity, filter;
-}
-
-.hiwOnly--in .hiwOnly__image {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  animation: hiwFloat 6.5s ease-in-out 900ms infinite;
-}
-
-@keyframes hiwFloat {
-  0% {
-    transform: translateY(0) scale(1);
-    filter: drop-shadow(0 18px 45px rgba(140, 90, 255, 0.20));
-  }
-  50% {
-    transform: translateY(-6px) scale(1);
-    filter: drop-shadow(0 22px 55px rgba(170, 120, 255, 0.26));
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    filter: drop-shadow(0 18px 45px rgba(140, 90, 255, 0.20));
-  }
-}
-
-/* overlay */
-.hiwOnly__overlay {
-  position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
+  background:
+    radial-gradient(1100px 520px at 50% 14%, rgba(145, 94, 255, 0.18), transparent 65%),
+    radial-gradient(900px 520px at 50% 88%, rgba(145, 94, 255, 0.08), transparent 70%);
+  animation: hiwGlow 7.2s ease-in-out infinite;
+  transform-origin: 50% 30%;
+  opacity: 0.95;
+  z-index: 0;
 }
 
-/* =========================
-   EXTRA ANIMATION: SOFT SHEEN OVER CONNECTOR
-   ========================= */
-.hiwOnly__stage::after {
+/* ✅ vignette */
+.hiwOnly::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 1;
-  opacity: 0;
-  background: linear-gradient(
-    110deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(190, 150, 255, 0.10) 38%,
-    rgba(255, 255, 255, 0) 68%
-  );
-  transform: translateX(-45%);
-  mix-blend-mode: screen;
-}
-
-.hiwOnly--in .hiwOnly__stage::after {
-  opacity: 1;
-  animation: hiwSheen 4.8s ease-in-out 1.2s infinite;
-}
-
-@keyframes hiwSheen {
-  0% {
-    transform: translateX(-45%);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.15;
-  }
-  80% {
-    opacity: 0.35;
-  }
-  100% {
-    transform: translateX(45%);
-    opacity: 0;
-  }
+  background:
+    radial-gradient(120% 90% at 50% 45%, rgba(0,0,0,0) 54%, rgba(0,0,0,0.82) 82%, rgba(0,0,0,0.95) 100%);
+  z-index: 0;
 }
 
 /* =========================
-   TEXT BLOCKS
+   ✅ STARS (like hero)
    ========================= */
-.hiwOnly__copy {
+.hiwOnly__starsSide {
   position: absolute;
-  left: 50%;
-  width: 230px;
-  text-align: center;
+  top: 0;
+  bottom: 0;
 
+  width: 26vw;
+  min-width: 260px;
+  max-width: 560px;
+
+  pointer-events: none;
+  z-index: 1;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 1200px auto;
+  background-position: 0 0;
+
+  opacity: 0.55;
+  filter: brightness(1.85) contrast(1.35);
+  mix-blend-mode: screen;
+
+  animation:
+    hiwStarsDrift1 var(--star-speed-1) linear infinite,
+    hiwStarsTwinkle var(--twinkle-speed) ease-in-out infinite,
+    hiwStarsBreathe 9s ease-in-out infinite;
+
+  will-change: background-position, opacity, filter;
+}
+
+.hiwOnly__starsSide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 900px auto;
+  background-position: 120px 200px;
+
+  opacity: 0.42;
+  filter: brightness(1.9) contrast(1.35);
+  mix-blend-mode: screen;
+
+  animation:
+    hiwStarsDrift2 var(--star-speed-2) linear infinite,
+    hiwStarsTwinkle2 calc(var(--twinkle-speed) * 1.25) ease-in-out infinite;
+}
+
+.hiwOnly__starsSide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 720px auto;
+  background-position: -200px 320px;
+
+  opacity: 0.28;
+  filter: brightness(2) contrast(1.4);
+  mix-blend-mode: screen;
+
+  animation:
+    hiwStarsDrift3 var(--star-speed-3) linear infinite,
+    hiwStarsTwinkle3 calc(var(--twinkle-speed) * 1.5) ease-in-out infinite;
+}
+
+.hiwOnly__starsSide--left {
+  left: -7vw;
+  mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+}
+
+.hiwOnly__starsSide--right {
+  right: -7vw;
+  transform: scaleX(-1);
+  mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+}
+
+/* =========================
+   CONTENT
+   ========================= */
+.hiwOnly__container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.hiwOnly__title {
+  margin: 0 0 36px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #fff;
+  font-size: clamp(36px, 4vw, 48px);
   opacity: 0;
-  transform: translate(-50%, 10px);
-  transition:
-    opacity 700ms ease,
-    transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1);
-  transition-delay: calc(220ms + (var(--i, 0) * 130ms));
+  transform: translateY(10px);
+  animation: hiwTitle 900ms cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: 80ms;
+}
+
+.hiwOnly__gridStage {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 36px;
+  row-gap: 28px;
+  justify-items: center;
+}
+
+.hiwOnly__cell {
+  text-align: center;
+  max-width: 260px;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: hiwFadeUp 900ms cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: var(--d, 220ms);
   will-change: transform, opacity;
 }
 
-.hiwOnly--in .hiwOnly__copy {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
+.hiwOnly__cell--top { align-self: end; }
+.hiwOnly__cell--bottom { align-self: start; }
 
-/* top texts (02, 04) */
-.hiwOnly__copy--top {
-  top: var(--topY);
-}
-
-/* bottom texts (01, 03) */
-.hiwOnly__copy--bottom {
-  top: var(--bottomY);
-}
-
-/* column alignment */
-.hiwOnly__copy--c1 { left: var(--c1); }
-.hiwOnly__copy--c2 { left: var(--c2); }
-.hiwOnly__copy--c3 { left: var(--c3); }
-.hiwOnly__copy--c4 { left: var(--c4); }
-
-/* move c2 & c4 slightly upward */
-.hiwOnly__copy--c2 { transform: translate(-50%, -138px); }
-.hiwOnly__copy--c4 { transform: translate(-50%, -158px); }
-
-/* preserve offsets when revealed */
-.hiwOnly--in .hiwOnly__copy--c2 { transform: translate(-50%, -138px); }
-.hiwOnly--in .hiwOnly__copy--c4 { transform: translate(-50%, -158px); }
-
-/* headings */
 .hiwOnly__h {
   margin: 0 0 8px;
-  font-weight: 700;
-  font-size: 15.5px;
-  color: rgba(255, 255, 255, 0.92);
+  font-weight: 650;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: #fff;
 }
 
-/* body text */
 .hiwOnly__p {
   margin: 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.62);
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.68);
   text-wrap: balance;
 }
 
-/* =========================
-   EXTRA ANIMATION: MICRO HOVER LIFT (DESKTOP)
-   ========================= */
-@media (hover: hover) and (pointer: fine) {
-  .hiwOnly__copy {
-    transition:
-      opacity 700ms ease,
-      transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1),
-      filter 250ms ease;
-  }
-
-  .hiwOnly__copy:hover {
-    filter: drop-shadow(0 10px 22px rgba(170, 120, 255, 0.18));
-  }
-
-  .hiwOnly__copy--c1:hover,
-  .hiwOnly__copy--c3:hover {
-    transform: translate(-50%, -6px);
-  }
-
-  .hiwOnly__copy--c2:hover {
-    transform: translate(-50%, -144px);
-  }
-
-  .hiwOnly__copy--c4:hover {
-    transform: translate(-50%, -164px);
-  }
-}
-
-/* =========================
-   SPARKS (subtle pulses on each node)
-   ========================= */
-.hiwOnly__spark {
-  position: absolute;
-  top: 58%;
-  left: 50%;
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  transform: translate(-50%, -50%);
+.hiwOnly__diagramRow {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 16px;
   opacity: 0;
-  background: radial-gradient(
-    circle,
-    rgba(210, 180, 255, 0.95) 0%,
-    rgba(150, 95, 255, 0.15) 55%,
-    rgba(0, 0, 0, 0) 72%
-  );
-  filter: blur(0.2px);
+  transform: translateY(10px) scale(0.985);
+  animation: hiwDiagramIn 900ms cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: 260ms;
+  will-change: transform, opacity;
 }
 
-.hiwOnly--in .hiwOnly__spark {
-  opacity: 1;
-  animation: hiwPulse 2.8s ease-in-out infinite;
+.hiwOnly__image {
+  width: 920px;
+  max-width: 100%;
+  transform: scale(0.92);
+  transform-origin: center;
+  filter: drop-shadow(0 16px 42px rgba(140, 90, 255, 0.22));
+  user-select: none;
+  pointer-events: none;
+  animation: hiwFloat 6.5s ease-in-out infinite;
+  will-change: transform;
 }
 
-@keyframes hiwPulse {
-  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.75; }
-  50% { transform: translate(-50%, -50%) scale(1.25); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.75; }
+.hiwOnly__image:hover {
+  filter: drop-shadow(0 18px 52px rgba(170, 120, 255, 0.28));
 }
 
-.hiwOnly__spark--c1 { left: var(--c1); animation-delay: 0ms; }
-.hiwOnly__spark--c2 { left: var(--c2); animation-delay: 220ms; }
-.hiwOnly__spark--c3 { left: var(--c3); animation-delay: 440ms; }
-.hiwOnly__spark--c4 { left: var(--c4); animation-delay: 660ms; }
+.hiwOnly__c1 { grid-column: 1; }
+.hiwOnly__c2 { grid-column: 2; }
+.hiwOnly__c3 { grid-column: 3; }
+.hiwOnly__c4 { grid-column: 4; }
 
-/* =========================
-   RESPONSIVE
-   ========================= */
-@media (max-width: 900px) {
+.hiwOnly__cell.hiwOnly__c1 { --d: 210ms; }
+.hiwOnly__cell.hiwOnly__c2 { --d: 270ms; }
+.hiwOnly__cell.hiwOnly__c3 { --d: 330ms; }
+.hiwOnly__cell.hiwOnly__c4 { --d: 390ms; }
+
+.hiwOnly__cell--bottom.hiwOnly__c1 { transform: translate(110px, -32px); }
+.hiwOnly__cell--top.hiwOnly__c2 { transform: translate(32px, 29px); }
+.hiwOnly__cell--bottom.hiwOnly__c3 { transform: translate(-24px, -24px); }
+.hiwOnly__cell--top.hiwOnly__c4 { transform: translate(-108px, 28px); }
+
+.hiwOnly__cell--top.hiwOnly__c2,
+.hiwOnly__cell--top.hiwOnly__c4,
+.hiwOnly__cell--bottom.hiwOnly__c1,
+.hiwOnly__cell--bottom.hiwOnly__c3 {
+  animation-name: hiwFadeUpNudged;
+}
+
+@media (max-width: 960px) {
   .hiwOnly {
-    padding: 80px 20px 120px;
+    padding: 60px 16px 90px;
   }
 
-  .hiwOnly__title {
-    transform: translateY(-24px);
-    margin-bottom: 48px;
-    opacity: 1;
+  .hiwOnly__gridStage {
+    grid-template-columns: 1fr;
+    row-gap: 22px;
   }
 
-  .hiwOnly__overlay {
-    position: static;
-    margin-top: 32px;
-    pointer-events: auto;
+  .hiwOnly__c1,
+  .hiwOnly__c2,
+  .hiwOnly__c3,
+  .hiwOnly__c4 {
+    grid-column: 1;
   }
 
-  .hiwOnly__copy {
-    position: static;
-    width: 100%;
-    max-width: 520px;
-    text-align: left;
-    margin: 0 auto 24px;
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .hiwOnly__cell {
+    max-width: 560px;
+    transform: translateY(12px);
   }
 
-  .hiwOnly__spark {
-    display: none;
+  .hiwOnly__diagramRow {
+    margin: 14px 0 10px;
   }
 
   .hiwOnly__image {
-    opacity: 1;
+    transform: scale(0.95);
+  }
+
+  .hiwOnly__cell--bottom.hiwOnly__c1,
+  .hiwOnly__cell--top.hiwOnly__c2,
+  .hiwOnly__cell--bottom.hiwOnly__c3,
+  .hiwOnly__cell--top.hiwOnly__c4 {
     transform: none;
-    transition: none;
-    animation: none;
+    animation-name: hiwFadeUp;
   }
 
-  .hiwOnly__stage::after {
-    display: none;
+  /* stars a bit wider on mobile */
+  .hiwOnly__starsSide {
+    width: 30vw;
+    min-width: 180px;
+    background-size: 1400px auto;
+    opacity: 0.5;
   }
+  .hiwOnly__starsSide::before {
+    background-size: 1000px auto;
+    opacity: 0.35;
+  }
+  .hiwOnly__starsSide::after {
+    background-size: 800px auto;
+    opacity: 0.22;
+  }
+  .hiwOnly__starsSide--left { left: -12vw; }
+  .hiwOnly__starsSide--right { right: -12vw; }
+}
 
-  .hiwOnly--in::before {
-    animation: none;
-  }
+@keyframes hiwTitle {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hiwFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hiwFadeUpNudged {
+  from { opacity: 0; transform: translate(var(--nx, 0px), var(--ny, 0px)) translateY(14px); }
+  to { opacity: 1; transform: translate(var(--nx, 0px), var(--ny, 0px)); }
+}
+
+.hiwOnly__cell--bottom.hiwOnly__c1 { --nx: 110px; --ny: -32px; }
+.hiwOnly__cell--top.hiwOnly__c2 { --nx: 32px; --ny: 29px; }
+.hiwOnly__cell--bottom.hiwOnly__c3 { --nx: -24px; --ny: -24px; }
+.hiwOnly__cell--top.hiwOnly__c4 { --nx: -108px; --ny: 28px; }
+
+@keyframes hiwDiagramIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes hiwFloat {
+  0%, 100% { transform: scale(0.92) translateY(0px); }
+  50% { transform: scale(0.92) translateY(-6px); }
+}
+
+@keyframes hiwGlow {
+  0%, 100% { transform: scale(1); opacity: 0.92; filter: saturate(1); }
+  50% { transform: scale(1.03); opacity: 1; filter: saturate(1.05); }
 }
 
 /* =========================
-   REDUCED MOTION
+   ✅ STARS KEYFRAMES (scoped)
    ========================= */
-@media (prefers-reduced-motion: reduce) {
-  .hiwOnly__title,
-  .hiwOnly__image,
-  .hiwOnly__copy {
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-  }
+@keyframes hiwStarsDrift1 {
+  from { background-position: 0 0; }
+  to { background-position: 0 var(--star-drift); }
+}
+@keyframes hiwStarsDrift2 {
+  from { background-position: 120px 200px; }
+  to { background-position: 120px calc(200px + var(--star-drift)); }
+}
+@keyframes hiwStarsDrift3 {
+  from { background-position: -200px 320px; }
+  to { background-position: -200px calc(320px + var(--star-drift)); }
+}
 
-  .hiwOnly__spark,
-  .hiwOnly__stage::after,
-  .hiwOnly::before {
+@keyframes hiwStarsTwinkle {
+  0%, 100% { opacity: 0.52; }
+  50% { opacity: 0.68; }
+}
+@keyframes hiwStarsTwinkle2 {
+  0%, 100% { opacity: 0.34; }
+  50% { opacity: 0.48; }
+}
+@keyframes hiwStarsTwinkle3 {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.32; }
+}
+
+@keyframes hiwStarsBreathe {
+  0%, 100% { filter: brightness(1.8) contrast(1.35); }
+  50% { filter: brightness(2.05) contrast(1.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiwOnly::before,
+  .hiwOnly__title,
+  .hiwOnly__cell,
+  .hiwOnly__diagramRow,
+  .hiwOnly__image,
+  .hiwOnly__starsSide,
+  .hiwOnly__starsSide::before,
+  .hiwOnly__starsSide::after {
     animation: none !important;
-    display: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
+}
+.hiwOnly {
+  background: #000 !important;
+}
+
+.hiwOnly::before,
+.hiwOnly::after {
+  background: #000 !important;
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+/* ✅ REMOVE EXTRA SPACE TOP/BOTTOM (tighten section padding) */
+.hiwOnly {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* (optional but safe) ensure the content still has a little breathing room without “wasted space” */
+.hiwOnly__container {
+  padding-top: 28px;
+  padding-bottom: 28px;
 }

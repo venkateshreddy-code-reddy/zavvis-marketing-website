@@ -1,12 +1,115 @@
-/* ROISection.css */
+/* src/style/ROISection.css */
 .roi {
-  position: relative;
-  width: 100%;
-  background: #000000;
-  color: #ffffff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  overflow: hidden;
-  padding: 86px 20px 110px;
+  background: #000 !important;
+}
+/* =========================
+   ⭐ STARS (Hero-style sides)
+   ========================= */
+.roi__starsSide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  width: 26vw;
+  min-width: 260px;
+  max-width: 560px;
+
+  pointer-events: none;
+  z-index: 0; /* behind everything */
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 1200px auto;
+  background-position: 0 0;
+
+  opacity: 0.6;
+  filter: brightness(1.85) contrast(1.35);
+  mix-blend-mode: screen;
+
+  animation: roiStarsDrift1 var(--star-speed-1) linear infinite,
+    roiStarsTwinkle var(--twinkle-speed) ease-in-out infinite,
+    roiStarsBreathe 9s ease-in-out infinite;
+
+  will-change: background-position, opacity, filter;
+}
+
+.roi__starsSide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 900px auto;
+  background-position: 120px 200px;
+
+  opacity: 0.42;
+  filter: brightness(1.9) contrast(1.35);
+  mix-blend-mode: screen;
+
+  animation: roiStarsDrift2 var(--star-speed-2) linear infinite,
+    roiStarsTwinkle2 calc(var(--twinkle-speed) * 1.25) ease-in-out infinite;
+}
+
+.roi__starsSide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: var(--stars-url);
+  background-repeat: repeat;
+  background-size: 720px auto;
+  background-position: -200px 320px;
+
+  opacity: 0.28;
+  filter: brightness(2) contrast(1.4);
+  mix-blend-mode: screen;
+
+  animation: roiStarsDrift3 var(--star-speed-3) linear infinite,
+    roiStarsTwinkle3 calc(var(--twinkle-speed) * 1.5) ease-in-out infinite;
+}
+
+.roi__starsSide--left {
+  left: -7vw;
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+  mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+}
+
+.roi__starsSide--right {
+  right: -7vw;
+  transform: scaleX(-1);
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+  mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+}
+
+@keyframes roiStarsDrift1 {
+  from { background-position: 0 0; }
+  to { background-position: 0 var(--star-drift); }
+}
+@keyframes roiStarsDrift2 {
+  from { background-position: 120px 200px; }
+  to { background-position: 120px calc(200px + var(--star-drift)); }
+}
+@keyframes roiStarsDrift3 {
+  from { background-position: -200px 320px; }
+  to { background-position: -200px calc(320px + var(--star-drift)); }
+}
+
+@keyframes roiStarsTwinkle {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.7; }
+}
+@keyframes roiStarsTwinkle2 {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.48; }
+}
+@keyframes roiStarsTwinkle3 {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.32; }
+}
+@keyframes roiStarsBreathe {
+  0%, 100% { filter: brightness(1.8) contrast(1.35); }
+  50% { filter: brightness(2.05) contrast(1.45); }
 }
 
 /* ===== Ambient animated glows ===== */
@@ -25,6 +128,7 @@
   pointer-events: none;
   opacity: 0.92;
   animation: roiGlowFloat 9s ease-in-out infinite;
+  z-index: 1; /* above stars */
 }
 
 .roi__glow--b {
@@ -39,30 +143,19 @@
   );
   filter: blur(2px);
   animation: roiGlowFloatB 11s ease-in-out infinite;
+  z-index: 1; /* above stars */
 }
 
 @keyframes roiGlowFloat {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(0, 10px, 0) scale(1.02);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, 10px, 0) scale(1.02); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
 @keyframes roiGlowFloatB {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(0, -12px, 0) scale(1.03);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -12px, 0) scale(1.03); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* Subtle film/noise (CSS-only) */
@@ -77,21 +170,19 @@
     radial-gradient(circle at 40% 70%, rgba(255,255,255,0.08) 0 1px, transparent 2px);
   background-size: 260px 260px, 340px 340px, 300px 300px;
   animation: roiNoiseDrift 18s linear infinite;
+  z-index: 2; /* above glows */
 }
 
 @keyframes roiNoiseDrift {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-40px, 22px, 0);
-  }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-40px, 22px, 0); }
 }
 
 .roi__container {
   position: relative;
   max-width: 1080px;
   margin: 0 auto;
+  z-index: 5; /* content above stars/glows/noise */
 }
 
 .roi__header {
@@ -188,21 +279,14 @@
   overflow: hidden;
 }
 
-/* subtle inner “breathing” */
 .roi.is-visible .roi__cardInner {
   animation: roiInnerBreath 6.5s ease-in-out infinite;
 }
 
 @keyframes roiInnerBreath {
-  0% {
-    box-shadow: 0 0 0 rgba(175, 125, 255, 0);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(175, 125, 255, 0.08);
-  }
-  100% {
-    box-shadow: 0 0 0 rgba(175, 125, 255, 0);
-  }
+  0% { box-shadow: 0 0 0 rgba(175, 125, 255, 0); }
+  50% { box-shadow: 0 0 40px rgba(175, 125, 255, 0.08); }
+  100% { box-shadow: 0 0 0 rgba(175, 125, 255, 0); }
 }
 
 .roi__cardTitle {
@@ -241,7 +325,6 @@
   transform: translateZ(0);
 }
 
-/* moving sheen across the table card */
 .roi__sheen {
   position: absolute;
   inset: -60% -40%;
@@ -261,21 +344,10 @@
 }
 
 @keyframes roiSheen {
-  0% {
-    transform: translate3d(-45%, -10%, 0) rotate(6deg);
-    opacity: 0;
-  }
-  18% {
-    opacity: 0.7;
-  }
-  45% {
-    transform: translate3d(45%, 20%, 0) rotate(6deg);
-    opacity: 0;
-  }
-  100% {
-    transform: translate3d(45%, 20%, 0) rotate(6deg);
-    opacity: 0;
-  }
+  0% { transform: translate3d(-45%, -10%, 0) rotate(6deg); opacity: 0; }
+  18% { opacity: 0.7; }
+  45% { transform: translate3d(45%, 20%, 0) rotate(6deg); opacity: 0; }
+  100% { transform: translate3d(45%, 20%, 0) rotate(6deg); opacity: 0; }
 }
 
 .roi__tableHeader {
@@ -355,18 +427,9 @@
 }
 
 @keyframes roiDotPulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.75;
-  }
-  50% {
-    transform: scale(1.35);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.75;
-  }
+  0% { transform: scale(1); opacity: 0.75; }
+  50% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.75; }
 }
 
 .roi__text {
@@ -374,20 +437,11 @@
   transform: translateY(-0.5px);
 }
 
-/* hover micro-interaction */
 .roi__row:hover {
-  background: linear-gradient(
-    90deg,
-    rgba(190, 140, 255, 0.10),
-    rgba(0, 0, 0, 0)
-  );
+  background: linear-gradient(90deg, rgba(190, 140, 255, 0.10), rgba(0, 0, 0, 0));
 }
-.roi__row:hover .roi__text {
-  color: rgba(255, 255, 255, 0.78);
-}
-.roi__row:hover .roi__dot {
-  filter: drop-shadow(0 0 10px rgba(190, 140, 255, 0.22));
-}
+.roi__row:hover .roi__text { color: rgba(255, 255, 255, 0.78); }
+.roi__row:hover .roi__dot { filter: drop-shadow(0 0 10px rgba(190, 140, 255, 0.22)); }
 
 .roi__cardFrame {
   position: absolute;
@@ -397,7 +451,6 @@
   pointer-events: none;
 }
 
-/* Side decor with gentle drift */
 .roi__tableDecor {
   position: absolute;
   top: 50%;
@@ -410,18 +463,9 @@
 }
 
 @keyframes roiDecorDrift {
-  0% {
-    transform: translateY(-50%) translate3d(0, 0, 0);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translateY(-50%) translate3d(0, -8px, 0);
-    opacity: 0.95;
-  }
-  100% {
-    transform: translateY(-50%) translate3d(0, 0, 0);
-    opacity: 0.85;
-  }
+  0% { transform: translateY(-50%) translate3d(0, 0, 0); opacity: 0.85; }
+  50% { transform: translateY(-50%) translate3d(0, -8px, 0); opacity: 0.95; }
+  100% { transform: translateY(-50%) translate3d(0, 0, 0); opacity: 0.85; }
 }
 
 .roi__tableDecor--left {
@@ -456,71 +500,34 @@
 
 /* Responsive */
 @media (max-width: 860px) {
-  .roi {
-    padding: 72px 16px 96px;
-  }
+  .roi { padding: 72px 16px 96px; }
+  .roi__title { font-size: 46px; }
+  .roi__cardInner { padding: 28px 22px 24px; }
+  .roi__tableDecor { display: none; }
 
-  .roi__title {
-    font-size: 46px;
+  .roi__starsSide {
+    width: 30vw;
+    min-width: 180px;
+    background-size: 1400px auto;
+    opacity: 0.5;
   }
-
-  .roi__cardInner {
-    padding: 28px 22px 24px;
-  }
-
-  .roi__tableDecor {
-    display: none;
-  }
+  .roi__starsSide::before { background-size: 1000px auto; opacity: 0.35; }
+  .roi__starsSide::after { background-size: 800px auto; opacity: 0.22; }
+  .roi__starsSide--left { left: -12vw; }
+  .roi__starsSide--right { right: -12vw; }
 }
 
 @media (max-width: 640px) {
-  .roi__title {
-    font-size: 40px;
-  }
-
-  .roi__lead {
-    max-width: 520px;
-    font-size: 13.5px;
-  }
-
-  .roi__card {
-    padding: 14px;
-    border-radius: 22px;
-  }
-
-  .roi__cardInner {
-    padding: 24px 16px 20px;
-  }
-
-  .roi__cardTitle {
-    font-size: 26px;
-    margin-bottom: 18px;
-  }
-
-  .roi__tableCard {
-    padding: 16px 14px 12px;
-    border-radius: 16px;
-  }
-
-  .roi__tableHeader {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding-bottom: 10px;
-  }
-
-  .roi__th--right {
-    text-align: left;
-  }
-
-  .roi__row {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 14px 4px;
-  }
-
-  .roi__cell--target {
-    padding-left: 0;
-  }
+  .roi__title { font-size: 40px; }
+  .roi__lead { max-width: 520px; font-size: 13.5px; }
+  .roi__card { padding: 14px; border-radius: 22px; }
+  .roi__cardInner { padding: 24px 16px 20px; }
+  .roi__cardTitle { font-size: 26px; margin-bottom: 18px; }
+  .roi__tableCard { padding: 16px 14px 12px; border-radius: 16px; }
+  .roi__tableHeader { grid-template-columns: 1fr; gap: 6px; padding-bottom: 10px; }
+  .roi__th--right { text-align: left; }
+  .roi__row { grid-template-columns: 1fr; gap: 10px; padding: 14px 4px; }
+  .roi__cell--target { padding-left: 0; }
 }
 
 /* Respect reduced motion */
@@ -531,8 +538,12 @@
   .roi__sheen,
   .roi__dot,
   .roi__tableDecor,
-  .roi.is-visible .roi__cardInner {
+  .roi.is-visible .roi__cardInner,
+  .roi__starsSide,
+  .roi__starsSide::before,
+  .roi__starsSide::after {
     animation: none !important;
+    transform: none !important;
   }
 
   .roi__title,

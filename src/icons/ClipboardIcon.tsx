@@ -1,9 +1,26 @@
-export default function ClipboardIcon({ size = 22, color = "#D8C2FF" }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="9" y="2" width="6" height="4" rx="1" />
-      <path d="M4 6h16v14a2 2 0 01-2 2H6a2 2 0 01-2-2z" />
-    </svg>
-  );
-}
+import React from "react";
+
+type Props = { size?: number; className?: string };
+
+const ClipboardIcon: React.FC<Props> = ({ size = 16, className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <rect
+      x="7"
+      y="5"
+      width="10"
+      height="15"
+      rx="2"
+      stroke="currentColor"
+      strokeWidth="1.75"
+    />
+    <path
+      d="M9 5V4h6v1"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export default ClipboardIcon;
