@@ -2,6 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import "../style/PrincipleSection.css";
 
+import grid from "../assets/grid.png";
+import stars from "../assets/stars.png";
+
 import ponIcon from "../assets/pon.png";
 import efcIcon from "../assets/EFC.png";
 import itpIcon from "../assets/ITP.png";
@@ -41,8 +44,30 @@ const PRINCIPLES: Principle[] = [
   },
 ];
 
+function useInView<T extends HTMLElement>(threshold = 0.18) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold }
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+
+  return { ref, inView };
+}
+
 export default function PrincipleSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const { ref: sectionRef, inView } = useInView<HTMLElement>(0.18);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -71,7 +96,7 @@ export default function PrincipleSection() {
         const clampedY = Math.max(-1, Math.min(1, ny));
 
         el.style.setProperty("--mx", `${clampedX * 10}px`);
-        el.style.setProperty("--my", `${clampedY * 8}px`);
+        el.style.setProperty("--my", `${clampedY * 6}px`);
       });
     };
 
@@ -82,29 +107,45 @@ export default function PrincipleSection() {
   return (
     <section
       ref={sectionRef}
-      className={`principles ${ready ? "principles--ready" : ""}`}
+      className={`principles ${ready ? "principles--ready" : ""} ${inView ? "principles--inview" : ""}`}
       aria-label="Principles We Build On"
+      style={
+        {
+          ["--grid-url" as any]: `url(${grid})`,
+          ["--stars-url" as any]: `url(${stars})`,
+        } as React.CSSProperties
+      }
     >
-      <div className="principles__bg" aria-hidden="true" />
-      <div className="principles__vignette" aria-hidden="true" />
+      <div className="principles__gridBowl" aria-hidden="true" />
+      <div className="principles__starsSide principles__starsSide--left" aria-hidden="true" />
+      <div className="principles__starsSide principles__starsSide--right" aria-hidden="true" />
 
       <div className="principles__container">
-        <div className="principles__left">
-          <h2 className="principles__title">Principles We Build On</h2>
+        <h2 className="principles__title">Principles We Build On</h2>
 
-          <div className="principles__list">
-            {PRINCIPLES.map((p) => (
-              <article key={p.title} className="principles__item">
-                <div className={`principles__iconBox principles__iconBox--${p.glow}`} aria-hidden="true">
-                  <img className="principles__icon" src={p.icon} alt="" draggable={false} />
+        <div className="principles__stage">
+          <div className="principles__grid">
+            {PRINCIPLES.map((p, idx) => (
+              <article
+                key={p.title}
+                className={`principles__card principles__card--${p.glow}`}
+                style={{ ["--i" as any]: idx } as React.CSSProperties}
+              >
+                <div className="principles__iconWrap" aria-hidden="true">
+                  <div className={`principles__iconBox principles__iconBox--${p.glow}`}>
+                    <img className="principles__icon" src={p.icon} alt="" draggable={false} />
+                  </div>
                 </div>
 
-                <div className="principles__copy">
-                  <h3 className="principles__itemTitle">{p.title}</h3>
-                  <p className="principles__itemDesc">{p.desc}</p>
-                </div>
+                <h3 className="principles__cardTitle">{p.title}</h3>
+                <p className="principles__cardDesc">{p.desc}</p>
               </article>
             ))}
+          </div>
+
+          <div className="principles__cross" aria-hidden="true">
+            <span className="principles__hLine" />
+            <span className="principles__dot" />
           </div>
         </div>
       </div>
