@@ -5,7 +5,7 @@
   isolation: isolate;
   overflow: hidden;
   width: 100%;
- min-height: auto;
+  min-height: auto;
   background: #000;
   color: #fff;
 
@@ -30,17 +30,14 @@ body {
   background: #000;
 }
 
-/* ======= BG GLOW (Hero-like) ======= */
+/* ======= BG GLOW (Hero-like) - PURPLE REMOVED ======= */
 .mission__bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
 
-  background:
-    radial-gradient(closest-side at 50% 0%, rgba(160, 120, 255, 0.46), rgba(0, 0, 0, 0) 72%),
-    radial-gradient(closest-side at 22% 62%, rgba(155, 98, 255, 0.16), rgba(0, 0, 0, 0) 64%),
-    radial-gradient(closest-side at 82% 64%, rgba(115, 72, 210, 0.14), rgba(0, 0, 0, 0) 64%);
+  background: transparent;
 
   filter: blur(12px);
   opacity: 0.98;
@@ -122,7 +119,12 @@ body {
 .mission__starsSide--left {
   left: -7vw;
   mask-image: linear-gradient(to right, #000 0%, #000 64%, transparent 96%);
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 64%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 64%,
+    transparent 96%
+  );
 }
 
 .mission__starsSide--right {
@@ -131,7 +133,12 @@ body {
     translate3d(calc(var(--mx) * 0.06), calc(var(--my) * 0.05), 0);
 
   mask-image: linear-gradient(to left, #000 0%, #000 64%, transparent 96%);
-  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 64%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    #000 64%,
+    transparent 96%
+  );
 }
 
 .mission__vignette {
@@ -141,8 +148,18 @@ body {
   z-index: 2;
 
   background:
-    radial-gradient(120% 80% at 50% 8%, rgba(0, 0, 0, 0) 34%, rgba(0, 0, 0, 0.62) 72%, rgba(0, 0, 0, 0.92) 100%),
-    radial-gradient(120% 90% at 50% 58%, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, 0.68) 86%, rgba(0, 0, 0, 0.95) 100%);
+    radial-gradient(
+      120% 80% at 50% 8%,
+      rgba(0, 0, 0, 0) 34%,
+      rgba(0, 0, 0, 0.62) 72%,
+      rgba(0, 0, 0, 0.92) 100%
+    ),
+    radial-gradient(
+      120% 90% at 50% 58%,
+      rgba(0, 0, 0, 0) 52%,
+      rgba(0, 0, 0, 0.68) 86%,
+      rgba(0, 0, 0, 0.95) 100%
+    );
 }
 
 /* ======= LAYOUT ======= */
@@ -171,8 +188,18 @@ body {
   place-items: center;
   transform: translateZ(0);
 
-  mask-image: radial-gradient(ellipse 68% 62% at 50% 52%, #000 0%, #000 68%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 68% 62% at 50% 52%, #000 0%, #000 68%, transparent 100%);
+  mask-image: radial-gradient(
+    ellipse 68% 62% at 50% 52%,
+    #000 0%,
+    #000 68%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 68% 62% at 50% 52%,
+    #000 0%,
+    #000 68%,
+    transparent 100%
+  );
 }
 
 .mission__media::after {
@@ -202,8 +229,7 @@ body {
   opacity: 0.96;
   mix-blend-mode: screen;
 
-  filter:
-    drop-shadow(0 26px 70px rgba(120, 70, 235, 0.16))
+  filter: drop-shadow(0 26px 70px rgba(80, 80, 80, 0.16))
     drop-shadow(0 10px 26px rgba(0, 0, 0, 0.65));
 
   transform: translate3d(calc(var(--mx) * 0.05), calc(var(--my) * 0.03), 0);
@@ -213,8 +239,7 @@ body {
 .mission__imgGlow {
   position: absolute;
   inset: -22% -16%;
-  background:
-    radial-gradient(closest-side at 46% 56%, rgba(185, 120, 255, 0.28), rgba(120, 70, 235, 0.08), rgba(0, 0, 0, 0) 72%);
+  background: transparent;
   filter: blur(18px);
   opacity: 0.86;
   z-index: -1;
@@ -232,8 +257,17 @@ body {
 
 .mission__title {
   margin: 0 0 14px;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial,
-    "Apple Color Emoji", "Segoe UI Emoji";
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Inter,
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
   font-size: clamp(40px, 4.2vw, 64px);
   letter-spacing: -0.02em;
   line-height: 1.02;
@@ -241,13 +275,22 @@ body {
   color: rgba(246, 246, 255, 0.96);
   text-shadow:
     0 0 14px rgba(165, 120, 255, 0.14),
-    0 0 34px rgba(120, 70, 235, 0.10);
+    0 0 34px rgba(120, 70, 235, 0.1);
 }
 
 .mission__text {
   max-width: 520px;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial,
-    "Apple Color Emoji", "Segoe UI Emoji";
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Inter,
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
   font-size: 16px;
   line-height: 1.75;
   color: rgba(205, 205, 220, 0.64);
@@ -266,7 +309,10 @@ body {
   opacity: 0;
   transform: translateY(18px);
   filter: blur(6px);
-  transition: opacity 800ms var(--ease-out), transform 800ms var(--ease-out), filter 800ms var(--ease-out);
+  transition:
+    opacity 800ms var(--ease-out),
+    transform 800ms var(--ease-out),
+    filter 800ms var(--ease-out);
   will-change: opacity, transform, filter;
 }
 
@@ -291,50 +337,90 @@ body {
 
 /* ======= KEYFRAMES ======= */
 @keyframes missionStarsDrift1 {
-  from { background-position: 0 0; }
-  to { background-position: 0 var(--star-drift); }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 var(--star-drift);
+  }
 }
 @keyframes missionStarsDrift2 {
-  from { background-position: 120px 200px; }
-  to { background-position: 120px calc(200px + var(--star-drift)); }
+  from {
+    background-position: 120px 200px;
+  }
+  to {
+    background-position: 120px calc(200px + var(--star-drift));
+  }
 }
 @keyframes missionStarsDrift3 {
-  from { background-position: -200px 320px; }
-  to { background-position: -200px calc(320px + var(--star-drift)); }
+  from {
+    background-position: -200px 320px;
+  }
+  to {
+    background-position: -200px calc(320px + var(--star-drift));
+  }
 }
 
 @keyframes missionStarsTwinkle {
-  0%, 100% { opacity: 0.58; }
-  50% { opacity: 0.72; }
+  0%,
+  100% {
+    opacity: 0.58;
+  }
+  50% {
+    opacity: 0.72;
+  }
 }
 @keyframes missionStarsTwinkle2 {
-  0%, 100% { opacity: 0.34; }
-  50% { opacity: 0.48; }
+  0%,
+  100% {
+    opacity: 0.34;
+  }
+  50% {
+    opacity: 0.48;
+  }
 }
 @keyframes missionStarsTwinkle3 {
-  0%, 100% { opacity: 0.22; }
-  50% { opacity: 0.32; }
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+  50% {
+    opacity: 0.32;
+  }
 }
 
 @keyframes missionStarsBreathe {
-  0%, 100% { filter: brightness(1.8) contrast(1.35); }
-  50% { filter: brightness(2.05) contrast(1.45); }
+  0%,
+  100% {
+    filter: brightness(1.8) contrast(1.35);
+  }
+  50% {
+    filter: brightness(2.05) contrast(1.45);
+  }
 }
 
 @keyframes missionGlowPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.74;
-    transform: translate3d(calc(var(--mx) * 0.04), calc(var(--my) * 0.03), 0) scale(1);
+    transform: translate3d(calc(var(--mx) * 0.04), calc(var(--my) * 0.03), 0)
+      scale(1);
   }
   50% {
     opacity: 0.94;
-    transform: translate3d(calc(var(--mx) * 0.04), calc(var(--my) * 0.03), 0) scale(1.03);
+    transform: translate3d(calc(var(--mx) * 0.04), calc(var(--my) * 0.03), 0)
+      scale(1.03);
   }
 }
 
 @keyframes missionFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -10px, 0); }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
 }
 
 /* ======= RESPONSIVE ======= */
@@ -363,8 +449,12 @@ body {
     opacity: 0.54;
   }
 
-  .mission__starsSide--left { left: -12vw; }
-  .mission__starsSide--right { right: -12vw; }
+  .mission__starsSide--left {
+    left: -12vw;
+  }
+  .mission__starsSide--right {
+    right: -12vw;
+  }
 }
 
 @media (max-width: 520px) {

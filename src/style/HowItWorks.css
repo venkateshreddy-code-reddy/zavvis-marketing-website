@@ -309,10 +309,10 @@
   to { opacity: 1; transform: translate(var(--nx, 0px), var(--ny, 0px)); }
 }
 
-.hiwOnly__cell--bottom.hiwOnly__c1 { --nx: 110px; --ny: -32px; }
-.hiwOnly__cell--top.hiwOnly__c2 { --nx: 32px; --ny: 29px; }
-.hiwOnly__cell--bottom.hiwOnly__c3 { --nx: -24px; --ny: -24px; }
-.hiwOnly__cell--top.hiwOnly__c4 { --nx: -108px; --ny: 28px; }
+.hiwOnly__cell--bottom.hiwOnly__c1 { --nx: 110px; --ny: -35px; }
+.hiwOnly__cell--top.hiwOnly__c2 { --nx: 32px; --ny: 32px; }
+.hiwOnly__cell--bottom.hiwOnly__c3 { --nx: -30px; --ny: -24px; }
+.hiwOnly__cell--top.hiwOnly__c4 { --nx: -108px; --ny: 35px; }
 
 @keyframes hiwDiagramIn {
   from { opacity: 0; transform: translateY(10px) scale(0.985); }

@@ -24,10 +24,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    radial-gradient(900px 520px at 50% -10%, rgba(168, 104, 255, 0.40), transparent 65%),
-    radial-gradient(760px 520px at 0% 10%, rgba(122, 74, 255, 0.22), transparent 70%),
-    radial-gradient(760px 520px at 100% 12%, rgba(122, 74, 255, 0.22), transparent 70%);
+  background: transparent;
   opacity: 0.95;
   z-index: 0;
 }
@@ -108,24 +105,39 @@
 .ogap__starsSide--left {
   left: -7vw;
   mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 65%,
+    transparent 96%
+  );
 }
 
 .ogap__starsSide--right {
   right: -7vw;
 
   /* ✅ match hero: flip + keep parallax */
-  transform: scaleX(-1) translate3d(calc(var(--mx) * 0.06), calc(var(--my) * 0.05), 0);
+  transform: scaleX(-1)
+    translate3d(calc(var(--mx) * 0.06), calc(var(--my) * 0.05), 0);
 
   mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
-  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    #000 65%,
+    transparent 96%
+  );
 }
 
 .ogap__vignette {
   position: absolute;
   inset: -1px;
   pointer-events: none;
-  background: radial-gradient(1200px 700px at 50% 20%, transparent 55%, rgba(0,0,0,0.72) 100%);
+  background: radial-gradient(
+    1200px 700px at 50% 20%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
   z-index: 2;
 }
 
@@ -165,12 +177,20 @@
   position: relative;
   border-radius: 26px;
   background:
-    radial-gradient(1000px 520px at 35% 20%, rgba(127, 70, 255, 0.22), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    radial-gradient(
+      1000px 520px at 35% 20%,
+      rgba(127, 70, 255, 0.22),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
+    );
   border: 1px solid rgba(190, 145, 255, 0.22);
   box-shadow:
     0 22px 80px rgba(98, 44, 178, 0.28),
-    inset 0 1px 0 rgba(255,255,255,0.10);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   padding: clamp(22px, 3.2vw, 34px);
   overflow: hidden;
   z-index: 1;
@@ -181,7 +201,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(900px 520px at 50% 0%, rgba(174, 114, 255, 0.18), transparent 62%);
+  background: transparent;
   opacity: 0.8;
 }
 
@@ -193,7 +213,7 @@
   pointer-events: none;
   opacity: 0;
   filter: blur(12px);
-  background: radial-gradient(60% 60% at 50% 0%, rgba(167, 110, 255, 0.55), transparent 65%);
+  background: transparent;
   transform: scale(1);
 }
 
@@ -203,8 +223,15 @@
 }
 
 @keyframes ogap-pulse {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50% { opacity: 0.70; transform: scale(1.02); }
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
 }
 
 .ogap__grid {
@@ -216,7 +243,9 @@
   z-index: 1;
 }
 
-.ogap__left { min-width: 0; }
+.ogap__left {
+  min-width: 0;
+}
 
 .ogap__kicker {
   margin: 0 0 16px;
@@ -225,7 +254,9 @@
   color: rgba(240, 235, 255, 0.92);
 }
 
-.ogap__kickerAccent { color: rgba(255, 126, 80, 0.95); }
+.ogap__kickerAccent {
+  color: rgba(255, 126, 80, 0.95);
+}
 
 .ogap__list {
   list-style: none;
@@ -254,18 +285,24 @@
   font-size: 14px;
   font-weight: 800;
   color: rgba(255, 126, 80, 0.95);
-  background: rgba(255, 126, 80, 0.10);
+  background: rgba(255, 126, 80, 0.1);
   border: 1px solid rgba(255, 126, 80, 0.22);
   margin-top: 1px;
   flex: 0 0 auto;
 }
 
-.ogap__liText { opacity: 0.98; }
+.ogap__liText {
+  opacity: 0.98;
+}
 
 .ogap__rule {
   height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, rgba(190,145,255,0.22), rgba(190,145,255,0.06));
+  background: linear-gradient(
+    90deg,
+    rgba(190, 145, 255, 0.22),
+    rgba(190, 145, 255, 0.06)
+  );
   margin: 16px 0;
 }
 
@@ -276,7 +313,9 @@
   line-height: 1.7;
 }
 
-.ogap__p + .ogap__p { margin-top: 14px; }
+.ogap__p + .ogap__p {
+  margin-top: 14px;
+}
 
 .ogap__callout {
   margin: 18px 0 0;
@@ -303,22 +342,36 @@
   position: absolute;
   inset: 0;
   border-radius: 26px;
-  border: 1px solid rgba(190,145,255,0.18);
+  border: 1px solid rgba(190, 145, 255, 0.18);
   background: rgba(15, 8, 28, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.ogap__frame--1 { transform: translate3d(-16px, -16px, 0); opacity: 0.35; }
-.ogap__frame--2 { transform: translate3d(-8px, -8px, 0); opacity: 0.5; }
+.ogap__frame--1 {
+  transform: translate3d(-16px, -16px, 0);
+  opacity: 0.35;
+}
+.ogap__frame--2 {
+  transform: translate3d(-8px, -8px, 0);
+  opacity: 0.5;
+}
 
 .ogap__frame--3 {
   display: grid;
   place-items: center;
   padding: 22px;
   background:
-    radial-gradient(420px 280px at 50% 10%, rgba(140, 84, 255, 0.25), transparent 65%),
-    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-  border: 1px solid rgba(190,145,255,0.22);
+    radial-gradient(
+      420px 280px at 50% 10%,
+      rgba(140, 84, 255, 0.25),
+      transparent 65%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
+    );
+  border: 1px solid rgba(190, 145, 255, 0.22);
   opacity: 1;
 }
 
@@ -336,11 +389,11 @@
   width: 100%;
   padding: 14px 18px;
   border-radius: 999px;
-  border: 1px solid rgba(190,145,255,0.24);
-  background: rgba(25, 10, 45, 0.30);
+  border: 1px solid rgba(190, 145, 255, 0.24);
+  background: rgba(25, 10, 45, 0.3);
   box-shadow:
     0 10px 30px rgba(95, 45, 170, 0.25),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   overflow: hidden;
   transform: translateZ(0);
 }
@@ -348,9 +401,9 @@
 .ogap__pill--orange {
   border-color: rgba(255, 126, 80, 0.35);
   box-shadow:
-    0 12px 36px rgba(255, 126, 80, 0.10),
+    0 12px 36px rgba(255, 126, 80, 0.1),
     0 10px 30px rgba(95, 45, 170, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .ogap__pillText {
@@ -360,7 +413,7 @@
   text-align: center;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: rgba(245, 241, 255, 0.92);
+  color: rgba(245, 245, 245, 0.92);
 }
 
 .ogap__pillShimmer {
@@ -370,7 +423,12 @@
   width: 56%;
   height: 150%;
   transform: skewX(-18deg);
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
   opacity: 0;
   pointer-events: none;
 }
@@ -381,10 +439,21 @@
 }
 
 @keyframes ogap-shimmer {
-  0% { transform: translateX(0) skewX(-18deg); opacity: 0; }
-  15% { opacity: 0.85; }
-  45% { transform: translateX(260%) skewX(-18deg); opacity: 0; }
-  100% { transform: translateX(260%) skewX(-18deg); opacity: 0; }
+  0% {
+    transform: translateX(0) skewX(-18deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  45% {
+    transform: translateX(260%) skewX(-18deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(260%) skewX(-18deg);
+    opacity: 0;
+  }
 }
 
 .ogap__arrowWrap {
@@ -400,25 +469,34 @@
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  color: rgba(237, 228, 255, 0.92);
-  border: 1px solid rgba(190,145,255,0.22);
-  background: rgba(17, 7, 30, 0.25);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  color: rgba(237, 237, 237, 0.92);
+  border: 1px solid rgba(120, 120, 120, 0.22);
+  background: rgba(30, 30, 30, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   font-size: 18px;
 }
 
-.ogap--inview .ogap__bounce { animation: ogap-bounce 1.6s ease-in-out infinite; }
+.ogap--inview .ogap__bounce {
+  animation: ogap-bounce 1.6s ease-in-out infinite;
+}
 
 @keyframes ogap-bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.92; }
-  50% { transform: translateY(8px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.92;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
 }
 
 .ogap__rightGlow {
   position: absolute;
   inset: -40px -60px -40px -60px;
   pointer-events: none;
-  background: radial-gradient(380px 260px at 55% 40%, rgba(168, 104, 255, 0.18), transparent 70%);
+  background: transparent;
   filter: blur(0px);
   opacity: 0.8;
 }
@@ -430,7 +508,7 @@
   filter: blur(6px);
   transition:
     opacity 700ms ease,
-    transform 700ms cubic-bezier(.2,.8,.2,1),
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
     filter 700ms ease;
   transition-delay: var(--d, 0ms);
   will-change: transform, opacity, filter;
@@ -442,64 +520,113 @@
   filter: blur(0);
 }
 
-.ogap__anim--left { transform: translate3d(-18px, 12px, 0); }
-.ogap__anim--right { transform: translate3d(18px, 12px, 0); }
-.ogap__anim--up { transform: translate3d(0, 18px, 0); }
+.ogap__anim--left {
+  transform: translate3d(-18px, 12px, 0);
+}
+.ogap__anim--right {
+  transform: translate3d(18px, 12px, 0);
+}
+.ogap__anim--up {
+  transform: translate3d(0, 18px, 0);
+}
 
 .ogap__anim--stagger {
   transition-delay: calc(var(--d, 0ms) + (var(--i, 0) * 90ms));
 }
 
 /* Floating right stack */
-.ogap--inview .ogap__float { animation: ogap-float 6.5s ease-in-out infinite; }
+.ogap--inview .ogap__float {
+  animation: ogap-float 6.5s ease-in-out infinite;
+}
 
 @keyframes ogap-float {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -8px, 0); }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
 }
 
 /* ✅ star animations */
 @keyframes ogapStarsDrift1 {
-  from { background-position: 0 0; }
-  to { background-position: 0 var(--star-drift); }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 var(--star-drift);
+  }
 }
 @keyframes ogapStarsDrift2 {
-  from { background-position: 120px 200px; }
-  to { background-position: 120px calc(200px + var(--star-drift)); }
+  from {
+    background-position: 120px 200px;
+  }
+  to {
+    background-position: 120px calc(200px + var(--star-drift));
+  }
 }
 @keyframes ogapStarsDrift3 {
-  from { background-position: -200px 320px; }
-  to { background-position: -200px calc(320px + var(--star-drift)); }
+  from {
+    background-position: -200px 320px;
+  }
+  to {
+    background-position: -200px calc(320px + var(--star-drift));
+  }
 }
 
 @keyframes ogapStarsTwinkle {
-  0%, 100% { opacity: 0.52; }
-  50% { opacity: 0.68; }
+  0%,
+  100% {
+    opacity: 0.52;
+  }
+  50% {
+    opacity: 0.68;
+  }
 }
 @keyframes ogapStarsTwinkle2 {
-  0%, 100% { opacity: 0.34; }
-  50% { opacity: 0.48; }
+  0%,
+  100% {
+    opacity: 0.34;
+  }
+  50% {
+    opacity: 0.48;
+  }
 }
 @keyframes ogapStarsTwinkle3 {
-  0%, 100% { opacity: 0.22; }
-  50% { opacity: 0.32; }
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+  50% {
+    opacity: 0.32;
+  }
 }
 
 @keyframes ogapStarsBreathe {
-  0%, 100% { filter: brightness(1.8) contrast(1.35); }
-  50% { filter: brightness(2.05) contrast(1.45); }
+  0%,
+  100% {
+    filter: brightness(1.8) contrast(1.35);
+  }
+  50% {
+    filter: brightness(2.05) contrast(1.45);
+  }
 }
 
 /* Responsive */
 @media (max-width: 980px) {
-  .ogap { padding: 64px 0 76px; }
+  .ogap {
+    padding: 64px 0 76px;
+  }
 
   .ogap__grid {
     grid-template-columns: 1fr;
     gap: 22px;
   }
 
-  .ogap__right { min-height: 320px; }
+  .ogap__right {
+    min-height: 320px;
+  }
 
   .ogap__frames {
     height: 320px;
@@ -523,16 +650,29 @@
     opacity: 0.22;
   }
 
-  .ogap__starsSide--left { left: -12vw; }
-  .ogap__starsSide--right { right: -12vw; }
+  .ogap__starsSide--left {
+    left: -12vw;
+  }
+  .ogap__starsSide--right {
+    right: -12vw;
+  }
 }
 
 @media (max-width: 520px) {
-  .ogap__panel { padding: 18px; border-radius: 22px; }
+  .ogap__panel {
+    padding: 18px;
+    border-radius: 22px;
+  }
   .ogap__frame,
-  .ogap__frame--3 { border-radius: 22px; }
-  .ogap__pill { padding: 13px 16px; }
-  .ogap__pillText { font-size: 14px; }
+  .ogap__frame--3 {
+    border-radius: 22px;
+  }
+  .ogap__pill {
+    padding: 13px 16px;
+  }
+  .ogap__pillText {
+    font-size: 14px;
+  }
 }
 
 /* Reduced motion */
@@ -560,7 +700,9 @@
     transform: none !important;
   }
 
-  .ogap__panel--pulse::before { opacity: 0 !important; }
+  .ogap__panel--pulse::before {
+    opacity: 0 !important;
+  }
 }
 
 /* ✅ force pure black everywhere behind this section */

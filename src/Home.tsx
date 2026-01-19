@@ -1,4 +1,4 @@
-// src/pages/Home.tsx (or src/Home.tsx)
+// src/Home.tsx  (UPDATED: include ContactSection at the bottom)
 import React from "react";
 import Hero from "./components/Hero";
 import PlatformShowcase from "./components/PlatformShowcase";
@@ -8,16 +8,14 @@ import HowItWorks from "./components/HowItWorks";
 import ZavvisVsRest from "./components/ZavvisVsRest";
 import Benefits from "./components/Benefits";
 import ROI from "./components/Roi";
-// remove or comment this
 import WhyNow from "./components/Whynow";
-
 import SocialProof from "./components/social";
 import FinalCtaFooter from "./components/FinalCtaFooter";
+import ContactSection from "./components/ContactSection";
 
 const Home: React.FC = () => {
   return (
     <main className="bg-black text-white pt-[140px]">
-      {/* 140px = navbar height */}
       <Hero />
       <PlatformShowcase />
       <Pillars />
@@ -28,10 +26,13 @@ const Home: React.FC = () => {
       <ROI />
       <WhyNow />
       <SocialProof />
+
+      {/* ✅ All CTAs jump here */}
+      <ContactSection />
+
       <FinalCtaFooter />
     </main>
   );
 };
 
 export default Home;
-

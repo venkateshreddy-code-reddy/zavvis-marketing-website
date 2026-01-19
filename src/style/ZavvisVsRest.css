@@ -8,8 +8,15 @@
   padding: 44px 16px 64px;
 
   color: rgba(255, 255, 255, 0.92);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
-    Roboto, Helvetica, Arial;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Inter",
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial;
 
   /* ✅ PURE BLACK BACKGROUND */
   background: #000;
@@ -20,16 +27,13 @@
   --stars-url: none;
 }
 
-/* Ambient animated glow on the page */
+/* Ambient animated glow on the page - PURPLE REMOVED */
 .zvr::before {
   content: "";
   position: absolute;
   inset: -120px -80px;
   pointer-events: none;
-  background:
-    radial-gradient(460px 280px at 50% 0%, rgba(168, 85, 247, 0.16) 0%, rgba(0, 0, 0, 0) 60%),
-    radial-gradient(560px 380px at 15% 40%, rgba(124, 58, 237, 0.10) 0%, rgba(0, 0, 0, 0) 65%),
-    radial-gradient(560px 380px at 85% 45%, rgba(99, 102, 241, 0.08) 0%, rgba(0, 0, 0, 0) 65%);
+  background: transparent;
   filter: blur(10px);
   opacity: 0.9;
   transform: translate3d(0, 0, 0);
@@ -38,9 +42,18 @@
 }
 
 @keyframes zvr-ambient {
-  0% { transform: translateY(-6px) scale(1); opacity: 0.85; }
-  50% { transform: translateY(8px) scale(1.02); opacity: 1; }
-  100% { transform: translateY(-6px) scale(1); opacity: 0.85; }
+  0% {
+    transform: translateY(-6px) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(8px) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-6px) scale(1);
+    opacity: 0.85;
+  }
 }
 
 /* =========================
@@ -68,7 +81,8 @@
   filter: brightness(1.85) contrast(1.35);
   mix-blend-mode: screen;
 
-  animation: zvr-starsDrift1 var(--star-speed-1) linear infinite,
+  animation:
+    zvr-starsDrift1 var(--star-speed-1) linear infinite,
     zvr-starsTwinkle var(--twinkle-speed) ease-in-out infinite,
     zvr-starsBreathe 9s ease-in-out infinite;
 
@@ -83,10 +97,11 @@
   background-repeat: repeat;
   background-size: 900px auto;
   background-position: 120px 200px;
-  opacity: 0.40;
+  opacity: 0.4;
   filter: brightness(1.9) contrast(1.35);
   mix-blend-mode: screen;
-  animation: zvr-starsDrift2 var(--star-speed-2) linear infinite,
+  animation:
+    zvr-starsDrift2 var(--star-speed-2) linear infinite,
     zvr-starsTwinkle2 calc(var(--twinkle-speed) * 1.25) ease-in-out infinite;
 }
 
@@ -101,52 +116,95 @@
   opacity: 0.26;
   filter: brightness(2) contrast(1.4);
   mix-blend-mode: screen;
-  animation: zvr-starsDrift3 var(--star-speed-3) linear infinite,
+  animation:
+    zvr-starsDrift3 var(--star-speed-3) linear infinite,
     zvr-starsTwinkle3 calc(var(--twinkle-speed) * 1.5) ease-in-out infinite;
 }
 
 .zvr__starsSide--left {
   left: -7vw;
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 65%,
+    transparent 96%
+  );
   mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
 }
 
 .zvr__starsSide--right {
   right: -7vw;
   transform: scaleX(-1);
-  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    #000 65%,
+    transparent 96%
+  );
   mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
 }
 
 /* Star animations */
 @keyframes zvr-starsDrift1 {
-  from { background-position: 0 0; }
-  to { background-position: 0 var(--star-drift); }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 var(--star-drift);
+  }
 }
 @keyframes zvr-starsDrift2 {
-  from { background-position: 120px 200px; }
-  to { background-position: 120px calc(200px + var(--star-drift)); }
+  from {
+    background-position: 120px 200px;
+  }
+  to {
+    background-position: 120px calc(200px + var(--star-drift));
+  }
 }
 @keyframes zvr-starsDrift3 {
-  from { background-position: -200px 320px; }
-  to { background-position: -200px calc(320px + var(--star-drift)); }
+  from {
+    background-position: -200px 320px;
+  }
+  to {
+    background-position: -200px calc(320px + var(--star-drift));
+  }
 }
 
 @keyframes zvr-starsTwinkle {
-  0%, 100% { opacity: 0.52; }
-  50% { opacity: 0.68; }
+  0%,
+  100% {
+    opacity: 0.52;
+  }
+  50% {
+    opacity: 0.68;
+  }
 }
 @keyframes zvr-starsTwinkle2 {
-  0%, 100% { opacity: 0.33; }
-  50% { opacity: 0.46; }
+  0%,
+  100% {
+    opacity: 0.33;
+  }
+  50% {
+    opacity: 0.46;
+  }
 }
 @keyframes zvr-starsTwinkle3 {
-  0%, 100% { opacity: 0.20; }
-  50% { opacity: 0.30; }
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 @keyframes zvr-starsBreathe {
-  0%, 100% { filter: brightness(1.8) contrast(1.35); }
-  50% { filter: brightness(2.05) contrast(1.45); }
+  0%,
+  100% {
+    filter: brightness(1.8) contrast(1.35);
+  }
+  50% {
+    filter: brightness(2.05) contrast(1.45);
+  }
 }
 
 /* ✅ keep content above stars */
@@ -175,7 +233,10 @@
 }
 
 @keyframes zvr-title-in {
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ====== Card (smaller) ====== */
@@ -185,8 +246,17 @@
   border-radius: 20px;
   border: 1px solid rgba(171, 117, 255, 0.35);
   background:
-    radial-gradient(860px 500px at 50% 12%, rgba(140, 78, 255, 0.17) 0%, rgba(0, 0, 0, 0) 60%),
-    linear-gradient(180deg, rgba(40, 20, 70, 0.56) 0%, rgba(22, 10, 40, 0.46) 60%, rgba(18, 7, 34, 0.50) 100%);
+    radial-gradient(
+      860px 500px at 50% 12%,
+      rgba(140, 78, 255, 0.17) 0%,
+      rgba(0, 0, 0, 0) 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(40, 20, 70, 0.56) 0%,
+      rgba(22, 10, 40, 0.46) 60%,
+      rgba(18, 7, 34, 0.5) 100%
+    );
   box-shadow:
     0 24px 78px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -199,7 +269,10 @@
 }
 
 @keyframes zvr-card-in {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Subtle sheen sweep across the card once */
@@ -212,9 +285,9 @@
   height: 220%;
   background: linear-gradient(
     90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.10) 35%,
-    rgba(255,255,255,0) 70%
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 35%,
+    rgba(255, 255, 255, 0) 70%
   );
   transform: rotate(12deg) translateX(-40%);
   opacity: 0;
@@ -223,9 +296,17 @@
 }
 
 @keyframes zvr-sheen {
-  0% { opacity: 0; transform: rotate(12deg) translateX(-40%); }
-  10% { opacity: 0.55; }
-  100% { opacity: 0; transform: rotate(12deg) translateX(280%); }
+  0% {
+    opacity: 0;
+    transform: rotate(12deg) translateX(-40%);
+  }
+  10% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(12deg) translateX(280%);
+  }
 }
 
 /* ====== Grid ====== */
@@ -284,7 +365,10 @@
 }
 
 @keyframes zvr-row-in {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Items */
@@ -313,34 +397,45 @@
 }
 
 @keyframes zvr-icon-pop {
-  0% { transform: scale(0.85); opacity: 0; }
-  60% { transform: scale(1.06); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.zvr__icon svg { display: block; }
+.zvr__icon svg {
+  display: block;
+}
 
 .zvr__icon--bad {
   color: rgba(255, 58, 86, 0.95);
-  background: rgba(255, 58, 86, 0.10);
+  background: rgba(255, 58, 86, 0.1);
   box-shadow:
     inset 0 0 0 1px rgba(255, 58, 86, 0.28),
-    0 10px 18px rgba(255, 58, 86, 0.10);
+    0 10px 18px rgba(255, 58, 86, 0.1);
 }
 
 .zvr__icon--good {
   color: rgba(34, 197, 94, 0.95);
-  background: rgba(34, 197, 94, 0.10);
+  background: rgba(34, 197, 94, 0.1);
   box-shadow:
     inset 0 0 0 1px rgba(34, 197, 94, 0.26),
-    0 10px 18px rgba(34, 197, 94, 0.10);
+    0 10px 18px rgba(34, 197, 94, 0.1);
 }
 
 /* ✅ smaller text */
 .zvr__text {
   font-size: 16px; /* ✅ was 18px */
   line-height: 1.32;
-  color: rgba(255, 255, 255, 0.70);
+  color: rgba(255, 255, 255, 0.7);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -351,16 +446,27 @@
 }
 
 @keyframes zvr-text-in {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Hover */
 .zvr__cell--body {
-  transition: background-color 220ms ease, transform 220ms ease;
+  transition:
+    background-color 220ms ease,
+    transform 220ms ease;
 }
-.zvr__cell--body:hover { background: rgba(255, 255, 255, 0.03); }
-.zvr__cell--body:hover .zvr__icon { transform: scale(1.03); }
-.zvr__cell--body:hover .zvr__text { color: rgba(255, 255, 255, 0.78); }
+.zvr__cell--body:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+.zvr__cell--body:hover .zvr__icon {
+  transform: scale(1.03);
+}
+.zvr__cell--body:hover .zvr__text {
+  color: rgba(255, 255, 255, 0.78);
+}
 
 /* ====== Bottom pill (smaller) ====== */
 .zvr__pillWrap {
@@ -390,7 +496,10 @@
 }
 
 @keyframes zvr-pill-in {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .zvr__pill::after {
@@ -399,9 +508,9 @@
   inset: -1px;
   background: linear-gradient(
     90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(168,85,247,0.22) 35%,
-    rgba(255,255,255,0) 70%
+    rgba(255, 255, 255, 0) 0%,
+    rgba(168, 85, 247, 0.22) 35%,
+    rgba(255, 255, 255, 0) 70%
   );
   transform: translateX(-120%);
   opacity: 0.35;
@@ -410,10 +519,21 @@
 }
 
 @keyframes zvr-pill-shimmer {
-  0% { transform: translateX(-120%); opacity: 0; }
-  15% { opacity: 0.45; }
-  35% { transform: translateX(120%); opacity: 0; }
-  100% { transform: translateX(120%); opacity: 0; }
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.45;
+  }
+  35% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
 }
 
 /* Responsive */
@@ -501,8 +621,12 @@
     opacity: 0.22;
   }
 
-  .zvr__starsSide--left { left: -12vw; }
-  .zvr__starsSide--right { right: -12vw; }
+  .zvr__starsSide--left {
+    left: -12vw;
+  }
+  .zvr__starsSide--right {
+    right: -12vw;
+  }
 }
 
 /* Reduced motion */

@@ -25,21 +25,16 @@ const Nav = styled.header<{ $scrolled: boolean; $home: boolean }>`
   background: ${({ $home, $scrolled }) =>
     $home && !$scrolled
       ? "transparent"
-      : `
-        radial-gradient(
-          900px 280px at 50% -40px,
-          rgba(140, 90, 255, ${$scrolled ? 0.22 : 0.16}),
-          rgba(0, 0, 0, 0) 60%
-        ),
-        rgba(0, 0, 0, ${$scrolled ? 0.62 : 0.34})
-      `};
+      : `rgba(0, 0, 0, ${$scrolled ? 0.62 : 0.34})`};
 
   backdrop-filter: ${({ $home, $scrolled }) =>
     $home && !$scrolled ? "none" : "blur(14px)"};
   -webkit-backdrop-filter: ${({ $home, $scrolled }) =>
     $home && !$scrolled ? "none" : "blur(14px)"};
 
-  transition: background 220ms ease, backdrop-filter 220ms ease;
+  transition:
+    background 220ms ease,
+    backdrop-filter 220ms ease;
 
   @media (max-width: 768px) {
     top: 10px;
@@ -74,23 +69,33 @@ const NavInner = styled.div`
 
 const NavGlow = styled.div`
   position: absolute;
-  inset: -520px 0 auto 0;
-  margin: 0 auto;
-  width: 1000px;
+  top: -520px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 1200px;
   height: 1200px;
-  background-image: url(${glow});
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  opacity: 0.65;
+
   pointer-events: none;
   z-index: -1;
 
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(155, 120, 255, 0.45) 0%,
+      rgba(155, 120, 255, 0.28) 25%,
+      rgba(155, 120, 255, 0.16) 40%,
+      rgba(155, 120, 255, 0.08) 55%,
+      rgba(0, 0, 0, 0) 70%
+    );
+
+  filter: blur(8px);
+
   @media (max-width: 768px) {
-    inset: -380px 0 auto 0;
-    width: 680px;
-    height: 900px;
-    opacity: 0.8;
+    top: -380px;
+    width: 820px;
+    height: 820px;
+    filter: blur(10px);
   }
 `;
 
@@ -131,11 +136,7 @@ const BrandGlow = styled.span<{ $active: boolean }>`
   border-radius: 18px;
   pointer-events: none;
 
-  background: radial-gradient(
-    120px 60px at 50% 50%,
-    rgba(215, 190, 255, ${({ $active }) => ($active ? 0.42 : 0.22)}),
-    rgba(0, 0, 0, 0) 70%
-  );
+  background: transparent;
 
   filter: blur(6px);
   opacity: ${({ $active }) => ($active ? 1 : 0.8)};
@@ -151,7 +152,9 @@ const Logo = styled.img`
   filter: brightness(1.32) saturate(1.1)
     drop-shadow(0 0 16px rgba(205, 175, 255, 0.35));
 
-  transition: filter 180ms ease, transform 180ms ease;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
 
   &:hover {
     filter: brightness(1.42) saturate(1.14)
@@ -190,7 +193,8 @@ const MenuPill = styled.nav`
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
-  box-shadow: 0 0 0 1px rgba(140, 90, 255, 0.12),
+  box-shadow:
+    0 0 0 1px rgba(140, 90, 255, 0.12),
     0 14px 34px rgba(0, 0, 0, 0.28);
 `;
 
@@ -199,7 +203,9 @@ const MenuLink = styled(Link)`
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: color 0.18s ease, transform 0.18s ease;
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
 
   &:hover {
     color: #fff;
@@ -244,7 +250,10 @@ const CTAButton = styled.button`
     0 0 22px rgba(190, 150, 255, 0.45);
 
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
 
   &:hover {
     transform: translateY(-1px);
@@ -295,11 +304,8 @@ const MenuToggle = styled.button`
 const MobileOverlay = styled.div<{ $open: boolean }>`
   position: fixed;
   inset: 0;
-  background: radial-gradient(
-      circle at top,
-      rgba(140, 90, 255, 0.22),
-      transparent 55%
-    ),
+  background:
+    radial-gradient(circle at top, rgba(140, 90, 255, 0.22), transparent 55%),
     rgba(0, 0, 0, 0.92);
   display: ${({ $open }) => ($open ? "flex" : "none")};
   align-items: center;

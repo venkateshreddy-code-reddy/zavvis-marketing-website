@@ -1,10 +1,9 @@
-// src/components/PlatformShowcase.tsx
 import { useEffect, useRef, useState } from "react";
 import "../style/PlatformShowcase.css";
 
 import leftGlow from "../assets/left.png";
 import rightGlow from "../assets/right.png";
-import stars from "../assets/stars.png"; // ✅ same stars as hero
+import stars from "../assets/stars.png";
 
 import qbLogo from "../assets/quickbooks.png";
 import salesforceLogo from "../assets/salesforce-logo.png";
@@ -82,7 +81,6 @@ const PlatformShowcase: React.FC = () => {
       >
         <div className="ps-ambient" aria-hidden="true" />
 
-        {/* ✅ stars sit where glows are (left/right), like hero */}
         <div className="ps-starsSide ps-starsSide--left" aria-hidden="true" />
         <div className="ps-starsSide ps-starsSide--right" aria-hidden="true" />
 
@@ -99,7 +97,9 @@ const PlatformShowcase: React.FC = () => {
 
                 <nav className="ps-nav" aria-label="Primary">
                   <button
-                    className={`ps-icon ${activeNav === "sparkles" ? "ps-icon--active" : ""}`}
+                    className={`ps-icon ${
+                      activeNav === "sparkles" ? "ps-icon--active" : ""
+                    }`}
                     onClick={() => setActiveNav("sparkles")}
                     aria-label="Sparkles"
                     type="button"
@@ -108,7 +108,9 @@ const PlatformShowcase: React.FC = () => {
                   </button>
 
                   <button
-                    className={`ps-icon ${activeNav === "alerts" ? "ps-icon--active" : ""}`}
+                    className={`ps-icon ${
+                      activeNav === "alerts" ? "ps-icon--active" : ""
+                    }`}
                     onClick={() => setActiveNav("alerts")}
                     aria-label="Alerts"
                     type="button"
@@ -117,7 +119,9 @@ const PlatformShowcase: React.FC = () => {
                   </button>
 
                   <button
-                    className={`ps-icon ${activeNav === "home" ? "ps-icon--active" : ""}`}
+                    className={`ps-icon ${
+                      activeNav === "home" ? "ps-icon--active" : ""
+                    }`}
                     onClick={() => setActiveNav("home")}
                     aria-label="Home"
                     type="button"
@@ -126,7 +130,9 @@ const PlatformShowcase: React.FC = () => {
                   </button>
 
                   <button
-                    className={`ps-icon ${activeNav === "db" ? "ps-icon--active" : ""}`}
+                    className={`ps-icon ${
+                      activeNav === "db" ? "ps-icon--active" : ""
+                    }`}
                     onClick={() => setActiveNav("db")}
                     aria-label="Database"
                     type="button"
@@ -135,7 +141,9 @@ const PlatformShowcase: React.FC = () => {
                   </button>
 
                   <button
-                    className={`ps-icon ${activeNav === "reports" ? "ps-icon--active" : ""}`}
+                    className={`ps-icon ${
+                      activeNav === "reports" ? "ps-icon--active" : ""
+                    }`}
                     onClick={() => setActiveNav("reports")}
                     aria-label="Reports"
                     type="button"
@@ -144,7 +152,9 @@ const PlatformShowcase: React.FC = () => {
                   </button>
 
                   <button
-                    className={`ps-icon ${activeNav === "grid" ? "ps-icon--active" : ""}`}
+                    className={`ps-icon ${
+                      activeNav === "grid" ? "ps-icon--active" : ""
+                    }`}
                     onClick={() => setActiveNav("grid")}
                     aria-label="Grid"
                     type="button"
@@ -153,7 +163,9 @@ const PlatformShowcase: React.FC = () => {
                   </button>
 
                   <button
-                    className={`ps-icon ${activeNav === "settings" ? "ps-icon--active" : ""}`}
+                    className={`ps-icon ${
+                      activeNav === "settings" ? "ps-icon--active" : ""
+                    }`}
                     onClick={() => setActiveNav("settings")}
                     aria-label="Settings"
                     type="button"
@@ -184,21 +196,34 @@ const PlatformShowcase: React.FC = () => {
                       <span aria-hidden="true">🗓️</span> 11:40 AM, Nov 25
                     </div>
 
-                    <button className="ps-hIcon" aria-label="Notifications" type="button">
+                    <button
+                      className="ps-hIcon"
+                      aria-label="Notifications"
+                      type="button"
+                    >
                       🔔
                     </button>
-                    <button className="ps-hIcon" aria-label="Messages" type="button">
+                    <button
+                      className="ps-hIcon"
+                      aria-label="Messages"
+                      type="button"
+                    >
                       💬
                     </button>
 
                     <div className="ps-search">
-                      <input className="ps-searchInput" placeholder="Search here" type="search" />
+                      <input
+                        className="ps-searchInput"
+                        placeholder="Search here"
+                        type="search"
+                      />
                       <span className="ps-searchIcon">🔍</span>
                     </div>
                   </div>
                 </header>
 
                 <div className="ps-layout">
+                  {/* ✅ Welcome panel (matches 2nd image spacing) */}
                   <section className="ps-card ps-welcome">
                     <div className="ps-badgeRow">
                       <div className="ps-badge">
@@ -206,31 +231,36 @@ const PlatformShowcase: React.FC = () => {
                       </div>
                     </div>
 
-                    <br />
-                    <br />
-                    <br />
-
                     <h1 className="ps-title">
-                      Hi! I&apos;m Zavvis AI. What would you like me to monitor, check, or explain today?
+                      Hi! I&apos;m Zavvis AI. What would you like me to monitor,
+                      check, or explain today?
                     </h1>
 
                     <div className="ps-prompts">
                       <button className="ps-prompt" type="button">
-                        Trace the root cause of any anomalies affecting revenue or expenses.
+                        Trace the root cause of any anomalies affecting revenue
+                        or expenses.
                       </button>
                       <button className="ps-prompt" type="button">
-                        Where are the biggest risks or inconsistencies across my financial data?
+                        Where are the biggest risks or inconsistencies across my
+                        financial data?
                       </button>
                       <button className="ps-prompt" type="button">
-                        Summarize today’s financial system health and flag any thresholds or guardrails that fired.
+                        Summarize today’s financial system health and flag any
+                        thresholds or guardrails that fired.
                       </button>
                       <button className="ps-prompt" type="button">
-                        Show me inconsistencies between QuickBooks data and the canonical model.
+                        Show me inconsistencies between QuickBooks data and the
+                        canonical model.
                       </button>
                     </div>
 
                     <div className="ps-inputRow">
-                      <input className="ps-input" placeholder="What do you want to know..." type="text" />
+                      <input
+                        className="ps-input"
+                        placeholder="What do you want to know..."
+                        type="text"
+                      />
                       <button className="ps-cta" type="button">
                         SHOW
                       </button>
@@ -241,51 +271,66 @@ const PlatformShowcase: React.FC = () => {
                     <div className="ps-anomTop">
                       <div className="ps-anomHead">
                         <div className="ps-anomPill">🔎</div>
-                        <div className="ps-anomTitle">Anomaly Detection Complete</div>
+                        <div className="ps-anomTitle">
+                          Anomaly Detection Complete
+                        </div>
                       </div>
 
                       <p className="ps-anomIntro">
-                        I’ve analyzed your financial data and identified the following anomalies that require attention:
+                        I’ve analyzed your financial data and identified the
+                        following anomalies that require attention:
                       </p>
                     </div>
 
                     <div className="ps-anomItem">
-                      <div className="ps-anomItemTitle">1. Revenue Integrity Issue — $48,900 Missing</div>
+                      <div className="ps-anomItemTitle">
+                        1. Revenue Integrity Issue — $48,900 Missing
+                      </div>
                       <p className="ps-anomDesc">
-                        Detected a mismatch between Salesforce closed-won deals and revenue posted in QuickBooks. This
-                        inconsistency suggests a break in your revenue-recognition workflow and should be reviewed.
+                        Detected a mismatch between Salesforce closed-won deals
+                        and revenue posted in QuickBooks. This inconsistency
+                        suggests a break in your revenue-recognition workflow
+                        and should be reviewed.
                       </p>
                     </div>
 
-                    {/* ✅ UPDATED to boss version */}
                     <div className="ps-anomItem">
-                      <div className="ps-anomItemTitle">2. November 2025 Financial Irregularities</div>
+                      <div className="ps-anomItemTitle">
+                        2. November 2025 Financial Irregularities
+                      </div>
 
                       <ul className="ps-anomList">
                         <li>
-                          <strong>Sales Revenue:</strong> $6.8M (17.5% below average of ~ $8.3M)
+                          <strong>Sales Revenue:</strong> $6.8M (17.5% below
+                          average of ~ $8.3M)
                         </li>
                         <li>
-                          <strong>Supplies:</strong> $140,000 (30% above normal $105,000)
+                          <strong>Supplies:</strong> $140,000 (30% above normal
+                          $105,000)
                         </li>
                         <li>6 deals marked closed-won not reflected in GL</li>
                         <li>2 deposits unlinked to customer records</li>
                       </ul>
 
                       <p className="ps-anomDesc ps-anomDesc--afterList">
-                        This significant deviation suggests potential data entry errors or missing revenue entries.
+                        This significant deviation suggests potential data entry
+                        errors or missing revenue entries.
                       </p>
                     </div>
 
-                    {/* ✅ UPDATED to boss version */}
                     <div className="ps-anomItem">
-                      <div className="ps-anomItemTitle">3. Unreversed Accrual — $12,400</div>
+                      <div className="ps-anomItemTitle">
+                        3. Unreversed Accrual — $12,400
+                      </div>
                       <p className="ps-anomDesc">
-                        Found an accrual from <span className="ps-anomMeta">2025-11-01</span> that did not generate its
-                        expected reversal entry. Traced to journal entry <span className="ps-anomMeta">#4412</span>.
+                        Found an accrual from{" "}
+                        <span className="ps-anomMeta">2025-11-01</span> that did
+                        not generate its expected reversal entry. Traced to
+                        journal entry <span className="ps-anomMeta">#4412</span>.
                       </p>
                       <p className="ps-anomDesc ps-anomDesc--afterList">
-                        This integrity risk should be corrected to ensure accurate financial reporting.
+                        This integrity risk should be corrected to ensure
+                        accurate financial reporting.
                       </p>
                     </div>
                   </aside>
@@ -314,15 +359,27 @@ const PlatformShowcase: React.FC = () => {
 
                     <ul className="ps-sources">
                       <li className="ps-sourceRow">
-                        <img src={qbLogo} alt="QuickBooks" className="ps-sourceLogo" />
+                        <img
+                          src={qbLogo}
+                          alt="QuickBooks"
+                          className="ps-sourceLogo"
+                        />
                         Quick Books
                       </li>
                       <li className="ps-sourceRow">
-                        <img src={salesforceLogo} alt="Salesforce" className="ps-sourceLogo" />
+                        <img
+                          src={salesforceLogo}
+                          alt="Salesforce"
+                          className="ps-sourceLogo"
+                        />
                         Salesforce
                       </li>
                       <li className="ps-sourceRow">
-                        <img src={plaidLogo} alt="Plaid" className="ps-sourceLogo" />
+                        <img
+                          src={plaidLogo}
+                          alt="Plaid"
+                          className="ps-sourceLogo"
+                        />
                         Plaid
                       </li>
                     </ul>

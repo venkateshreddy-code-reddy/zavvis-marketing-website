@@ -14,9 +14,9 @@ function WireSphere({ className }: { className: string }) {
     >
       <defs>
         <linearGradient id="ctaSphereStroke" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="rgba(255, 196, 0, 0.55)" />
-          <stop offset="48%" stopColor="rgba(182, 120, 255, 0.75)" />
-          <stop offset="100%" stopColor="rgba(0, 214, 255, 0.55)" />
+          <stop offset="0%" stopColor="rgba(180, 180, 180, 0.55)" />
+          <stop offset="48%" stopColor="rgba(150, 150, 150, 0.75)" />
+          <stop offset="100%" stopColor="rgba(120, 120, 120, 0.55)" />
         </linearGradient>
 
         <filter id="ctaSphereGlow" x="-45%" y="-45%" width="190%" height="190%">
@@ -77,8 +77,12 @@ export default function CTASection() {
     const el = sectionRef.current;
     if (!el) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const hover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const hover = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
     if (reduced || !hover) return;
 
     let raf = 0;
@@ -155,10 +159,18 @@ export default function CTASection() {
       }
     >
       <div className="cta__starsSide cta__starsSide--left" aria-hidden="true" />
-      <div className="cta__starsSide cta__starsSide--right" aria-hidden="true" />
+      <div
+        className="cta__starsSide cta__starsSide--right"
+        aria-hidden="true"
+      />
 
       <div className="cta__wrap">
-        <div className="cta__card" ref={cardRef} role="region" aria-label="CTA card">
+        <div
+          className="cta__card"
+          ref={cardRef}
+          role="region"
+          aria-label="CTA card"
+        >
           <div className="cta__bgGlow" aria-hidden="true" />
           <div className="cta__vignette" aria-hidden="true" />
           <div className="cta__sheen" aria-hidden="true" />
@@ -183,10 +195,13 @@ export default function CTASection() {
               <span className="cta__tStrong">Finance Operations?</span>
             </h2>
 
-            <p className="cta__kicker">START WITH QUICKBOOKS → ADD NETSUITE, SALESFORCE IN WEEKS</p>
+            <p className="cta__kicker">
+              START WITH QUICKBOOKS → ADD NETSUITE, SALESFORCE IN WEEKS
+            </p>
 
             <p className="cta__support">
-              Book a 15-minute demo → see a live war room generated from your data.
+              Book a 15-minute demo → see a live war room generated from your
+              data.
             </p>
 
             <a className="cta__btn" href="#contact" aria-label="Get in touch">
@@ -203,7 +218,12 @@ export default function CTASection() {
         <div className="ctaFooter__inner">
           <div className="ctaFooter__left">
             <div className="ctaFooter__logoWrap" aria-label="Zavvis logo">
-              <img className="ctaFooter__logoImg" src={logo} alt="Zavvis" draggable={false} />
+              <img
+                className="ctaFooter__logoImg"
+                src={logo}
+                alt="Zavvis"
+                draggable={false}
+              />
             </div>
             <div className="ctaFooter__company">Zavvis Technologies, Inc.</div>
           </div>
@@ -237,7 +257,9 @@ export default function CTASection() {
             </a>
           </div>
 
-          <div className="ctaFooter__copy">© 2025 Zavvis Technologies, Inc. All rights reserved.</div>
+          <div className="ctaFooter__copy">
+            © 2025 Zavvis Technologies, Inc. All rights reserved.
+          </div>
         </div>
       </footer>
     </section>

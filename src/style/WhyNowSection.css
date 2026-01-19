@@ -8,8 +8,16 @@
   overflow: hidden;
   isolation: isolate;
   padding: clamp(64px, 7vw, 110px) 20px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Inter",
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
 }
 
 .wn * {
@@ -36,12 +44,7 @@
   top: -280px;
   width: 860px;
   height: 720px;
-  background: radial-gradient(
-    circle at 55% 45%,
-    rgba(165, 110, 255, 0.55) 0%,
-    rgba(125, 80, 255, 0.26) 30%,
-    rgba(0, 0, 0, 0) 66%
-  );
+  background: transparent;
   animation-duration: 11s;
 }
 
@@ -50,12 +53,7 @@
   bottom: -360px;
   width: 980px;
   height: 860px;
-  background: radial-gradient(
-    circle at 40% 40%,
-    rgba(115, 92, 255, 0.36) 0%,
-    rgba(150, 80, 255, 0.16) 28%,
-    rgba(0, 0, 0, 0) 68%
-  );
+  background: transparent;
   animation-duration: 13s;
   animation-direction: reverse;
 }
@@ -73,7 +71,8 @@
 .wn__vignette {
   position: absolute;
   inset: -18%;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       1200px 520px at 50% 40%,
       rgba(0, 0, 0, 0) 52%,
       rgba(0, 0, 0, 0.72) 92%
@@ -163,7 +162,8 @@
   position: relative;
   border-radius: 22px;
   overflow: hidden;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       900px 520px at 50% 10%,
       rgba(170, 120, 255, 0.18) 0%,
       rgba(0, 0, 0, 0) 62%
@@ -210,7 +210,7 @@
   background: linear-gradient(
     115deg,
     rgba(255, 255, 255, 0) 15%,
-    rgba(255, 255, 255, 0.10) 32%,
+    rgba(255, 255, 255, 0.1) 32%,
     rgba(255, 255, 255, 0) 52%
   );
   transform: translateX(-130%) skewX(-12deg);
@@ -346,7 +346,11 @@
   border-radius: 14px;
   padding: 18px 18px;
   margin: 10px 0 22px;
-  background: linear-gradient(180deg, rgba(14, 12, 26, 0.8), rgba(0, 0, 0, 0.55));
+  background: linear-gradient(
+    180deg,
+    rgba(14, 12, 26, 0.8),
+    rgba(0, 0, 0, 0.55)
+  );
   border: 1px solid rgba(190, 140, 255, 0.42);
   box-shadow:
     0 0 0 1px rgba(110, 70, 200, 0.16) inset,

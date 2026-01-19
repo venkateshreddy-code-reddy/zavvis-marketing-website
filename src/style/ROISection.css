@@ -26,7 +26,8 @@
   filter: brightness(1.85) contrast(1.35);
   mix-blend-mode: screen;
 
-  animation: roiStarsDrift1 var(--star-speed-1) linear infinite,
+  animation:
+    roiStarsDrift1 var(--star-speed-1) linear infinite,
     roiStarsTwinkle var(--twinkle-speed) ease-in-out infinite,
     roiStarsBreathe 9s ease-in-out infinite;
 
@@ -47,7 +48,8 @@
   filter: brightness(1.9) contrast(1.35);
   mix-blend-mode: screen;
 
-  animation: roiStarsDrift2 var(--star-speed-2) linear infinite,
+  animation:
+    roiStarsDrift2 var(--star-speed-2) linear infinite,
     roiStarsTwinkle2 calc(var(--twinkle-speed) * 1.25) ease-in-out infinite;
 }
 
@@ -65,65 +67,102 @@
   filter: brightness(2) contrast(1.4);
   mix-blend-mode: screen;
 
-  animation: roiStarsDrift3 var(--star-speed-3) linear infinite,
+  animation:
+    roiStarsDrift3 var(--star-speed-3) linear infinite,
     roiStarsTwinkle3 calc(var(--twinkle-speed) * 1.5) ease-in-out infinite;
 }
 
 .roi__starsSide--left {
   left: -7vw;
-  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 65%,
+    transparent 96%
+  );
   mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
 }
 
 .roi__starsSide--right {
   right: -7vw;
   transform: scaleX(-1);
-  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
+  -webkit-mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    #000 65%,
+    transparent 96%
+  );
   mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
 }
 
 @keyframes roiStarsDrift1 {
-  from { background-position: 0 0; }
-  to { background-position: 0 var(--star-drift); }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 var(--star-drift);
+  }
 }
 @keyframes roiStarsDrift2 {
-  from { background-position: 120px 200px; }
-  to { background-position: 120px calc(200px + var(--star-drift)); }
+  from {
+    background-position: 120px 200px;
+  }
+  to {
+    background-position: 120px calc(200px + var(--star-drift));
+  }
 }
 @keyframes roiStarsDrift3 {
-  from { background-position: -200px 320px; }
-  to { background-position: -200px calc(320px + var(--star-drift)); }
+  from {
+    background-position: -200px 320px;
+  }
+  to {
+    background-position: -200px calc(320px + var(--star-drift));
+  }
 }
 
 @keyframes roiStarsTwinkle {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 @keyframes roiStarsTwinkle2 {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.48; }
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.48;
+  }
 }
 @keyframes roiStarsTwinkle3 {
-  0%, 100% { opacity: 0.22; }
-  50% { opacity: 0.32; }
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+  50% {
+    opacity: 0.32;
+  }
 }
 @keyframes roiStarsBreathe {
-  0%, 100% { filter: brightness(1.8) contrast(1.35); }
-  50% { filter: brightness(2.05) contrast(1.45); }
+  0%,
+  100% {
+    filter: brightness(1.8) contrast(1.35);
+  }
+  50% {
+    filter: brightness(2.05) contrast(1.45);
+  }
 }
 
-/* ===== Ambient animated glows ===== */
+/* ===== Ambient animated glows - PURPLE REMOVED ===== */
 .roi__glow {
   position: absolute;
   inset: -220px -260px auto -260px;
   height: 520px;
-  background: radial-gradient(
-    circle at 50% 35%,
-    rgba(155, 98, 255, 0.55) 0%,
-    rgba(122, 72, 210, 0.32) 22%,
-    rgba(58, 24, 100, 0.18) 44%,
-    rgba(0, 0, 0, 0) 72%
-  );
+  background: transparent;
   filter: blur(1px);
   pointer-events: none;
   opacity: 0.92;
@@ -135,27 +174,34 @@
   inset: auto -260px -240px -260px;
   height: 540px;
   opacity: 0.55;
-  background: radial-gradient(
-    circle at 50% 45%,
-    rgba(170, 120, 255, 0.36) 0%,
-    rgba(110, 60, 210, 0.22) 28%,
-    rgba(0, 0, 0, 0) 70%
-  );
+  background: transparent;
   filter: blur(2px);
   animation: roiGlowFloatB 11s ease-in-out infinite;
   z-index: 1; /* above stars */
 }
 
 @keyframes roiGlowFloat {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(0, 10px, 0) scale(1.02); }
-  100% { transform: translate3d(0, 0, 0) scale(1); }
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, 10px, 0) scale(1.02);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 @keyframes roiGlowFloatB {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(0, -12px, 0) scale(1.03); }
-  100% { transform: translate3d(0, 0, 0) scale(1); }
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) scale(1.03);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 /* Subtle film/noise (CSS-only) */
@@ -165,17 +211,36 @@
   pointer-events: none;
   opacity: 0.06;
   background-image:
-    radial-gradient(circle at 20% 10%, rgba(255,255,255,0.10) 0 1px, transparent 2px),
-    radial-gradient(circle at 80% 35%, rgba(255,255,255,0.08) 0 1px, transparent 2px),
-    radial-gradient(circle at 40% 70%, rgba(255,255,255,0.08) 0 1px, transparent 2px);
-  background-size: 260px 260px, 340px 340px, 300px 300px;
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(255, 255, 255, 0.1) 0 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 80% 35%,
+      rgba(255, 255, 255, 0.08) 0 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 40% 70%,
+      rgba(255, 255, 255, 0.08) 0 1px,
+      transparent 2px
+    );
+  background-size:
+    260px 260px,
+    340px 340px,
+    300px 300px;
   animation: roiNoiseDrift 18s linear infinite;
   z-index: 2; /* above glows */
 }
 
 @keyframes roiNoiseDrift {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-40px, 22px, 0); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-40px, 22px, 0);
+  }
 }
 
 .roi__container {
@@ -197,7 +262,9 @@
 .roi__card {
   opacity: 0;
   transform: translate3d(0, 18px, 0);
-  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    opacity 700ms ease,
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform, opacity;
 }
 
@@ -258,8 +325,17 @@
   border-radius: 26px;
   padding: 18px;
   background:
-    radial-gradient(1200px 500px at 55% 25%, rgba(180, 120, 255, 0.22) 0%, rgba(0, 0, 0, 0) 60%),
-    linear-gradient(180deg, rgba(75, 36, 124, 0.38) 0%, rgba(35, 14, 66, 0.62) 55%, rgba(22, 8, 43, 0.78) 100%);
+    radial-gradient(
+      1200px 500px at 55% 25%,
+      rgba(180, 120, 255, 0.22) 0%,
+      rgba(0, 0, 0, 0) 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(75, 36, 124, 0.38) 0%,
+      rgba(35, 14, 66, 0.62) 55%,
+      rgba(22, 8, 43, 0.78) 100%
+    );
   border: 1px solid rgba(188, 128, 255, 0.55);
   box-shadow:
     0 0 0 1px rgba(155, 98, 255, 0.16) inset,
@@ -284,9 +360,15 @@
 }
 
 @keyframes roiInnerBreath {
-  0% { box-shadow: 0 0 0 rgba(175, 125, 255, 0); }
-  50% { box-shadow: 0 0 40px rgba(175, 125, 255, 0.08); }
-  100% { box-shadow: 0 0 0 rgba(175, 125, 255, 0); }
+  0% {
+    box-shadow: 0 0 0 rgba(175, 125, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(175, 125, 255, 0.08);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(175, 125, 255, 0);
+  }
 }
 
 .roi__cardTitle {
@@ -331,7 +413,7 @@
   background: linear-gradient(
     115deg,
     rgba(255, 255, 255, 0) 42%,
-    rgba(200, 150, 255, 0.10) 48%,
+    rgba(200, 150, 255, 0.1) 48%,
     rgba(255, 255, 255, 0) 54%
   );
   transform: translate3d(-40%, -20%, 0) rotate(6deg);
@@ -344,10 +426,21 @@
 }
 
 @keyframes roiSheen {
-  0% { transform: translate3d(-45%, -10%, 0) rotate(6deg); opacity: 0; }
-  18% { opacity: 0.7; }
-  45% { transform: translate3d(45%, 20%, 0) rotate(6deg); opacity: 0; }
-  100% { transform: translate3d(45%, 20%, 0) rotate(6deg); opacity: 0; }
+  0% {
+    transform: translate3d(-45%, -10%, 0) rotate(6deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.7;
+  }
+  45% {
+    transform: translate3d(45%, 20%, 0) rotate(6deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(45%, 20%, 0) rotate(6deg);
+    opacity: 0;
+  }
 }
 
 .roi__tableHeader {
@@ -383,7 +476,9 @@
 
   opacity: 0;
   transform: translate3d(0, 10px, 0);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    opacity 650ms ease,
+    transform 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
   transition-delay: calc(360ms + (var(--i) * 90ms));
 }
 
@@ -403,7 +498,7 @@
   align-items: center;
   gap: 12px;
   min-height: 22px;
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 15px;
   line-height: 1.35;
 }
@@ -427,9 +522,18 @@
 }
 
 @keyframes roiDotPulse {
-  0% { transform: scale(1); opacity: 0.75; }
-  50% { transform: scale(1.35); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.75; }
+  0% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
 }
 
 .roi__text {
@@ -438,10 +542,18 @@
 }
 
 .roi__row:hover {
-  background: linear-gradient(90deg, rgba(190, 140, 255, 0.10), rgba(0, 0, 0, 0));
+  background: linear-gradient(
+    90deg,
+    rgba(190, 140, 255, 0.1),
+    rgba(0, 0, 0, 0)
+  );
 }
-.roi__row:hover .roi__text { color: rgba(255, 255, 255, 0.78); }
-.roi__row:hover .roi__dot { filter: drop-shadow(0 0 10px rgba(190, 140, 255, 0.22)); }
+.roi__row:hover .roi__text {
+  color: rgba(255, 255, 255, 0.78);
+}
+.roi__row:hover .roi__dot {
+  filter: drop-shadow(0 0 10px rgba(190, 140, 255, 0.22));
+}
 
 .roi__cardFrame {
   position: absolute;
@@ -463,47 +575,72 @@
 }
 
 @keyframes roiDecorDrift {
-  0% { transform: translateY(-50%) translate3d(0, 0, 0); opacity: 0.85; }
-  50% { transform: translateY(-50%) translate3d(0, -8px, 0); opacity: 0.95; }
-  100% { transform: translateY(-50%) translate3d(0, 0, 0); opacity: 0.85; }
+  0% {
+    transform: translateY(-50%) translate3d(0, 0, 0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-50%) translate3d(0, -8px, 0);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(-50%) translate3d(0, 0, 0);
+    opacity: 0.85;
+  }
 }
 
 .roi__tableDecor--left {
   left: -168px;
   transform: translateY(-50%) rotate(-18deg);
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(198, 145, 255, 0.42) 0px,
-      rgba(198, 145, 255, 0.42) 1px,
-      transparent 1px,
-      transparent 34px
-    );
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(198, 145, 255, 0.42) 0px,
+    rgba(198, 145, 255, 0.42) 1px,
+    transparent 1px,
+    transparent 34px
+  );
   filter: drop-shadow(0 0 10px rgba(160, 96, 255, 0.12));
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 1));
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 22%,
+    rgba(0, 0, 0, 1)
+  );
 }
 
 .roi__tableDecor--right {
   right: -168px;
   transform: translateY(-50%) rotate(18deg);
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(198, 145, 255, 0.42) 0px,
-      rgba(198, 145, 255, 0.42) 1px,
-      transparent 1px,
-      transparent 34px
-    );
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(198, 145, 255, 0.42) 0px,
+    rgba(198, 145, 255, 0.42) 1px,
+    transparent 1px,
+    transparent 34px
+  );
   filter: drop-shadow(0 0 10px rgba(160, 96, 255, 0.12));
-  mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 1));
+  mask-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 22%,
+    rgba(0, 0, 0, 1)
+  );
 }
 
 /* Responsive */
 @media (max-width: 860px) {
-  .roi { padding: 72px 16px 96px; }
-  .roi__title { font-size: 46px; }
-  .roi__cardInner { padding: 28px 22px 24px; }
-  .roi__tableDecor { display: none; }
+  .roi {
+    padding: 72px 16px 96px;
+  }
+  .roi__title {
+    font-size: 46px;
+  }
+  .roi__cardInner {
+    padding: 28px 22px 24px;
+  }
+  .roi__tableDecor {
+    display: none;
+  }
 
   .roi__starsSide {
     width: 30vw;
@@ -511,23 +648,61 @@
     background-size: 1400px auto;
     opacity: 0.5;
   }
-  .roi__starsSide::before { background-size: 1000px auto; opacity: 0.35; }
-  .roi__starsSide::after { background-size: 800px auto; opacity: 0.22; }
-  .roi__starsSide--left { left: -12vw; }
-  .roi__starsSide--right { right: -12vw; }
+  .roi__starsSide::before {
+    background-size: 1000px auto;
+    opacity: 0.35;
+  }
+  .roi__starsSide::after {
+    background-size: 800px auto;
+    opacity: 0.22;
+  }
+  .roi__starsSide--left {
+    left: -12vw;
+  }
+  .roi__starsSide--right {
+    right: -12vw;
+  }
 }
 
 @media (max-width: 640px) {
-  .roi__title { font-size: 40px; }
-  .roi__lead { max-width: 520px; font-size: 13.5px; }
-  .roi__card { padding: 14px; border-radius: 22px; }
-  .roi__cardInner { padding: 24px 16px 20px; }
-  .roi__cardTitle { font-size: 26px; margin-bottom: 18px; }
-  .roi__tableCard { padding: 16px 14px 12px; border-radius: 16px; }
-  .roi__tableHeader { grid-template-columns: 1fr; gap: 6px; padding-bottom: 10px; }
-  .roi__th--right { text-align: left; }
-  .roi__row { grid-template-columns: 1fr; gap: 10px; padding: 14px 4px; }
-  .roi__cell--target { padding-left: 0; }
+  .roi__title {
+    font-size: 40px;
+  }
+  .roi__lead {
+    max-width: 520px;
+    font-size: 13.5px;
+  }
+  .roi__card {
+    padding: 14px;
+    border-radius: 22px;
+  }
+  .roi__cardInner {
+    padding: 24px 16px 20px;
+  }
+  .roi__cardTitle {
+    font-size: 26px;
+    margin-bottom: 18px;
+  }
+  .roi__tableCard {
+    padding: 16px 14px 12px;
+    border-radius: 16px;
+  }
+  .roi__tableHeader {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding-bottom: 10px;
+  }
+  .roi__th--right {
+    text-align: left;
+  }
+  .roi__row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px 4px;
+  }
+  .roi__cell--target {
+    padding-left: 0;
+  }
 }
 
 /* Respect reduced motion */
