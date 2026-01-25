@@ -1,4 +1,4 @@
-// src/Home.tsx  (UPDATED: include ContactSection at the bottom)
+// src/Home.tsx
 import React from "react";
 import Hero from "./components/Hero";
 import PlatformShowcase from "./components/PlatformShowcase";
@@ -18,16 +18,25 @@ const Home: React.FC = () => {
     <main className="bg-black text-white pt-[140px]">
       <Hero />
       <PlatformShowcase />
+
+      {/* ✅ Pillars anchor (NOT wrapping section) */}
+      <div id="pillars" className="scroll-mt-[110px]" />
       <Pillars />
+
       <ObservabilityGap />
       <HowItWorks />
+
+      {/* ✅ Why Zavvis anchor */}
+      <div id="why-zavvis" className="scroll-mt-[110px]" />
       <ZavvisVsRest />
+
       <Benefits />
       <ROI />
       <WhyNow />
       <SocialProof />
 
-      {/* ✅ All CTAs jump here */}
+      {/* ✅ Contact anchor */}
+      <div id="contact" className="scroll-mt-[110px]" />
       <ContactSection />
 
       <FinalCtaFooter />

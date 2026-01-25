@@ -156,7 +156,7 @@ body {
   padding: clamp(84px, 12vh, 140px) 0 clamp(64px, 10vh, 120px);
 }
 
-/* 1) DARKER / CLEANER CARD FILL (matches 2nd image) - PURPLE REMOVED */
+/* DARKER / CLEANER CARD FILL */
 .cta__card {
   position: relative;
   width: 100%;
@@ -166,7 +166,6 @@ body {
 
   padding: 82px 28px 76px;
 
-  /* 🔥 darker, more subtle (no big lavender wash) */
   background: linear-gradient(
     180deg,
     rgba(24, 24, 24, 0.92) 0%,
@@ -262,7 +261,7 @@ body {
   animation: ctaSheen 7.5s ease-in-out infinite;
 }
 
-/* ✅ smaller spheres so they don’t dominate */
+/* spheres + dots */
 .cta__sphere {
   position: absolute;
   top: 60px;
@@ -488,6 +487,9 @@ body {
   transform: translateY(0px) scale(1.01);
 }
 
+/* =========================
+   FOOTER
+   ========================= */
 .ctaFooter {
   position: relative;
   z-index: 2;
@@ -518,33 +520,53 @@ body {
   justify-items: start;
 }
 
+/* ✅ LOGO PLATE (NO BORDER LINE) */
 .ctaFooter__logoWrap {
-  width: 172px;
-  height: 64px;
-  border-radius: 4px;
+  position: relative;
+  width: 196px;
+  height: 76px;
 
-  border: 1px solid rgba(180, 180, 180, 0.52);
-  background:
-    radial-gradient(
-      120px 46px at 50% 45%,
-      rgba(200, 200, 200, 0.22),
-      rgba(0, 0, 0, 0) 70%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(140, 140, 140, 0.4),
-      rgba(40, 40, 40, 0.18) 55%,
-      rgba(0, 0, 0, 0)
-    );
-
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 0 26px rgba(150, 150, 150, 0.18);
+  border-radius: 18px;
+  padding: 14px 16px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(0, 0, 0, 0.35)
+  );
+
+  border: 0 !important; /* ✅ kill outer border */
+
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.55),
+    0 0 44px rgba(170, 120, 255, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset; /* ✅ ultra-soft edge */
+  overflow: hidden;
+}
+
+/* soft outer glow */
+.ctaFooter__logoWrap::before {
+  content: "";
+  position: absolute;
+  inset: -22px;
+  border-radius: 26px;
+  background: radial-gradient(
+    closest-side at 50% 60%,
+    rgba(180, 135, 255, 0.22),
+    rgba(0, 0, 0, 0) 70%
+  );
+  filter: blur(14px);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ✅ remove inner frame line completely */
+.ctaFooter__logoWrap::after {
+  content: none !important;
 }
 
 .ctaFooter__logoImg {
@@ -553,8 +575,8 @@ body {
   object-fit: contain;
   display: block;
 
-  filter: brightness(1.26) saturate(1.1)
-    drop-shadow(0 0 14px rgba(150, 150, 150, 0.22));
+  transform: translateZ(0);
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
 }
 
 .ctaFooter__company {

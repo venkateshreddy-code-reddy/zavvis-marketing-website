@@ -134,8 +134,12 @@
   z-index: 2;
   width: 100%;
   max-width: 1120px;
-  margin: 0 auto;
+
+  /* ⬇️ move left */
+margin-left: calc(50% - 560px - 60px);
+  margin-right: 0;
 }
+
 
 .hiwOnly__title {
   margin: 0 0 36px;

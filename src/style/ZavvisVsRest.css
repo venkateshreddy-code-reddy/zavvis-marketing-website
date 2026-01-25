@@ -325,6 +325,7 @@
   padding: 0 22px; /* ✅ was 28px */
   display: flex;
   align-items: center;
+  
 }
 
 /* Vertical divider */

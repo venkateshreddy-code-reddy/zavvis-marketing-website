@@ -1,7 +1,34 @@
 /* src/style/hero.css */
 
+/* =========================================================
+   GLOBAL STAR KILL (ONLY WHILE HERO IS PRESENT)
+   - This targets the MOST COMMON implementations:
+     body::before / body::after / #root::before / #root::after
+   - Does NOT affect .hero__box::before (your animation)
+   ========================================================= */
+body.no-stars-in-hero::before,
+body.no-stars-in-hero::after,
+body.no-stars-in-hero #root::before,
+body.no-stars-in-hero #root::after {
+  content: none !important;
+  background: none !important;
+  background-image: none !important;
+  filter: none !important;
+  opacity: 0 !important;
+}
+
+/* Also kill any fixed star overlay elements if they exist with common names */
+body.no-stars-in-hero .stars,
+body.no-stars-in-hero .stars-layer,
+body.no-stars-in-hero .starfield,
+body.no-stars-in-hero .star-field,
+body.no-stars-in-hero .bg-stars,
+body.no-stars-in-hero [data-stars="true"] {
+  display: none !important;
+}
+
 /* =========================
-   HERO BASE (gap fixed)
+   HERO BASE
    ========================= */
 .hero {
   position: relative;
@@ -9,12 +36,8 @@
   overflow: hidden;
   width: 100%;
 
-  /* ✅ was 100vh (creates extra empty space) */
   min-height: clamp(760px, 92vh, 980px);
-
   padding-top: clamp(86px, 10vh, 120px);
-
-  /* ✅ reduce bottom padding so next section comes closer */
   padding-bottom: clamp(24px, 5vh, 70px);
 
   background: #000;
@@ -22,15 +45,7 @@
 
   --mx: 0px;
   --my: 0px;
-
   --grid-url: none;
-  --stars-url: none;
-
-  --star-drift: 260px;
-  --star-speed-1: 40s;
-  --star-speed-2: 60s;
-  --star-speed-3: 85s;
-  --twinkle-speed: 5s;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -39,10 +54,10 @@
   --breathe-speed: 10s;
 }
 
-/* ✅ prevent body/html showing as a different black */
 html,
-body {
-  background: #000;
+body,
+#root {
+  background: #000 !important;
 }
 
 .hero ::selection {
@@ -53,7 +68,7 @@ body {
 }
 
 /* =========================
-   GRID BOWL (position fixed)
+   GRID BOWL
    ========================= */
 .hero__grid {
   position: absolute;
@@ -104,103 +119,6 @@ body {
       translate3d(calc(var(--mx) * 0.18), calc(var(--my) * 0.16), 0)
       scale(1.012);
   }
-}
-
-/* =========================
-   STARS (sides)
-   ========================= */
-.hero__starsSide {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-
-  width: 26vw;
-  min-width: 260px;
-  max-width: 560px;
-
-  pointer-events: none;
-  z-index: 1;
-
-  background-image: var(--stars-url);
-  background-repeat: repeat;
-  background-size: 1200px auto;
-  background-position: 0 0;
-
-  opacity: 0.6;
-  filter: brightness(1.85) contrast(1.35);
-  mix-blend-mode: screen;
-
-  transform: translate3d(calc(var(--mx) * 0.06), calc(var(--my) * 0.05), 0);
-
-  animation:
-    starsDrift1 var(--star-speed-1) linear infinite,
-    starsTwinkle var(--twinkle-speed) ease-in-out infinite,
-    starsBreathe 9s ease-in-out infinite;
-
-  will-change: background-position, opacity, transform, filter;
-}
-
-.hero__starsSide::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background-image: var(--stars-url);
-  background-repeat: repeat;
-  background-size: 900px auto;
-  background-position: 120px 200px;
-
-  opacity: 0.42;
-  filter: brightness(1.9) contrast(1.35);
-  mix-blend-mode: screen;
-
-  animation:
-    starsDrift2 var(--star-speed-2) linear infinite,
-    starsTwinkle2 calc(var(--twinkle-speed) * 1.25) ease-in-out infinite;
-}
-
-.hero__starsSide::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background-image: var(--stars-url);
-  background-repeat: repeat;
-  background-size: 720px auto;
-  background-position: -200px 320px;
-
-  opacity: 0.28;
-  filter: brightness(2) contrast(1.4);
-  mix-blend-mode: screen;
-
-  animation:
-    starsDrift3 var(--star-speed-3) linear infinite,
-    starsTwinkle3 calc(var(--twinkle-speed) * 1.5) ease-in-out infinite;
-}
-
-.hero__starsSide--left {
-  left: -7vw;
-  mask-image: linear-gradient(to right, #000 0%, #000 65%, transparent 96%);
-  -webkit-mask-image: linear-gradient(
-    to right,
-    #000 0%,
-    #000 65%,
-    transparent 96%
-  );
-}
-
-.hero__starsSide--right {
-  right: -7vw;
-  transform: scaleX(-1)
-    translate3d(calc(var(--mx) * 0.06), calc(var(--my) * 0.05), 0);
-
-  mask-image: linear-gradient(to left, #000 0%, #000 65%, transparent 96%);
-  -webkit-mask-image: linear-gradient(
-    to left,
-    #000 0%,
-    #000 65%,
-    transparent 96%
-  );
 }
 
 /* =========================
@@ -297,38 +215,6 @@ body {
   line-height: inherit;
   color: inherit;
 }
-
-/* Top lightning effect (glow behind title) - COMMENTED OUT */
-/* .hero__title::after {
-  content: "";
-  position: absolute;
-  inset: -10px -18px;
-  pointer-events: none;
-
-  background: radial-gradient(
-    260px 90px at 50% 40%,
-    rgba(170, 120, 255, 0.22),
-    rgba(0, 0, 0, 0) 70%
-  );
-
-  opacity: 0;
-  transform: translateY(8px) scale(0.98);
-}
-
-.hero.hero--ready .hero__title::after {
-  animation: titleGlowIn 1100ms var(--ease-out) 260ms both;
-}
-
-@keyframes titleGlowIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-} */
 
 /* Subtitle */
 .hero__subtitle {
@@ -441,7 +327,7 @@ body {
   color: rgba(255, 255, 255, 0.65);
 }
 
-/* Callout Box */
+/* Callout Box (KEEP ANIMATION) */
 .hero__box {
   margin-top: 22px;
   width: min(900px, 92vw);
@@ -512,15 +398,6 @@ body {
   }
 }
 
-.hero__boxTitle {
-  margin: 0 0 10px;
-  font-size: 18px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.92);
-  position: relative;
-  z-index: 1;
-}
-
 .hero__boxText {
   margin: 0;
   font-size: 15px;
@@ -531,106 +408,12 @@ body {
 }
 
 /* =========================
-   STAR ANIMATIONS
-   ========================= */
-@keyframes starsDrift1 {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 var(--star-drift);
-  }
-}
-@keyframes starsDrift2 {
-  from {
-    background-position: 120px 200px;
-  }
-  to {
-    background-position: 120px calc(200px + var(--star-drift));
-  }
-}
-@keyframes starsDrift3 {
-  from {
-    background-position: -200px 320px;
-  }
-  to {
-    background-position: -200px calc(320px + var(--star-drift));
-  }
-}
-
-@keyframes starsTwinkle {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-@keyframes starsTwinkle2 {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.48;
-  }
-}
-@keyframes starsTwinkle3 {
-  0%,
-  100% {
-    opacity: 0.22;
-  }
-  50% {
-    opacity: 0.32;
-  }
-}
-
-@keyframes starsBreathe {
-  0%,
-  100% {
-    filter: brightness(1.8) contrast(1.35);
-  }
-  50% {
-    filter: brightness(2.05) contrast(1.45);
-  }
-}
-
-/* =========================
-   ✅ SEAM FIX: blend Hero into next section
-   (prevents “two different colours” band)
-   ========================= */
-/* Bottom lightning effect - COMMENTED OUT */
-/* .hero::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 220px;
-  pointer-events: none;
-  z-index: 4;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(140, 90, 255, 0.1) 38%,
-    rgba(0, 0, 0, 0.75) 75%,
-    #000 100%
-  );
-} */
-
-/* =========================
    MOBILE
    ========================= */
 @media (max-width: 768px) {
   .hero {
     padding-top: 92px;
-
-    /* ✅ tighter on mobile too */
     padding-bottom: 56px;
-
-    /* ✅ avoid forced tall hero on small screens */
     min-height: auto;
   }
 
@@ -641,30 +424,6 @@ body {
 
   .hero__ctaBtn {
     width: 220px;
-  }
-
-  .hero__starsSide {
-    width: 30vw;
-    min-width: 180px;
-    background-size: 1400px auto;
-    opacity: 0.5;
-  }
-
-  .hero__starsSide::before {
-    background-size: 1000px auto;
-    opacity: 0.35;
-  }
-
-  .hero__starsSide::after {
-    background-size: 800px auto;
-    opacity: 0.22;
-  }
-
-  .hero__starsSide--left {
-    left: -12vw;
-  }
-  .hero__starsSide--right {
-    right: -12vw;
   }
 
   .hero__box {
@@ -682,15 +441,10 @@ body {
   }
 
   .hero__grid,
-  .hero__starsSide,
-  .hero__starsSide::before,
-  .hero__starsSide::after,
-  .hero__title::after,
   .hero__ctaPrimary,
   .hero__ctaPrimary::after,
   .hero__box,
-  .hero__box::before,
-  .hero::after {
+  .hero__box::before {
     transform: none !important;
     animation: none !important;
   }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../style/AboutZavvis.css";
 
-import grid from "../assets/grid.png";
+import grid from "../assets/gridh.png";
 import stars from "../assets/stars.png";
 
 const AboutZavvis: React.FC = () => {

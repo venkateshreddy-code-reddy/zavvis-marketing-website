@@ -1,12 +1,15 @@
 // src/components/Hero.tsx
 import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../style/hero.css";
-import grid from "../assets/grid.png";
-import stars from "../assets/stars.png";
+import grid from "../assets/gridh.png";
 
 const Hero: React.FC = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [ready, setReady] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setReady(true));
@@ -42,6 +45,19 @@ const Hero: React.FC = () => {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
+  const scrollToContact = () => {
+    const el = document.getElementById("contact");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    navigate("/");
+    setTimeout(() => {
+      const target = document.getElementById("contact");
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 60);
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -49,13 +65,11 @@ const Hero: React.FC = () => {
       style={
         {
           ["--grid-url" as any]: `url(${grid})`,
-          ["--stars-url" as any]: `url(${stars})`,
         } as React.CSSProperties
       }
     >
+      <div className="hero__backdrop" aria-hidden="true" />
       <div className="hero__grid" aria-hidden="true" />
-      <div className="hero__starsSide hero__starsSide--left" aria-hidden="true" />
-      <div className="hero__starsSide hero__starsSide--right" aria-hidden="true" />
 
       <div className="hero__content">
         <h1 className="hero__title">
@@ -69,8 +83,21 @@ const Hero: React.FC = () => {
         </p>
 
         <div className="hero__ctas">
-          <button className="hero__ctaBtn hero__ctaPrimary">Get Started</button>
-          <button className="hero__ctaBtn hero__ctaSecondary">Book Demo</button>
+          <button
+            type="button"
+            className="hero__ctaBtn hero__ctaPrimary"
+            onClick={scrollToContact}
+          >
+            Get Started
+          </button>
+
+          <button
+            type="button"
+            className="hero__ctaBtn hero__ctaSecondary"
+            onClick={scrollToContact}
+          >
+            Book Demo
+          </button>
         </div>
 
         <p className="hero__fineprint">

@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/logo.png";
-import glow from "../assets/glow.png";
 
 /* =========================
    NAV WRAPPER
@@ -21,7 +20,6 @@ const Nav = styled.header<{ $scrolled: boolean; $home: boolean }>`
   align-items: center;
   justify-content: center;
 
-  /* transparent only on home when at very top */
   background: ${({ $home, $scrolled }) =>
     $home && !$scrolled
       ? "transparent"
@@ -129,7 +127,6 @@ const Brand = styled(Link)`
   border-radius: 14px;
 `;
 
-/* ✨ soft halo behind Zavvis (lighter like the pills) */
 const BrandGlow = styled.span<{ $active: boolean }>`
   position: absolute;
   inset: -10px -14px;
@@ -148,7 +145,6 @@ const Logo = styled.img`
   z-index: 1;
   height: 44px;
 
-  /* ✅ lighter “Zavvis button” look */
   filter: brightness(1.32) saturate(1.1)
     drop-shadow(0 0 16px rgba(205, 175, 255, 0.35));
 
@@ -240,7 +236,6 @@ const CTAButton = styled.button`
   text-transform: uppercase;
   border-radius: 999px;
 
-  /* ✅ lighter gradient like your reference */
   background: linear-gradient(90deg, #8f6bff, #d7b6ff);
   color: #fff;
 
@@ -332,12 +327,22 @@ const MobileMenu = styled.div`
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
 `;
 
-const MobileLink = styled(MenuLink)`
+const MobileLink = styled.a`
+  color: rgba(255, 255, 255, 0.92);
   font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
   padding: 12px 0;
   border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease,
+    background 0.18s ease;
 
   &:hover {
+    color: #fff;
+    transform: translateY(-1px);
     background: rgba(255, 255, 255, 0.06);
   }
 `;
@@ -345,6 +350,16 @@ const MobileLink = styled(MenuLink)`
 const MobileCTA = styled(CTAButton)`
   margin-top: 10px;
 `;
+
+/* =========================
+   HELPERS
+   ========================= */
+
+function scrollToId(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 /* =========================
    COMPONENT
@@ -355,6 +370,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = useMemo(() => location.pathname === "/", [location.pathname]);
 
   useEffect(() => {
@@ -376,6 +392,44 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const goHomeTop = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      requestAnimationFrame(() =>
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      );
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const goToHomeSection = (id: string) => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => scrollToId(id), 60);
+      return;
+    }
+    scrollToId(id);
+  };
+
+  const goToBlog = () => {
+    navigate("/blog");
+  };
+
+  const goToCompany = () => {
+    navigate("/company");
+  };
+
+  const goToContact = () => {
+    const hasLocalContact = !!document.getElementById("contact");
+    if (hasLocalContact) {
+      scrollToId("contact");
+      return;
+    }
+    navigate("/");
+    setTimeout(() => scrollToId("contact"), 60);
+  };
+
   return (
     <>
       <Nav $scrolled={scrolled} $home={isHome}>
@@ -383,7 +437,7 @@ export default function Navbar() {
           <NavGlow />
 
           <Left>
-            <Brand to="/" aria-label="Go to home">
+            <Brand to="/" aria-label="Go to home" onClick={goHomeTop}>
               <BrandGlow $active={isHome && !scrolled} />
               <Logo src={logo} alt="Zavvis" />
             </Brand>
@@ -391,16 +445,20 @@ export default function Navbar() {
 
           <Center>
             <MenuPill aria-label="Primary navigation">
-              <MenuLink to="/">The Pillars</MenuLink>
-              <MenuLink to="/">Why Zavvis</MenuLink>
-              <MenuLink to="/">Blog</MenuLink>
+              <MenuLink to="/" onClick={(e) => (e.preventDefault(), goToHomeSection("pillars"))}>
+                The Pillars
+              </MenuLink>
+              <MenuLink to="/" onClick={(e) => (e.preventDefault(), goToHomeSection("why-zavvis"))}>
+                Why Zavvis
+              </MenuLink>
+              <MenuLink to="/blog">Blog</MenuLink>
               <MenuLink to="/company">Company</MenuLink>
             </MenuPill>
           </Center>
 
           <Right>
             <DesktopCTA>
-              <CTAButton>GET STARTED</CTAButton>
+              <CTAButton onClick={goToContact}>GET STARTED</CTAButton>
             </DesktopCTA>
 
             <MenuToggle
@@ -416,19 +474,50 @@ export default function Navbar() {
 
       <MobileOverlay $open={open} onClick={() => setOpen(false)}>
         <MobileMenu onClick={(e) => e.stopPropagation()}>
-          <MobileLink to="/" onClick={() => setOpen(false)}>
+          <MobileLink
+            onClick={() => {
+              setOpen(false);
+              goToHomeSection("pillars");
+            }}
+          >
             The Pillars
           </MobileLink>
-          <MobileLink to="/" onClick={() => setOpen(false)}>
+
+          <MobileLink
+            onClick={() => {
+              setOpen(false);
+              goToHomeSection("why-zavvis");
+            }}
+          >
             Why Zavvis
           </MobileLink>
-          <MobileLink to="/" onClick={() => setOpen(false)}>
+
+          <MobileLink
+            onClick={() => {
+              setOpen(false);
+              goToBlog();
+            }}
+          >
             Blog
           </MobileLink>
-          <MobileLink to="/company" onClick={() => setOpen(false)}>
+
+          <MobileLink
+            onClick={() => {
+              setOpen(false);
+              goToCompany();
+            }}
+          >
             Company
           </MobileLink>
-          <MobileCTA onClick={() => setOpen(false)}>GET STARTED</MobileCTA>
+
+          <MobileCTA
+            onClick={() => {
+              setOpen(false);
+              goToContact();
+            }}
+          >
+            GET STARTED
+          </MobileCTA>
         </MobileMenu>
       </MobileOverlay>
     </>

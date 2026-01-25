@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../style/PrincipleSection.css";
 
-import grid from "../assets/grid.png";
+import grid from "../assets/gridh.png";
 import stars from "../assets/stars.png";
 
 import ponIcon from "../assets/pon.png";

@@ -227,7 +227,11 @@
   z-index: 2;
   max-width: 1180px;
   margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
 }
+
 
 .pillars__head {
   text-align: center;
@@ -269,7 +273,9 @@
 
   gap: clamp(14px, 2.2vw, 24px);
 
-  /* ✅ small, but not too tight */
+  /* ✅ CENTER THE DIAMOND BLOCK */
+  margin: auto 0;
+
   padding: clamp(8px, 1.1vw, 14px) 0;
 }
 
