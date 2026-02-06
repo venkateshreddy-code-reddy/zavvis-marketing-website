@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import "../style/CTASection.css";
 import logo from "../assets/logo.png";
 import stars from "../assets/stars.png";
+import { Link } from "react-router-dom";
 
 function WireSphere({ className }: { className: string }) {
   return (
@@ -218,12 +219,15 @@ export default function CTASection() {
         <div className="ctaFooter__inner">
           <div className="ctaFooter__left">
             <div className="ctaFooter__logoWrap" aria-label="Zavvis logo">
-              <img
-                className="ctaFooter__logoImg"
-                src={logo}
-                alt="Zavvis"
-                draggable={false}
-              />
+             <Link to="/">
+  <img
+    className="ctaFooter__logoImg"
+    src={logo}
+    alt="Zavvis"
+    draggable={false}
+    style={{ cursor: "pointer" }}
+  />
+</Link>
             </div>
             <div className="ctaFooter__company">Zavvis Technologies, Inc.</div>
           </div>
