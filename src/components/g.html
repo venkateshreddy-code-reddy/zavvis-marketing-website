@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Control Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+        :root {
+            --bg-page: #0B0C15;
+            --bg-window: #0F111A;
+            --bg-sidebar: #13151F;
+            --bg-panel: #161822;
+            --bg-input: #1E202E;
+            --bg-card: #1E2130;
+            --bg-card-hover: #252838;
+            
+            --border-color: #2A2D3E;
+            --border-active: #3E425A;
+            
+            --text-primary: #E2E4F0;
+            --text-secondary: #8B8FA3;
+            --text-muted: #5A6078;
+            
+            --accent-blue: #3B82F6;
+            --accent-purple: #8B5CF6;
+            --accent-red: #EF4444;
+            --accent-green: #10B981;
+            --accent-orange: #F59E0B;
+            --accent-yellow: #EAB308;
+            --accent-cyan: #06B6D4;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A2D3E;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3E425A;
+        }
+
+        .app-window {
+            width: 92vw;
+            max-width: 1400px;
+            height: 88vh;
+            max-height: 900px;
+            background-color: var(--bg-window);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1f2230;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sidebar-icon {
+            transition: all 0.2s ease;
+        }
+        .sidebar-icon:hover {
+            color: var(--text-primary);
+            background-color: rgba(255,255,255,0.05);
+        }
+        .sidebar-icon.active {
+            color: var(--text-primary);
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 2px solid var(--accent-blue);
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .syntax-keyword { color: var(--accent-purple); }
+        .syntax-string { color: var(--accent-green); }
+        .syntax-comment { color: var(--text-muted); font-style: italic; }
+        .syntax-func { color: var(--accent-yellow); }
+        .syntax-var { color: var(--accent-cyan); }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background-color: var(--accent-blue);
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .signal-card {
+            border-left: 3px solid var(--accent-red);
+            background-color: var(--bg-card);
+            transition: transform 0.2s ease, background-color 0.2s;
+        }
+        .signal-card:hover {
+            background-color: var(--bg-card-hover);
+            transform: translateX(2px);
+        }
+
+        .data-source-icon {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Line Highlight */
+        .line-highlight {
+            background-color: rgba(59, 130, 246, 0.08);
+            border-radius: 4px;
+            margin: 0 -8px;
+            padding: 0 8px;
+            width: calc(100% + 16px);
+            display: inline-block;
+        }
+
+        .tab-active {
+            background-color: rgba(59, 130, 246, 0.15);
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--accent-blue);
+        }
+        
+        .tab-inactive {
+            color: var(--text-secondary);
+            border-bottom: 1px solid transparent;
+        }
+        .tab-inactive:hover {
+            background-color: rgba(255,255,255,0.03);
+            color: var(--text-primary);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+        }
+        .btn-gradient:hover {
+            opacity: 0.9;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .prompt-card {
+            background-color: rgba(30, 33, 48, 0.6);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .prompt-card:hover {
+            border-color: var(--border-active);
+            background-color: var(--bg-card);
+            transform: translateY(-1px);
+        }
+
+        /* Animation Classes */
+        .fade-in-up {
+            animation: fadeInUp 0.4s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-complete {
+            animation: none;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-window">
+        <!-- Sidebar -->
+        <aside class="w-14 bg-[#13151F] border-r border-[#1f2230] flex flex-col items-center py-4 z-10">
+            <div class="mb-6 text-blue-500">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            
+            <nav class="flex flex-col gap-1 w-full">
+                <button class="sidebar-icon active w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Files">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                </button>
+                <button class="sidebar-icon w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Starred">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </button>
+                <button class="sidebar-icon w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Alerts">
+                    <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                </button>
+                <button class="sidebar-icon w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Analytics">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                </button>
+                <button class="sidebar-icon w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Database">
+                    <i data-lucide="database" class="w-5 h-5"></i>
+                </button>
+                <button class="sidebar-icon w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Tasks">
+                    <i data-lucide="check-square" class="w-5 h-5"></i>
+                </button>
+                <button class="sidebar-icon w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Grid">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                </button>
+            </nav>
+
+            <div class="mt-auto flex flex-col gap-1 w-full">
+                <button class="sidebar-icon w-full h-10 flex items-center justify-center text-[#8B8FA3]" title="Settings">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col min-w-0 bg-[#0F111A]">
+            
+            <!-- MacOS Window Bar / Tabs -->
+            <header class="h-12 border-b border-[#1f2230] flex items-center px-4 bg-[#0F111A] select-none">
+                <!-- Window Controls -->
+                <div class="flex gap-2 mr-6">
+                    <div class="w-3 h-3 rounded-full bg-[#FF5F56] hover:brightness-110 cursor-pointer"></div>
+                    <div class="w-3 h-3 rounded-full bg-[#FFBD2E] hover:brightness-110 cursor-pointer"></div>
+                    <div class="w-3 h-3 rounded-full bg-[#27C93F] hover:brightness-110 cursor-pointer"></div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex h-full items-end gap-1">
+                    <button class="tab-active px-4 py-2 text-xs font-medium rounded-t-md flex items-center gap-2 transition-colors">
+                        <span class="text-blue-400 font-bold text-[10px]">Ds</span>
+                        engine-main.ds
+                        <i data-lucide="x" class="w-3 h-3 ml-1 opacity-50 hover:opacity-100"></i>
+                    </button>
+                    <button class="tab-inactive px-4 py-2 text-xs font-medium rounded-t-md flex items-center gap-2 transition-colors">
+                        <i data-lucide="settings" class="w-3 h-3 text-gray-500"></i>
+                        revenue-related.sg
+                        <i data-lucide="x" class="w-3 h-3 ml-1 opacity-0 hover:opacity-50"></i>
+                    </button>
+                    <button class="tab-inactive px-4 py-2 text-xs font-medium rounded-t-md flex items-center gap-2 transition-colors">
+                        <i data-lucide="settings" class="w-3 h-3 text-gray-500"></i>
+                        control-related.sg
+                        <i data-lucide="x" class="w-3 h-3 ml-1 opacity-0 hover:opacity-50"></i>
+                    </button>
+                </div>
+
+                <!-- Status Pill (Absolute Center) -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-3 flex items-center gap-2 px-3 py-1 bg-[#1E202E] rounded-full border border-[#2A2D3E] text-[10px] font-medium text-gray-400 shadow-sm z-20 hidden" id="status-pill">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    Running analysis…
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="flex-1 flex overflow-hidden">
+                
+                <!-- Left Panel -->
+                <div class="flex-1 flex flex-col min-w-0 border-r border-[#1f2230]">
+                    
+                    <!-- Code Editor -->
+                    <div class="flex-1 overflow-y-auto p-4 code-font text-[13px] leading-6 relative" id="code-editor">
+                        <div class="flex flex-col gap-0.5" id="code-content">
+                            <!-- Code lines injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Prompts Grid -->
+                    <div class="p-4 border-t border-[#1f2230] bg-[#0F111A]">
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <button class="prompt-card p-3 rounded-lg text-left text-xs text-gray-300 leading-relaxed h-full">
+                                Trace the root cause of any signal affecting revenue or expenses.
+                            </button>
+                            <button class="prompt-card p-3 rounded-lg text-left text-xs text-gray-300 leading-relaxed h-full">
+                                Where are the biggest financial risks and control gaps across my data?
+                            </button>
+                            <button class="prompt-card p-3 rounded-lg text-left text-xs text-gray-300 leading-relaxed h-full">
+                                Summarize system health and flag any thresholds or guardrails that fired.
+                            </button>
+                            <button class="prompt-card p-3 rounded-lg text-left text-xs text-gray-300 leading-relaxed h-full">
+                                Show inconsistencies between my financial data and the canonical model.
+                            </button>
+                        </div>
+
+                        <!-- Input Area -->
+                        <div class="relative">
+                            <input type="text" placeholder="Ask Conversation Agent" class="w-full bg-[#161822] border border-[#2A2D3E] rounded-lg py-2.5 pl-4 pr-10 text-sm text-gray-200 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all placeholder-gray-600">
+                            <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 text-gray-500 hover:text-blue-400 transition-colors">
+                                <i data-lucide="send" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reports Section -->
+                    <div class="bg-[#161822] border-t border-[#1f2230] p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                <i data-lucide="file-text" class="w-4 h-4 text-gray-500"></i>
+                                Reports
+                            </div>
+                            <button class="btn-gradient text-white text-[11px] font-semibold px-3 py-1.5 rounded-md flex items-center gap-1.5 transition-all">
+                                <i data-lucide="plus" class="w-3 h-3"></i>
+                                Add Report
+                            </button>
+                        </div>
+                        <div class="flex flex-col gap-1 code-font text-xs text-gray-400">
+                            <div class="flex items-center gap-2 p-1.5 hover:bg-white/5 rounded cursor-pointer group transition-colors">
+                                <i data-lucide="chevron-right" class="w-3 h-3 text-gray-600 group-hover:text-blue-400"></i>
+                                <span class="group-hover:text-blue-400 transition-colors">Q4_2025_revenue-behavior-shift_warroom_2026-01-22.html</span>
+                            </div>
+                            <div class="flex items-center gap-2 p-1.5 hover:bg-white/5 rounded cursor-pointer group transition-colors">
+                                <i data-lucide="chevron-right" class="w-3 h-3 text-gray-600 group-hover:text-blue-400"></i>
+                                <span class="group-hover:text-blue-400 transition-colors">Oct_2025_missed-invoicing_control-break_warroom_2026-01-22.html</span>
+                            </div>
+                            <div class="flex items-center gap-2 p-1.5 hover:bg-white/5 rounded cursor-pointer group transition-colors">
+                                <i data-lucide="chevron-right" class="w-3 h-3 text-gray-600 group-hover:text-blue-400"></i>
+                                <span class="group-hover:text-blue-400 transition-colors">Nov_2025_expense-misclassification_opex-to-cogs_warroom_2026-01-22.html</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel -->
+                <aside class="w-[380px] bg-[#0F111A] flex flex-col">
+                    <div class="p-4 border-b border-[#1f2230]">
+                        <h2 class="text-[11px] font-bold tracking-wider text-gray-400 uppercase border-b border-gray-700 pb-2 mb-1 inline-block">Detect Agent Output</h2>
+                        <p class="text-xs text-gray-500 mt-3 leading-relaxed">
+                            The following signals were produced by the latest detection run:
+                        </p>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto p-4 space-y-3" id="signals-container">
+                        <!-- Signals injected via JS -->
+                    </div>
+
+                    <!-- Data Sources -->
+                    <div class="p-4 bg-[#161822] border-t border-[#1f2230]">
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="flex items-center gap-2 text-xs font-semibold text-gray-300">
+                                <i data-lucide="database" class="w-4 h-4 text-gray-500"></i>
+                                Data Sources
+                            </div>
+                            <button class="btn-gradient text-white text-[11px] font-semibold px-3 py-1 rounded transition-all">
+                                Add Data
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 p-1.5 rounded hover:bg-white/5 cursor-pointer transition-colors group">
+                                <div class="w-8 h-8 rounded bg-[#4A5568] flex items-center justify-center text-white font-bold text-xs data-source-icon">T</div>
+                                <span class="text-sm text-gray-300 group-hover:text-white">NetSuite</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-1.5 rounded hover:bg-white/5 cursor-pointer transition-colors group">
+                                <div class="w-8 h-8 rounded bg-[#00A1E0] flex items-center justify-center text-white data-source-icon">
+                                    <i data-lucide="cloud" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-sm text-gray-300 group-hover:text-white">SalesForce</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-1.5 rounded hover:bg-white/5 cursor-pointer transition-colors group">
+                                <div class="w-8 h-8 rounded bg-[#635BFF] flex items-center justify-center text-white font-bold text-xs data-source-icon">S</div>
+                                <span class="text-sm text-gray-300 group-hover:text-white">Stripe</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-1.5 rounded hover:bg-white/5 cursor-pointer transition-colors group">
+                                <div class="w-8 h-8 rounded bg-[#2CA01C] flex items-center justify-center text-white font-bold text-[10px] data-source-icon">qb</div>
+                                <span class="text-sm text-gray-300 group-hover:text-white">QuickBooks</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Data Definitions
+        const codeLines = [
+            { id: 1, content: "// CHAT", type: "comment" },
+            { id: 2, content: "// Financial Control Center", type: "comment" },
+            { id: 3, content: "", type: "empty" },
+            { id: 4, content: "import { financial_observability_scan } from 'zavvis/engine';", type: "import" },
+            { id: 5, content: "{", type: "code" },
+            { id: 6, content: "  all connected systems have been analyzed for material changes and control deviations;", type: "code" },
+            { id: 7, content: "}", type: "code" },
+            { id: 8, content: "", type: "empty" },
+            { id: 9, content: "detect agent has analyzed your financial systems and identified material signals across revenue,", type: "code" },
+            { id: 10, content: "expenses, and controls. {", type: "code" },
+            { id: 11, content: "  runnerService: priority signals are summarized on the right => {", type: "code", milestone: 0 },
+            { id: 12, content: "    explain agent is ready to drill into root causes at the transaction level ({", type: "code", milestone: 1 },
+            { id: 13, content: "      });", type: "code" },
+            { id: 14, content: "    }", type: "code" },
+            { id: 15, content: "  };", type: "code" },
+            { id: 16, content: "};", type: "code" },
+            { id: 17, content: "", type: "empty" },
+            { id: 18, content: "export default: present agent can generate updated live war room reflecting the latest financial", type: "export", milestone: 2 },
+            { id: 19, content: "state;", type: "export" }
+        ];
+
+        const signals = [
+            {
+                id: 1,
+                title: "Revenue Integrity Issue — $48,900 Missing",
+                desc: "Detected a mismatch between Salesforce closed-won deals and revenue posted in QuickBooks.",
+                details: "This inconsistency suggests a break in your revenue-recognition workflow and should be reviewed.",
+                type: "error"
+            },
+            {
+                id: 2,
+                title: "November 2025 Financial Irregularities",
+                desc: null,
+                details: [
+                    "• Sales Revenue: $6.8 M (75% below average of ~$8.3 M) Office",
+                    "• Supplies: $140,000 (300% above normal $35,000)",
+                    "• 6 deals marked closed-won not reflected in GL",
+                    "• 2 deposits unlinked to customer records",
+                    "",
+                    "This significant deviation suggests potential data entry errors or missing revenue entries, thresholds or guardrails that fired."
+                ],
+                type: "error"
+            },
+            {
+                id: 3,
+                title: "Unreversed Accrual — $12,400",
+                desc: "Found an accrual from 2025-11-01 that did not generate its expected reversal entry. Traced to journal entry 114412.",
+                details: "This integrity risk should be corrected to ensure accurate financial reporting.",
+                type: "error"
+            }
+        ];
+
+        // DOM Elements
+        const codeContainer = document.getElementById('code-content');
+        const signalsContainer = document.getElementById('signals-container');
+        const statusPill = document.getElementById('status-pill');
+        const editor = document.getElementById('code-editor');
+
+        // State
+        let currentLine = 0;
+        let isRunning = false;
+        const typingSpeed = 30; // ms per char
+
+        // Helper: Syntax Highlighting Logic
+        function highlightSyntax(text, type) {
+            if (type === 'comment') return `<span class="syntax-comment">${text}</span>`;
+            if (type === 'empty') return '';
+            
+            // Simple regex replacements for demo purposes
+            let html = text
+                .replace(/(import|from|export|default)/g, '<span class="syntax-keyword">$1</span>')
+                .replace(/('.*?')/g, '<span class="syntax-string">$1</span>')
+                .replace(/(detect|runnerService|explain)/g, '<span class="syntax-func">$1</span>')
+                .replace(/(\{|\}|\(|\)|=>)/g, '<span class="text-gray-400">$1</span>');
+            
+            return html;
+        }
+
+        // Render Initial Empty Lines
+        function initCodeEditor() {
+            codeContainer.innerHTML = '';
+            codeLines.forEach((line, index) => {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'flex gap-4 min-h-[1.5em] opacity-20 transition-opacity duration-300';
+                lineDiv.id = `line-${index}`;
+                
+                const num = document.createElement('span');
+                num.className = 'text-[#3E425A] select-none w-6 text-right text-[11px] pt-0.5';
+                num.textContent = line.id;
+                
+                const content = document.createElement('span');
+                content.className = 'text-gray-300';
+                content.innerHTML = '&nbsp;'; // Placeholder
+                
+                lineDiv.appendChild(num);
+                lineDiv.appendChild(content);
+                codeContainer.appendChild(lineDiv);
+            });
+        }
+
+        // Typewriter Effect
+        async function typeLine(index) {
+            if (index >= codeLines.length) {
+                finishSimulation();
+                return;
+            }
+
+            const lineData = codeLines[index];
+            const lineEl = document.getElementById(`line-${index}`);
+            const contentEl = lineEl.querySelector('span:last-child');
+            
+            // Highlight current line
+            lineEl.classList.remove('opacity-20');
+            lineEl.classList.add('opacity-100');
+            
+            // Add highlight background effect
+            const highlightSpan = document.createElement('span');
+            highlightSpan.className = 'line-highlight';
+            contentEl.innerHTML = '';
+            contentEl.appendChild(highlightSpan);
+
+            // Scroll to view
+            lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Typing logic
+            const text = lineData.content;
+            let charIndex = 0;
+            
+            // Create cursor
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor-blink';
+            
+            const typeChar = () => {
+                if (charIndex < text.length) {
+                    highlightSpan.textContent = text.substring(0, charIndex + 1);
+                    highlightSpan.appendChild(cursor);
+                    charIndex++;
+                    setTimeout(typeChar, typingSpeed);
+                } else {
+                    // Finished typing this line
+                    highlightSpan.innerHTML = highlightSyntax(text, lineData.type);
+                    if (index < codeLines.length - 1) {
+                         // Move to next line
+                         setTimeout(() => typeLine(index + 1), 100);
+                    } else {
+                        finishSimulation();
+                    }
+                    
+                    // Trigger Milestones
+                    if (lineData.milestone !== undefined) {
+                        showSignal(lineData.milestone);
+                    }
+                }
+            };
+            
+            typeChar();
+        }
+
+        function showSignal(index) {
+            const signal = signals[index];
+            if (!signal) return;
+
+            const card = document.createElement('div');
+            card.className = 'signal-card p-3 rounded-r-lg fade-in-up';
+            
+            let detailsHtml = '';
+            if (Array.isArray(signal.details)) {
+                detailsHtml = signal.details.map(d => `<p class="text-[11px] text-gray-400 mb-1">${d}</p>`).join('');
+            } else {
+                detailsHtml = `<p class="text-[11px] text-gray-400 mb-2">${signal.details}</p>`;
+            }
+
+            card.innerHTML = `
+                <div class="flex items-start gap-2 mb-1">
+                    <span class="text-red-500 font-bold text-lg leading-none mt-[-2px]">×</span>
+                    <h3 class="text-xs font-bold text-gray-200 leading-tight">${signal.title}</h3>
+                </div>
+                ${signal.desc ? `<p class="text-[11px] text-gray-400 mb-2 pl-4">${signal.desc}</p>` : ''}
+                <div class="pl-4 mb-2">
+                    ${detailsHtml}
+                </div>
+                <button class="pl-4 text-[11px] font-bold text-blue-500 hover:text-blue-400 transition-colors">Show RCA</button>
+            `;
+            
+            signalsContainer.appendChild(card);
+            // Scroll signals to bottom
+            signalsContainer.scrollTop = signalsContainer.scrollHeight;
+        }
+
+        function finishSimulation() {
+            isRunning = false;
+            statusPill.classList.add('hidden');
+            // Keep the last line highlighted or remove highlight? 
+            // Let's remove the highlight effect but keep text
+            const lastLine = document.getElementById(`line-${codeLines.length - 1}`);
+            if(lastLine) {
+                const span = lastLine.querySelector('.line-highlight');
+                if(span) span.classList.remove('line-highlight');
+            }
+        }
+
+        function startSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            statusPill.classList.remove('hidden');
+            signalsContainer.innerHTML = ''; // Clear previous signals
+            initCodeEditor();
+            
+            // Small delay before starting
+            setTimeout(() => {
+                typeLine(0);
+            }, 500);
+        }
+
+        // Initialize
+        initCodeEditor();
+        
+        // Start automatically on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(startSimulation, 800);
+        });
+
+        // Add click handlers to prompt cards to restart simulation for demo purposes
+        document.querySelectorAll('.prompt-card').forEach(card => {
+            card.addEventListener('click', () => {
+                if(!isRunning) startSimulation();
+            });
+        });
+
+    </script>
+</body>
+</html>
